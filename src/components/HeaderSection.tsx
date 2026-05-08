@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
-import { Code, Menu, X } from 'lucide-react'
+import { Code, Menu, MoonStar, SunMedium, X } from 'lucide-react'
+import { useTheme } from '../hooks/useTheme'
 
 export default function HeaderSection() {
     const { t, i18n } = useTranslation()
+    const { isDark, toggleTheme } = useTheme()
     const [menuOpen, setMenuOpen] = useState(false)
 
     const toggleLanguage = () => {
@@ -31,6 +33,13 @@ export default function HeaderSection() {
                     >
                         {i18n.language === 'en' ? 'ES' : 'EN'}
                     </button>
+                    <button
+                        onClick={toggleTheme}
+                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                        className="inline-flex items-center justify-center rounded border px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    >
+                        {isDark ? <SunMedium size={16} /> : <MoonStar size={16} />}
+                    </button>
                 </nav>
 
                 {/* Mobile menu button */}
@@ -40,6 +49,13 @@ export default function HeaderSection() {
                         className="px-2 py-1 text-xs border rounded hover:bg-gray-100"
                     >
                         {i18n.language === 'en' ? 'ES' : 'EN'}
+                    </button>
+                    <button
+                        onClick={toggleTheme}
+                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                        className="inline-flex items-center justify-center rounded border px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    >
+                        {isDark ? <SunMedium size={16} /> : <MoonStar size={16} />}
                     </button>
                     <button onClick={() => setMenuOpen(!menuOpen)}>
                         {menuOpen ? <X size={20} /> : <Menu size={20} />}

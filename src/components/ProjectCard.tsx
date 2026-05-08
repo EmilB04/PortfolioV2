@@ -1,4 +1,3 @@
-import React from 'react'
 import type { Project } from '../hooks/useProjects'
 
 export default function ProjectCard({ project }: { project: Project }) {
