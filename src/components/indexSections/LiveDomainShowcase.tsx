@@ -150,10 +150,10 @@ export default function LiveDomainShowcase() {
                         </div>
 
                         {/* URL */}
-                        <p className="text-sm opacity-45 tracking-wider">spillarena.no</p>
+                        <p className="text-sm text-white opacity-45 tracking-wider">spillarena.no</p>
 
                         {/* Description */}
-                        <p className="text-lg leading-relaxed opacity-82 max-w-md">
+                        <p className="text-lg text-white leading-relaxed opacity-82 max-w-md">
                             Arenaen hvor spillene dine samles. En samling av nettbaserte spill du kan spille direkte i nettleseren — ingen nedlasting nødvendig.
                         </p>
 

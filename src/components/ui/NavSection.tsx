@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 
 const links = [
-    { href: 'about-me', label: 'Om meg' },
-    { href: 'domains', label: 'Domener' },
+    { href: 'landing', label: 'Hjem' },
+    { href: 'about', label: 'Om meg' },
+    { href: 'live-projects', label: 'Prosjekter' },
     { href: 'timeline', label: 'Tidslinje' },
-    { href: 'projects', label: 'Prosjekter og sider' },
-    { href: 'knowledge', label: 'Kunnskap' },
-    { href: 'github', label: 'GitHub' },
 ]
 
 function scrollTo(id: string) {
@@ -25,15 +23,23 @@ function NavLinkList({ activeSection, onNavigate }: { activeSection: string; onN
                             onNavigate(href)
                         }}
                         className={`
-                            block px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide
+                            relative block px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide
                             transition-all duration-200 whitespace-nowrap
                             ${activeSection === href
-                                ? 'text-[var(--c-text)] bg-[rgba(255,255,255,0.1)]'
-                                : 'text-[rgba(255,255,255,0.55)] bg-transparent hover:text-[var(--c-text)] hover:bg-[rgba(255,255,255,0.08)]'
+                                ? 'text-[var(--c-text)]'
+                                : 'text-[rgba(255,255,255,0.55)] hover:text-[var(--c-text)]'
                             }
                         `}
                     >
                         {label}
+                        <span
+                            aria-hidden="true"
+                            className={`
+                                pointer-events-none absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full
+                                bg-[var(--c-accent)] transition-all duration-300 ease-out motion-reduce:transition-none
+                                ${activeSection === href ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'}
+                            `}
+                        />
                     </a>
                 </li>
             ))}
