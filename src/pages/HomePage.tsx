@@ -1,5 +1,6 @@
 
 import Landing from '../components/indexSections/Landing'
+import AboutMe from '../components/indexSections/AboutMe';
 
 export default function Home() {
     function handleScrollNextSection() {
@@ -9,6 +10,7 @@ export default function Home() {
     return (
         <main>
             <Landing onScrollNextSection={handleScrollNextSection} />
+            <AboutMe />
 
         </main>
     )

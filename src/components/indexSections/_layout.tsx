@@ -27,7 +27,7 @@ export default function IndexLayout({ id, children, className = '' }: IndexSecti
             className={`w-full min-h-screen flex items-center justify-center ${className}`}
             style={{ color: 'var(--text)' }}
         >
-            <div className="w-full max-w-6xl mx-auto flex items-center justify-center">
+            <div className="w-full max-w-6xl mx-auto flex items-center justify-center rounded-3xl backdrop-blur-sm sm:px-10 sm:py-10 lg:px-12">
                 {children}
             </div>
         </section>
