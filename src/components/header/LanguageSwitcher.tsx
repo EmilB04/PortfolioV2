@@ -1,77 +1,159 @@
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SUPPORTED_LANGUAGES } from '../../lib/i18n'
 
 export default function LanguageSwitcher() {
     const { i18n } = useTranslation()
+    const [open, setOpen] = useState(false)
+    const rootRef = useRef<HTMLDivElement | null>(null)
 
-    const currentLanguage = SUPPORTED_LANGUAGES.some(
-        (language) => language.code === i18n.language
-    )
-        ? i18n.language
-        : i18n.resolvedLanguage ?? 'no'
+    const currentLanguage =
+        SUPPORTED_LANGUAGES.find((language) => language.code === i18n.language)?.code ??
+        i18n.resolvedLanguage ??
+        'no'
 
-    function handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        void i18n.changeLanguage(event.target.value)
+    const currentLabel =
+        SUPPORTED_LANGUAGES.find((language) => language.code === currentLanguage)?.label ??
+        'Norsk'
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (!rootRef.current?.contains(event.target as Node)) {
+                setOpen(false)
+            }
+        }
+
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === 'Escape') {
+                setOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        window.addEventListener('keydown', handleKeyDown)
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [])
+
+    async function handleLanguageSelect(code: string) {
+        await i18n.changeLanguage(code)
+        setOpen(false)
     }
 
     return (
-        <div className="relative inline-flex items-center">
-            <span className="sr-only">Choose language</span>
-
-            <select
-                value={currentLanguage}
-                onChange={handleLanguageChange}
+        <div ref={rootRef} className="relative inline-flex">
+            <button
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded={open}
                 aria-label="Choose language"
-                className="appearance-none rounded-full outline-none transition-all duration-200"
-                style={{
-                    height: '2.5rem',
-                    padding: '0 2.25rem 0 1rem',
-                    fontSize: '0.875rem',
-                    fontWeight: 600,
-                    letterSpacing: '-0.01em',
-                    background: 'var(--c-surface)',
-                    color: 'var(--c-text)',
-                    border: '1px solid var(--c-border)',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-1px)'
-                    e.currentTarget.style.background = 'var(--c-surface-card)'
-                    e.currentTarget.style.borderColor = 'var(--c-border-hover)'
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = ''
-                    e.currentTarget.style.background = 'var(--c-surface)'
-                    e.currentTarget.style.borderColor = 'var(--c-border)'
-                }}
+                onClick={() => setOpen((value) => !value)}
+                className={`
+                    group relative inline-flex h-10 min-w-[7rem] items-center justify-between gap-2 rounded-full
+                    border px-4 pr-3 text-sm font-semibold tracking-[-0.01em]
+                    transition-all duration-200 ease-out motion-reduce:transition-none
+                    ${open
+                        ? 'border-[var(--c-accent)] bg-[var(--c-surface-card)] text-[var(--c-text)] shadow-[0_12px_30px_rgba(0,0,0,0.18)] ring-4 ring-[color:color-mix(in_srgb,var(--c-accent)_16%,transparent)]'
+                        : 'border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[0_8px_24px_rgba(0,0,0,0.14)] hover:-translate-y-[1px] hover:border-[var(--c-border-hover)] hover:bg-[var(--c-surface-card)] active:translate-y-0 active:scale-[0.985] active:shadow-[0_4px_14px_rgba(0,0,0,0.14)]'
+                    }
+                `}
             >
-                {SUPPORTED_LANGUAGES.map((language) => (
-                    <option key={language.code} value={language.code}>
-                        {language.label}
-                    </option>
-                ))}
-            </select>
+                <span className="truncate">{currentLabel}</span>
 
-            <svg
-                aria-hidden="true"
-                viewBox="0 0 20 20"
-                fill="none"
-                className="
-                    pointer-events-none absolute right-3 h-4 w-4
-                    text-[var(--c-text)]/70 transition-colors duration-200
-                "
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    className={`
+                        h-4 w-4 shrink-0 text-[var(--c-text-subtle)]
+                        transition-all duration-200 ease-out
+                        ${open ? 'rotate-180 text-[var(--c-text)]' : 'group-hover:text-[var(--c-text)]'}
+                    `}
+                >
+                    <path
+                        d="M6 8l4 4 4-4"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            </button>
+
+            <div
+                className={`
+                    absolute left-0 top-[calc(100%+0.6rem)] z-[400] min-w-full overflow-hidden rounded-2xl
+                    border border-[var(--c-border)] bg-[color:color-mix(in_srgb,var(--c-surface-card)_86%,transparent)]
+                    shadow-[0_18px_48px_rgba(0,0,0,0.22)]
+                    backdrop-blur-2xl
+                    transition-all duration-200 ease-out origin-top motion-reduce:transition-none
+                    ${open
+                        ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
+                        : 'pointer-events-none -translate-y-1 scale-[0.98] opacity-0'
+                    }
+                `}
             >
-                <path
-                    d="M6 8l4 4 4-4"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-            </svg>
+                <div className="p-1.5">
+                    <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--c-text-subtle)]">
+                        Språk
+                    </div>
+
+                    <div role="listbox" aria-label="Choose language" className="flex flex-col gap-1">
+                        {SUPPORTED_LANGUAGES.map((language) => {
+                            const selected = language.code === currentLanguage
+
+                            return (
+                                <button
+                                    key={language.code}
+                                    type="button"
+                                    role="option"
+                                    aria-selected={selected}
+                                    onClick={() => void handleLanguageSelect(language.code)}
+                                    className={`
+                                        group flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left
+                                        transition-all duration-200 ease-out motion-reduce:transition-none
+                                        ${selected
+                                            ? 'bg-[color:color-mix(in_srgb,var(--c-accent)_16%,var(--c-surface-card))] text-[var(--c-text)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--c-accent)_30%,transparent)]'
+                                            : 'text-[var(--c-text-subtle)] hover:bg-[var(--c-surface)] hover:text-[var(--c-text)] active:scale-[0.99]'
+                                        }
+                                    `}
+                                >
+                                    <span className="font-medium">{language.label}</span>
+
+                                    <span
+                                        className={`
+                                            inline-flex h-5 w-5 items-center justify-center rounded-full
+                                            transition-all duration-200
+                                            ${selected
+                                                ? 'bg-[var(--c-accent)] text-black'
+                                                : 'bg-transparent text-transparent group-hover:bg-[var(--c-surface-card)] group-hover:text-[var(--c-text-subtle)]'
+                                            }
+                                        `}
+                                    >
+                                        <svg
+                                            aria-hidden="true"
+                                            viewBox="0 0 20 20"
+                                            fill="none"
+                                            className="h-3.5 w-3.5"
+                                        >
+                                            <path
+                                                d="M5 10.5l3 3 7-7"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </span>
+                                </button>
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

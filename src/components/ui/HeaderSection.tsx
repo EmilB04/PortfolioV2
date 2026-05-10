@@ -15,7 +15,7 @@ export default function HeaderSection() {
             <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:h-18 sm:px-6 lg:px-8">
                 <NavSection />
 
-                <div className="flex items-center gap-2 sm:gap-3">
+                <div className="hidden items-center gap-2 sm:gap-3 md:flex">
                     <LanguageSwitcher />
                     <ThemeSwitcher />
                     <ContactButton />

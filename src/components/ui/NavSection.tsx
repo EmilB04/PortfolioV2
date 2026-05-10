@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import LanguageSwitcher from '../header/LanguageSwitcher'
+import ThemeSwitcher from '../header/ThemeSwitcher'
 
 const links = [
     { href: 'landing', label: 'Hjem' },
@@ -22,12 +24,15 @@ function NavLinkList({ activeSection, onNavigate }: { activeSection: string; onN
                             e.preventDefault()
                             onNavigate(href)
                         }}
+                        style={{
+                            color: 'var(--c-text)',
+                        }}
                         className={`
                             relative block px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide
                             transition-all duration-200 whitespace-nowrap
                             ${activeSection === href
                                 ? 'text-[var(--c-text)]'
-                                : 'text-[rgba(255,255,255,0.55)] hover:text-[var(--c-text)]'
+                                : 'text-[var(--c-text-subtle)] hover:text-[var(--c-text)]'
                             }
                         `}
                     >
@@ -55,8 +60,8 @@ function MobileMenuButton({ menuOpen, onToggle }: { menuOpen: boolean; onToggle:
                 flex md:hidden flex-col items-center justify-center gap-1.25 w-9 h-9
                 rounded-full border transition-all duration-200
                 ${menuOpen
-                    ? 'bg-[rgba(255,255,255,0.15)] border-[rgba(255,255,255,0.2)]'
-                    : 'bg-[rgba(255,255,255,0.08)] border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.12)] hover:scale-[1.08]'
+                    ? 'bg-[var(--c-surface-card)] border-[var(--c-border-hover)]'
+                    : 'bg-[var(--c-surface)] border-[var(--c-border)] hover:bg-[var(--c-surface-card)] hover:scale-[1.08]'
                 }
             `}
             onClick={onToggle}
@@ -76,71 +81,71 @@ function MobileMenuButton({ menuOpen, onToggle }: { menuOpen: boolean; onToggle:
 }
 
 
-function MobileDrawer({ menuOpen, onNavigate, onClose }: { menuOpen: boolean; onNavigate: (id: string) => void; onClose: () => void }) {
-    if (!menuOpen) {
-        return null
-    }
+function MobileDrawer({ isOpen, onNavigate, onClose }: { isOpen: boolean; onNavigate: (id: string) => void; onClose: () => void }) {
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        function onKeyDown(event: KeyboardEvent) {
+            if (event.key === 'Escape') {
+                onClose()
+            }
+        }
+        window.addEventListener('keydown', onKeyDown)
+        return () => window.removeEventListener('keydown', onKeyDown)
+    }, [isOpen, onClose])
 
     return (
         <>
-            {/* Backdrop */}
+
             <div
-                onClick={onClose}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[250]"
-            />
+                className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(80%,300px)] flex flex-col overflow-y-auto border-l border-[var(--c-border)] shadow-[var(--shadow)] pt-20 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'
+                    }`}
+                style={{
+                    background: 'var(--c-bg)',
+                }}
+            >
+                <section className="mb-8 flex flex-row items-center justify-between gap-4 px-6">
+                    <span className="text-xs font-bold uppercase tracking-widest text-[var(--c-text-subtle)]">
+                        Navigasjon
+                    </span>
 
-            {/* Drawer */}
-            <div className="
-                fixed top-0 right-0 bottom-0 z-[300]
-                w-[min(80%,300px)] flex flex-col
-                overflow-y-auto
-                bg-[rgba(15,15,20,0.97)] backdrop-blur-2xl
-                border-l border-[rgba(255,255,255,0.07)]
-                shadow-[-8px_0_40px_rgba(0,0,0,0.4)]
-                pt-20 pb-8
-            ">
-                {/* Header */}
-                <span className="
-                    absolute top-[1.4rem] left-6
-                    text-xs font-bold tracking-widest uppercase
-                    text-[rgba(255,255,255,0.3)]
-                ">
-                    Navigasjon
-                </span>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        aria-label="Lukk meny"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] transition-all duration-200 hover:scale-[1.05] hover:bg-[var(--c-surface-card)]"
+                    >
+                        <span className="text-lg leading-none">✕</span>
+                    </button>
+                </section>
 
-                {/* Navigation Links */}
                 {links.map(({ href, label }) => (
                     <button
                         key={href}
                         onClick={() => onNavigate(href)}
-                        className="
-                            w-full px-6 py-4
-                            border-b border-[rgba(255,255,255,0.06)]
-                            text-left text-sm font-medium
-                            text-[rgba(255,255,255,0.6)]
-                            transition-all duration-200
-                            hover:text-[var(--c-text)]
-                            hover:bg-[rgba(255,255,255,0.05)]
-                            hover:pl-8
-                        "
+                        className="w-full border-b border-[var(--c-border)] px-6 py-4 text-left text-sm font-medium text-[var(--c-text-subtle)] transition-all duration-200 hover:bg-[var(--c-surface-card)] hover:pl-8 hover:text-[var(--c-text)]"
                     >
                         {label}
                     </button>
                 ))}
 
-                {/* Contact Button */}
+                <div className="mt-6 border-t border-[var(--c-border)] px-6 pt-5">
+                    <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--c-text-subtle)]">
+                        Innstillinger
+                    </p>
+
+                    <div className="flex items-center gap-3">
+                        <LanguageSwitcher />
+                        <ThemeSwitcher />
+                    </div>
+                </div>
+
                 <a
                     href="/contact"
                     onClick={onClose}
-                    className="
-                        mx-6 mt-4 px-4 py-3
-                        rounded-full text-xs font-semibold
-                        text-white
-                        bg-[var(--c-accent)]
-                        text-center
-                        transition-all duration-200
-                        hover:brightness-[1.12]
-                    "
+                    className="mx-6 mt-6 rounded-full bg-[var(--c-accent)] px-4 py-3 text-center text-xs font-semibold text-black transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] active:translate-y-0 active:scale-[0.99] motion-reduce:transition-none hover:text-white"
                 >
                     Kontakt meg
                 </a>
@@ -153,6 +158,8 @@ function MobileDrawer({ menuOpen, onNavigate, onClose }: { menuOpen: boolean; on
 export default function NavSection() {
     const [activeSection, setActiveSection] = useState('')
     const [menuOpen, setMenuOpen] = useState(false)
+    const [drawerMounted, setDrawerMounted] = useState(false)
+    const [drawerOpen, setDrawerOpen] = useState(false)
 
     useEffect(() => {
         function onScroll() {
@@ -179,8 +186,40 @@ export default function NavSection() {
         return () => window.removeEventListener('resize', onResize)
     }, [])
 
-    function navigate(id: string) {
+    useEffect(() => {
+        if (menuOpen) {
+            return
+        }
+
+        const unmountTimeoutId = window.setTimeout(() => setDrawerMounted(false), 300)
+
+        return () => {
+            window.clearTimeout(unmountTimeoutId)
+        }
+    }, [menuOpen])
+
+    function openMenu() {
+        setDrawerMounted(true)
+        setMenuOpen(true)
+        window.requestAnimationFrame(() => setDrawerOpen(true))
+    }
+
+    function closeMenu() {
+        setDrawerOpen(false)
         setMenuOpen(false)
+    }
+
+    function toggleMenu() {
+        if (menuOpen) {
+            closeMenu()
+            return
+        }
+
+        openMenu()
+    }
+
+    function navigate(id: string) {
+        closeMenu()
         scrollTo(id)
     }
 
@@ -190,15 +229,17 @@ export default function NavSection() {
                 <NavLinkList activeSection={activeSection} onNavigate={navigate} />
 
                 <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-                    <MobileMenuButton menuOpen={menuOpen} onToggle={() => setMenuOpen((current) => !current)} />
+                    <MobileMenuButton menuOpen={menuOpen} onToggle={toggleMenu} />
                 </div>
             </div>
 
-            <div className="flex items-center gap-2 sm:hidden">
-                <MobileMenuButton menuOpen={menuOpen} onToggle={() => setMenuOpen((current) => !current)} />
+            <div className="flex items-center gap-2 md:hidden">
+                <MobileMenuButton menuOpen={menuOpen} onToggle={toggleMenu} />
             </div>
 
-            <MobileDrawer menuOpen={menuOpen} onNavigate={navigate} onClose={() => setMenuOpen(false)} />
+            {drawerMounted ? (
+                <MobileDrawer isOpen={drawerOpen} onNavigate={navigate} onClose={closeMenu} />
+            ) : null}
         </nav>
     )
 }
