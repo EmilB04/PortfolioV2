@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import BackButton from '../header/BackButton'
 import LanguageSwitcher from '../header/LanguageSwitcher'
 import ThemeSwitcher from '../header/ThemeSwitcher'
 
@@ -156,6 +158,8 @@ function MobileDrawer({ isOpen, onNavigate, onClose }: { isOpen: boolean; onNavi
 
 
 export default function NavSection() {
+    const location = useLocation()
+    const isHomePage = location.pathname === '/'
     const [activeSection, setActiveSection] = useState('')
     const [menuOpen, setMenuOpen] = useState(false)
     const [drawerMounted, setDrawerMounted] = useState(false)
@@ -185,6 +189,16 @@ export default function NavSection() {
         window.addEventListener('resize', onResize)
         return () => window.removeEventListener('resize', onResize)
     }, [])
+
+    useEffect(() => {
+        const frameId = window.requestAnimationFrame(() => {
+            setMenuOpen(false)
+            setDrawerOpen(false)
+            setDrawerMounted(false)
+        })
+
+        return () => window.cancelAnimationFrame(frameId)
+    }, [location.pathname])
 
     useEffect(() => {
         if (menuOpen) {
@@ -226,18 +240,26 @@ export default function NavSection() {
     return (
         <nav className="flex items-center justify-between gap-3 flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-1 min-w-0">
-                <NavLinkList activeSection={activeSection} onNavigate={navigate} />
+                {isHomePage ? (
+                    <NavLinkList activeSection={activeSection} onNavigate={navigate} />
+                ) : (
+                    <BackButton />
+                )}
 
-                <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+                {isHomePage ? (
+                    <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+                        <MobileMenuButton menuOpen={menuOpen} onToggle={toggleMenu} />
+                    </div>
+                ) : null}
+            </div>
+
+            {isHomePage ? (
+                <div className="flex items-center gap-2 md:hidden">
                     <MobileMenuButton menuOpen={menuOpen} onToggle={toggleMenu} />
                 </div>
-            </div>
+            ) : null}
 
-            <div className="flex items-center gap-2 md:hidden">
-                <MobileMenuButton menuOpen={menuOpen} onToggle={toggleMenu} />
-            </div>
-
-            {drawerMounted ? (
+            {isHomePage && drawerMounted ? (
                 <MobileDrawer isOpen={drawerOpen} onNavigate={navigate} onClose={closeMenu} />
             ) : null}
         </nav>

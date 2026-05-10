@@ -1,51 +1,52 @@
-import React, { useState } from 'react'
-import { supabase } from '../lib/supabase'
+// React import not required with new JSX transform
+import IndexLayout from '../components/indexSections/_layout'
+import ContactCard from '../components/ContactCard'
+import { Linkedin, Github, Mail } from '../lib/icons'
 
 export default function Contact() {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('')
-    const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
-
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault()
-        setStatus('sending')
-        const { error } = await supabase.from('messages').insert([{ name, email, message }])
-        if (error) {
-            console.error(error)
-            setStatus('error')
-        } else {
-            setStatus('sent')
-            setName('')
-            setEmail('')
-            setMessage('')
-        }
-    }
-
     return (
-        <main className="max-w-2xl mx-auto px-4 py-8">
-            <h2 className="text-2xl font-semibold mb-4">Contact</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block text-sm">Name</label>
-                    <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full border rounded px-3 py-2" required />
+        <IndexLayout id="contact">
+            <section className="py-16">
+                <div className="max-w-4xl mx-auto px-4">
+                    <h1
+                        className="text-4xl md:text-5xl font-extrabold text-center mb-4 text-[var(--c-text)]"
+                        style={{
+                            background: 'var(--c-accent)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}
+                    >La oss komme i kontakt</h1>
+                    <p className="text-center text-[var(--c-text-subtle)] mb-12">Har du spørsmål eller vil du samarbeide? Ta gjerne kontakt!</p>
+
+                    <div className="flex flex-row flex-wrap gap-8 justify-center">
+                        <ContactCard
+                            title="LinkedIn"
+                            description="Koble deg til mitt nettverk"
+                            buttonLabel="KONTAKT"
+                            href="https://www.linkedin.com/in/emilber/"
+                            external
+                            icon={<Linkedin size={36} />}
+                        />
+
+                        <ContactCard
+                            title="GitHub"
+                            description="Se mine prosjekter og bidrag"
+                            buttonLabel="SE PROFIL"
+                            href="https://github.com/emilb04"
+                            external
+                            icon={<Github size={36} />}
+                        />
+                        <ContactCard
+                            title="E-post"
+                            description="Send meg en melding direkte"
+                            buttonLabel="SEND E-POST"
+                            href="mailto:emil.berglund+portfolio@live.no"
+                            external
+                            icon={<Mail size={36} />}
+                        />
+                    </div>
                 </div>
-                <div>
-                    <label className="block text-sm">Email</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 block w-full border rounded px-3 py-2" required />
-                </div>
-                <div>
-                    <label className="block text-sm">Message</label>
-                    <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 block w-full border rounded px-3 py-2" rows={6} required />
-                </div>
-                <div>
-                    <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded" disabled={status === 'sending'}>
-                        {status === 'sending' ? 'Sending…' : 'Send'}
-                    </button>
-                    {status === 'sent' && <span className="ml-3 text-green-600">Sent — thanks!</span>}
-                    {status === 'error' && <span className="ml-3 text-red-600">Error sending message.</span>}
-                </div>
-            </form>
-        </main>
+            </section>
+        </IndexLayout>
     )
 }

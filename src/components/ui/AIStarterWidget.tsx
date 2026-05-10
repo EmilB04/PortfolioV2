@@ -49,7 +49,7 @@ export default function AIStarterWidget() {
                 type="button"
                 onClick={() => setIsOpen((current) => !current)}
                 aria-label={isOpen ? 'Close AI starter widget' : 'Open AI starter widget'}
-                className="group inline-flex items-center gap-3 rounded-full border px-4 py-3 text-left shadow-2xl transition-all duration-200 hover:-translate-y-0.5"
+                className="group inline-flex items-center gap-3 rounded-full border px-3 py-3 text-left shadow-2xl transition-all duration-200 hover:-translate-y-0.5 sm:px-4"
                 style={{
                     background: 'var(--c-surface)',
                     borderColor: 'var(--c-border)',
@@ -63,7 +63,7 @@ export default function AIStarterWidget() {
                     <BotMessageSquare size={18} />
                 </span>
 
-                <span className="flex flex-col">
+                <span className="hidden flex-col sm:flex">
                     <span className="text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--c-text-muted)' }}>
                         AI assistant
                     </span>

@@ -2,6 +2,7 @@ import HeaderSection from './ui/HeaderSection';
 import FooterSection from './ui/FooterSection';
 import AIStarterWidget from './ui/AIStarterWidget';
 import ShootingStars from '../styles/ShootingStars';
+import ToTopButton from './ui/ToTopButton';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
@@ -19,6 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <AIStarterWidget />
+            <ToTopButton />
         </div>
     );
 }
