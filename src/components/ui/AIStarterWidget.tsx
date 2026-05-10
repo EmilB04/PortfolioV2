@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BotMessageSquare, Sparkles } from 'lucide-react'
 
 export default function AIStarterWidget() {
+    const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -18,16 +20,15 @@ export default function AIStarterWidget() {
                 >
                     <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--c-text-muted)' }}>
                         <Sparkles size={14} />
-                        AI assistant
+                        {t('aiWidget.assistant')}
                     </div>
 
                     <h2 className="mb-2 text-lg font-semibold" style={{ color: 'var(--c-text)' }}>
-                        Starter widget
+                        {t('aiWidget.title')}
                     </h2>
 
                     <p className="mb-4 text-sm leading-6" style={{ color: 'var(--c-text-muted)' }}>
-                        This space is prepared for a future personal AI assistant. Later you can connect it to GPT-4.3,
-                        add portfolio knowledge, and turn this panel into a chat experience.
+                        {t('aiWidget.description')}
                     </p>
 
                     <button
@@ -40,7 +41,7 @@ export default function AIStarterWidget() {
                         onClick={() => setIsOpen(false)}
                     >
                         <BotMessageSquare size={16} />
-                        Close
+                        {t('aiWidget.close')}
                     </button>
                 </div>
             )}
@@ -48,7 +49,7 @@ export default function AIStarterWidget() {
             <button
                 type="button"
                 onClick={() => setIsOpen((current) => !current)}
-                aria-label={isOpen ? 'Close AI starter widget' : 'Open AI starter widget'}
+                aria-label={isOpen ? t('aiWidget.closed') : t('aiWidget.open')}
                 className="group inline-flex items-center gap-3 rounded-full border px-3 py-3 text-left shadow-2xl transition-all duration-200 hover:-translate-y-0.5 sm:px-4"
                 style={{
                     background: 'var(--c-surface)',
@@ -65,10 +66,10 @@ export default function AIStarterWidget() {
 
                 <span className="hidden flex-col sm:flex">
                     <span className="text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--c-text-muted)' }}>
-                        AI assistant
+                        {t('aiWidget.assistant')}
                     </span>
                     <span className="text-sm font-semibold" style={{ color: 'var(--c-text)' }}>
-                        Ask me later
+                        {t('aiWidget.teaser')}
                     </span>
                 </span>
             </button>

@@ -1,6 +1,8 @@
-import { Github } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { Github } from '../../lib/icons'
 
 export default function FooterSection() {
+    const { t } = useTranslation()
     const year = new Date().getFullYear()
 
     return (
@@ -19,7 +21,7 @@ export default function FooterSection() {
                     className="mb-4 text-xs font-semibold uppercase tracking-[0.04em] sm:text-sm"
                     style={{ color: 'var(--c-text-muted)' }}
                 >
-                    Tilgjengelig for samarbeid og nye prosjekter
+                    {t('footer.tagline')}
                 </p>
 
                 <a
@@ -45,15 +47,15 @@ export default function FooterSection() {
                     }}
                 >
                     <Github size={18} />
-                    <span>Se kildekode på GitHub</span>
+                    <span>{t('footer.github')}</span>
                 </a>
 
                 <p className="m-0 text-sm sm:text-[0.98rem]" style={{ color: 'var(--c-text-muted)' }}>
-                    Laget med ❤️ av <strong style={{ color: 'var(--c-text)' }}>Emil Berglund</strong>
+                    {t('footer.madeBy')} <strong style={{ color: 'var(--c-text)' }}>Emil Berglund</strong>
                     <span className="mx-2" style={{ color: 'var(--c-text-subtle)' }} aria-hidden="true">
                         •
                     </span>
-                    <span>Sist oppdatert: April {year}</span>
+                    <span>{t('footer.updated', { year })}</span>
                 </p>
             </div>
         </footer>

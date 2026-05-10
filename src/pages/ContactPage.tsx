@@ -1,9 +1,11 @@
-// React import not required with new JSX transform
+import { useTranslation } from 'react-i18next'
 import IndexLayout from '../components/indexSections/_layout'
 import ContactCard from '../components/ContactCard'
 import { Linkedin, Github, Mail } from '../lib/icons'
 
 export default function Contact() {
+    const { t } = useTranslation()
+
     return (
         <IndexLayout id="contact">
             <section className="py-16">
@@ -15,31 +17,31 @@ export default function Contact() {
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                         }}
-                    >La oss komme i kontakt</h1>
-                    <p className="text-center text-[var(--c-text-subtle)] mb-12">Har du spørsmål eller vil du samarbeide? Ta gjerne kontakt!</p>
+                    >{t('contactPage.title')}</h1>
+                    <p className="text-center text-[var(--c-text-subtle)] mb-12">{t('contactPage.subtitle')}</p>
 
                     <div className="flex flex-row flex-wrap gap-8 justify-center">
                         <ContactCard
-                            title="LinkedIn"
-                            description="Koble deg til mitt nettverk"
-                            buttonLabel="KONTAKT"
+                            title={t('contactPage.cards.linkedin.title')}
+                            description={t('contactPage.cards.linkedin.description')}
+                            buttonLabel={t('contactPage.cards.linkedin.button')}
                             href="https://www.linkedin.com/in/emilber/"
                             external
                             icon={<Linkedin size={36} />}
                         />
 
                         <ContactCard
-                            title="GitHub"
-                            description="Se mine prosjekter og bidrag"
-                            buttonLabel="SE PROFIL"
+                            title={t('contactPage.cards.github.title')}
+                            description={t('contactPage.cards.github.description')}
+                            buttonLabel={t('contactPage.cards.github.button')}
                             href="https://github.com/emilb04"
                             external
                             icon={<Github size={36} />}
                         />
                         <ContactCard
-                            title="E-post"
-                            description="Send meg en melding direkte"
-                            buttonLabel="SEND E-POST"
+                            title={t('contactPage.cards.email.title')}
+                            description={t('contactPage.cards.email.description')}
+                            buttonLabel={t('contactPage.cards.email.button')}
                             href="mailto:emil.berglund+portfolio@live.no"
                             external
                             icon={<Mail size={36} />}

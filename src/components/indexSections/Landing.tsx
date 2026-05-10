@@ -1,5 +1,6 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ArrowDown, Github, Linkedin } from 'lucide-react'
 import IndexLayout from './_layout'
 
@@ -8,15 +9,21 @@ type LandingProps = {
     onScrollNextSection?: () => void
 }
 
-const TYPEWRITER_LINES = ['Informatikk student', 'Full-Stack utvikler', 'Frontend utvikler', 'Backend utvikler']
-
 export default function Landing({ shouldUseAos = false, onScrollNextSection }: LandingProps) {
+    const { t, i18n } = useTranslation()
+    const typewriterLines = useMemo(() => t('home.roles', { returnObjects: true }) as string[], [i18n.language, t])
     const [lineIndex, setLineIndex] = useState(0)
     const [typewriterText, setTypewriterText] = useState('')
     const [isDeleting, setIsDeleting] = useState(false)
 
     useEffect(() => {
-        const currentLine = TYPEWRITER_LINES[lineIndex]
+        setLineIndex(0)
+        setTypewriterText('')
+        setIsDeleting(false)
+    }, [typewriterLines])
+
+    useEffect(() => {
+        const currentLine = typewriterLines[lineIndex]
         let timeoutMs = isDeleting ? 40 : 80
 
         if (!isDeleting && typewriterText === currentLine) {
@@ -40,7 +47,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
 
             if (typewriterText === '') {
                 setIsDeleting(false)
-                setLineIndex((current) => (current + 1) % TYPEWRITER_LINES.length)
+                setLineIndex((current) => (current + 1) % typewriterLines.length)
                 return
             }
 
@@ -48,7 +55,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
         }, timeoutMs)
 
         return () => clearTimeout(timeoutId)
-    }, [isDeleting, lineIndex, typewriterText])
+    }, [isDeleting, lineIndex, typewriterLines, typewriterText])
 
     function handleScrollNextSection() {
         if (onScrollNextSection) {
@@ -63,7 +70,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
         <IndexLayout id="landing" className={"text-left"}>
             <section className="about-me w-full max-w-4xl">
                 <h1 className="mb-8 text-4xl font-semibold leading-tight text-[var(--text-h)] sm:text-5xl lg:text-6xl">
-                    Hei! Jeg er Emil Berglund <br />
+                    {t('home.title')} <br />
                     <span
                         className="inline-block px-1 py-2 text-[var(--text-h)]"
                         style={{ minWidth: '18ch' }}
@@ -74,9 +81,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                 </h1>
 
                 <p className="mb-10 max-w-5xl text-lg leading-relaxed sm:text-2xl">
-                    Jeg er en person med lidenskap for teknologi og et ønske om å lære og vokse. Jeg tror det finnes
-                    flere måter å nå et mål eller finne en løsning på, og jeg liker å utforske innovative tilnærminger
-                    for å takle utfordringer.
+                    {t('home.intro')}
                 </p>
 
                 <div className="mb-8 flex flex-wrap items-center gap-4">
@@ -84,7 +89,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                         href="https://github.com/EmilB04"
                         target="_blank"
                         rel="noreferrer"
-                        aria-label="GitHub-profil"
+                        aria-label={t('home.githubAria')}
                         className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5"
                     >
                         <Github size={28} />
@@ -94,7 +99,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                         href="https://www.linkedin.com/in/emilber/"
                         target="_blank"
                         rel="noreferrer"
-                        aria-label="LinkedIn-profil"
+                        aria-label={t('home.linkedinAria')}
                         className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5"
                     >
                         <Linkedin size={28} />
@@ -110,7 +115,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                     className="inline-flex items-center gap-4 rounded-3xl bg-[var(--accent)] px-10 py-5 text-xl font-semibold text-black transition-opacity duration-200 hover:opacity-90"
                 >
                     <ArrowDown className="h-7 w-7 animate-bounce" />
-                    Ta en titt
+                    {t('home.cta')}
                 </button>
             </section>
         </IndexLayout>

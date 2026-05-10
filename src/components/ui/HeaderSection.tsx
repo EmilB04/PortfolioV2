@@ -1,7 +1,7 @@
 import ContactButton from '../header/ContactButton'
 import LanguageSwitcher from '../header/LanguageSwitcher'
 import ThemeSwitcher from '../header/ThemeSwitcher'
-import NavSection from './NavSection'
+import NavSection from './NavSection.tsx'
 
 export default function HeaderSection() {
     return (

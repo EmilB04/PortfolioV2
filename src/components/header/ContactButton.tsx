@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next'
+
 export default function ContactButton() {
+    const { t } = useTranslation()
+
     return (
         <a
             href="/contact"
@@ -30,7 +34,7 @@ export default function ContactButton() {
                 e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.18)'
             }}
         >
-            Kontakt meg
+            {t('contactButton.label')}
         </a>
     )
 }

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import MuiTimeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -13,88 +14,46 @@ import Typography from '@mui/material/Typography';
 import IndexLayout from './_layout';
 
 export default function Timeline() {
+  const { t } = useTranslation()
+  const items = t('timeline.items', { returnObjects: true }) as Array<{
+    time: string
+    title: string
+    description: string
+  }>
+
   return (
     <IndexLayout id="timeline">
+      <div className="mb-8 text-center">
+        <h2 className="text-3xl font-semibold sm:text-4xl">{t('timeline.title')}</h2>
+      </div>
       <MuiTimeline position="alternate">
-        <TimelineItem>
-          <TimelineOppositeContent
-            align="right"
-            variant="body2"
-            sx={{
-              color: 'text.secondary',
-              m: 'auto 0',
-            }}
-          >
-            9:30 am
-          </TimelineOppositeContent>
-          <TimelineSeparator>
-            <TimelineConnector />
-            <TimelineDot>
-              <FastfoodIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent sx={{ py: '12px', px: 2 }}>
-            <Typography variant="h6" component="span">
-              Eat
-            </Typography>
-            <Typography>Because you need strength</Typography>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineOppositeContent
-            variant="body2"
-            sx={{
-              color: 'text.secondary',
-              m: 'auto 0',
-            }}
-          >
-            10:00 am
-          </TimelineOppositeContent>
-          <TimelineSeparator>
-            <TimelineConnector />
-            <TimelineDot color="primary">
-              <LaptopMacIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent sx={{ py: '12px', px: 2 }}>
-            <Typography variant="h6" component="span">
-              Code
-            </Typography>
-            <Typography>Because it&apos;s awesome!</Typography>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineConnector />
-            <TimelineDot color="primary" variant="outlined">
-              <HotelIcon />
-            </TimelineDot>
-            <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-          </TimelineSeparator>
-          <TimelineContent sx={{ py: '12px', px: 2 }}>
-            <Typography variant="h6" component="span">
-              Sleep
-            </Typography>
-            <Typography>Because you need rest</Typography>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-            <TimelineDot color="secondary">
-              <RepeatIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent sx={{ py: '12px', px: 2 }}>
-            <Typography variant="h6" component="span">
-              Repeat
-            </Typography>
-            <Typography>Because this is the life you love!</Typography>
-          </TimelineContent>
-        </TimelineItem>
+        {items.map((item, index) => (
+          <TimelineItem key={item.time + item.title}>
+            <TimelineOppositeContent
+              align="right"
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+                m: 'auto 0',
+              }}
+            >
+              {item.time}
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineConnector />
+              <TimelineDot>
+                {index === 0 ? <FastfoodIcon /> : index === 1 ? <LaptopMacIcon /> : index === 2 ? <HotelIcon /> : <RepeatIcon />}
+              </TimelineDot>
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent sx={{ py: '12px', px: 2 }}>
+              <Typography variant="h6" component="span">
+                {item.title}
+              </Typography>
+              <Typography>{item.description}</Typography>
+            </TimelineContent>
+          </TimelineItem>
+        ))}
       </MuiTimeline>
     </IndexLayout>
   );

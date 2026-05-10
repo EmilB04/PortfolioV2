@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import { useTranslation } from 'react-i18next'
 
 export default function ToTopButton() {
+    const { t } = useTranslation()
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -15,8 +17,8 @@ export default function ToTopButton() {
         <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="Tilbake til toppen"
-            title="Tilbake til toppen"
+            aria-label={t('toTop.aria')}
+            title={t('toTop.title')}
             className={`
         fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40
                 inline-flex items-center gap-3 rounded-full border px-3 py-3 sm:px-4
@@ -45,13 +47,13 @@ export default function ToTopButton() {
                     className="text-xs font-semibold uppercase tracking-[0.14em]"
                     style={{ color: "var(--c-text-muted)" }}
                 >
-                    Tilbake til
+                    {t('toTop.prefix')}
                 </span>
                 <span
                     className="text-sm font-semibold"
                     style={{ color: "var(--c-text)" }}
                 >
-                    Toppen
+                    {t('toTop.label')}
                 </span>
             </span>
         </button>

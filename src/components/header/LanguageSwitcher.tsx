@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { SUPPORTED_LANGUAGES } from '../../lib/i18n'
+import { SUPPORTED_LANGUAGES } from '../../lib/i18n.ts'
 
 export default function LanguageSwitcher() {
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation()
     const [open, setOpen] = useState(false)
     const rootRef = useRef<HTMLDivElement | null>(null)
 
@@ -49,7 +49,7 @@ export default function LanguageSwitcher() {
                 type="button"
                 aria-haspopup="listbox"
                 aria-expanded={open}
-                aria-label="Choose language"
+                aria-label={t('languageSwitcher.choose')}
                 onClick={() => setOpen((value) => !value)}
                 className={`
                     group relative inline-flex h-10 min-w-[7rem] items-center justify-between gap-2 rounded-full
@@ -98,10 +98,10 @@ export default function LanguageSwitcher() {
             >
                 <div className="p-1.5">
                     <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--c-text-subtle)]">
-                        Språk
+                        {t('languageSwitcher.section')}
                     </div>
 
-                    <div role="listbox" aria-label="Choose language" className="flex flex-col gap-1">
+                    <div role="listbox" aria-label={t('languageSwitcher.choose')} className="flex flex-col gap-1">
                         {SUPPORTED_LANGUAGES.map((language) => {
                             const selected = language.code === currentLanguage
 

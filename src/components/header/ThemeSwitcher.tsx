@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
 import { useTheme } from '../../hooks/useTheme'
 
 function MoonIcon({ active }: { active: boolean }) {
@@ -94,14 +95,15 @@ function SunIcon({ active }: { active: boolean }) {
 }
 
 export default function ThemeSwitcher() {
+    const { t } = useTranslation()
     const { isDark, toggleTheme } = useTheme()
 
     return (
         <motion.button
             type="button"
             onClick={toggleTheme}
-            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? t('themeSwitcher.light') : t('themeSwitcher.dark')}
+            aria-label={isDark ? t('themeSwitcher.light') : t('themeSwitcher.dark')}
             className="relative inline-grid h-10 w-[84px] grid-cols-2 items-center rounded-full p-1 cursor-pointer"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

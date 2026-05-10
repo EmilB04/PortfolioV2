@@ -35,7 +35,7 @@ export default function HeaderSection() {
                     </button>
                     <button
                         onClick={toggleTheme}
-                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                        aria-label={isDark ? t('themeSwitcher.light') : t('themeSwitcher.dark')}
                         className="inline-flex items-center justify-center rounded border px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                     >
                         {isDark ? <SunMedium size={16} /> : <MoonStar size={16} />}
@@ -52,7 +52,7 @@ export default function HeaderSection() {
                     </button>
                     <button
                         onClick={toggleTheme}
-                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                        aria-label={isDark ? t('themeSwitcher.light') : t('themeSwitcher.dark')}
                         className="inline-flex items-center justify-center rounded border px-2 py-1 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                     >
                         {isDark ? <SunMedium size={16} /> : <MoonStar size={16} />}

@@ -1,6 +1,9 @@
 import type { Project } from '../hooks/useProjects'
+import { useTranslation } from 'react-i18next'
 
 export default function ProjectCard({ project }: { project: Project }) {
+    const { t } = useTranslation()
+
     return (
         <article className="border rounded-lg p-4 bg-white">
             <h3 className="text-lg font-medium mb-1">{project.title}</h3>
@@ -12,10 +15,10 @@ export default function ProjectCard({ project }: { project: Project }) {
             </div>
             <div className="flex gap-3 text-sm">
                 {project.github_url && (
-                    <a href={project.github_url} target="_blank" rel="noreferrer" className="text-blue-600">GitHub</a>
+                    <a href={project.github_url} target="_blank" rel="noreferrer" className="text-blue-600">{t('projectCard.github')}</a>
                 )}
                 {project.live_url && (
-                    <a href={project.live_url} target="_blank" rel="noreferrer" className="text-blue-600">Live</a>
+                    <a href={project.live_url} target="_blank" rel="noreferrer" className="text-blue-600">{t('projectCard.live')}</a>
                 )}
             </div>
         </article>

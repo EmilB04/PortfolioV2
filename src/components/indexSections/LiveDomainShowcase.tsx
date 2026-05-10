@@ -1,8 +1,12 @@
 
+import { useTranslation } from 'react-i18next'
 import { ArrowRight, Lock } from 'lucide-react'
 import IndexLayout from './_layout'
 
 export default function LiveDomainShowcase() {
+    const { t } = useTranslation()
+    const tags = t('showcase.tags', { returnObjects: true }) as string[]
+
     return (
         <IndexLayout id="live-projects" fullscreen>
             <style>{`
@@ -134,40 +138,36 @@ export default function LiveDomainShowcase() {
                         {/* Logo */}
                         <img
                             src="/images/projects/SpillArena/logo.png"
-                            alt="SpillArena logo"
+                            alt={t('showcase.logoAlt')}
                             className="w-18 h-18 object-contain rounded-lg shadow-[0_0_24px_rgba(170,0,255,0.4)]"
                         />
 
                         {/* Title and status */}
                         <div className="flex items-center gap-4">
                             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#cc44ff] to-[#ff2d78] bg-clip-text text-transparent">
-                                SpillArena
+                                {t('showcase.title')}
                             </h2>
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold text-green-400 bg-green-400/10 border border-green-400/35">
                                 <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-green-400" />
-                                Live
+                                {t('showcase.status')}
                             </div>
                         </div>
 
                         {/* URL */}
-                        <p className="text-sm text-white opacity-45 tracking-wider">spillarena.no</p>
+                        <p className="text-sm text-white opacity-45 tracking-wider">{t('showcase.url')}</p>
 
                         {/* Description */}
                         <p className="text-lg text-white leading-relaxed opacity-82 max-w-md">
-                            Arenaen hvor spillene dine samles. En samling av nettbaserte spill du kan spille direkte i nettleseren — ingen nedlasting nødvendig.
+                            {t('showcase.description')}
                         </p>
 
                         {/* Tags */}
                         <div className="flex flex-wrap gap-2 mt-2">
-                            <span className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[#cc44ff]/15 border border-[#cc44ff]/35 text-[#e0aaff]">
-                                🎮 Nettspill
-                            </span>
-                            <span className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[#cc44ff]/15 border border-[#cc44ff]/35 text-[#e0aaff]">
-                                🤖 Bot-motstander
-                            </span>
-                            <span className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[#cc44ff]/15 border border-[#cc44ff]/35 text-[#e0aaff]">
-                                🌍 Norsk/Engelsk
-                            </span>
+                            {tags.map((tag) => (
+                                <span key={tag} className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[#cc44ff]/15 border border-[#cc44ff]/35 text-[#e0aaff]">
+                                    {tag}
+                                </span>
+                            ))}
                         </div>
 
                         {/* Visit button */}
@@ -177,7 +177,7 @@ export default function LiveDomainShowcase() {
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-3 mt-4 px-7 py-3 rounded-full font-bold text-white bg-gradient-to-r from-[#aa00ff] to-[#ff2d78] shadow-[0_4px_20px_rgba(170,0,255,0.45)] hover:shadow-[0_8px_32px_rgba(170,0,255,0.65)] transition-all duration-200 hover:-translate-y-1 w-fit"
                         >
-                            Besøk siden
+                            {t('showcase.visit')}
                             <ArrowRight size={18} />
                         </a>
                     </div>
@@ -197,9 +197,9 @@ export default function LiveDomainShowcase() {
                                     <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
                                     <div className="w-3 h-3 rounded-full bg-[#28c840]" />
                                 </div>
-                                <div className="flex-1 flex items-center justify-center gap-2 px-3 py-1 text-xs text-white/45 bg-white/5 rounded-full tracking-wide">
+                                <div className="flex-1 flex items-center justify-center gap-2 px-3 py-1 text-xs text-white/45 bg-white/5 rounded-full tracking-wide" title={t('showcase.browserLabel')}>
                                     <Lock size={13} className="opacity-60" />
-                                    spillarena.no
+                                    {t('showcase.url')}
                                 </div>
                             </div>
 
@@ -207,7 +207,7 @@ export default function LiveDomainShowcase() {
                             <div className="bg-[#0d0d1a]">
                                 <img
                                     src="/images/projects/SpillArena/spillarena-preview.jpeg"
-                                    alt="SpillArena nettside forhåndsvisning"
+                                    alt={t('showcase.previewAlt')}
                                     className="w-full block object-cover"
                                 />
                             </div>
