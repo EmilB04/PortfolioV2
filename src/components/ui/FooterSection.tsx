@@ -1,27 +1,60 @@
-import { Linkedin, Mail } from 'lucide-react'
+import { Github } from 'lucide-react'
 
 export default function FooterSection() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="border-t mt-12 bg-gray-50">
-            <div className="max-w-4xl mx-auto px-4 py-6">
-                <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-600">
-                        © {year} EmilB04 — Built with React, TypeScript, Supabase
-                    </p>
-                    <div className="flex gap-4">
-                        <a href="https://github.com/EmilB04" target="_blank" rel="noreferrer" className="text-gray-600 hover:text-gray-900">
-                            <p>GitHub ikon her </p>
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-gray-600 hover:text-gray-900">
-                            <Linkedin size={20} />
-                        </a>
-                        <a href="mailto:your-email@example.com" className="text-gray-600 hover:text-gray-900">
-                            <Mail size={20} />
-                        </a>
-                    </div>
-                </div>
+        <footer aria-label="Site footer" className="w-full px-4 pb-4 pt-12 sm:px-6">
+            <div
+                className="mx-auto w-full max-w-6xl rounded-3xl border px-5 py-5 text-center sm:px-6 sm:py-6"
+                style={{
+                    background: 'var(--c-surface)',
+                    borderColor: 'var(--c-border)',
+                    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.12)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                }}
+            >
+                <p
+                    className="mb-4 text-xs font-semibold uppercase tracking-[0.04em] sm:text-sm"
+                    style={{ color: 'var(--c-text-muted)' }}
+                >
+                    Tilgjengelig for samarbeid og nye prosjekter
+                </p>
+
+                <a
+                    href="https://github.com/EmilB04"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Besøk GitHub-profilen til Emil Berglund"
+                    className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-3 font-semibold transition-all duration-200 hover:-translate-y-0.5"
+                    style={{
+                        color: 'var(--c-text)',
+                        borderColor: 'var(--c-border)',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--c-border-hover)'
+                        e.currentTarget.style.color = 'var(--c-accent)'
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--c-border)'
+                        e.currentTarget.style.color = 'var(--c-text)'
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                    }}
+                >
+                    <Github size={18} />
+                    <span>Se kildekode på GitHub</span>
+                </a>
+
+                <p className="m-0 text-sm sm:text-[0.98rem]" style={{ color: 'var(--c-text-muted)' }}>
+                    Laget med ❤️ av <strong style={{ color: 'var(--c-text)' }}>Emil Berglund</strong>
+                    <span className="mx-2" style={{ color: 'var(--c-text-subtle)' }} aria-hidden="true">
+                        •
+                    </span>
+                    <span>Sist oppdatert: April {year}</span>
+                </p>
             </div>
         </footer>
     )

@@ -1,37 +1,27 @@
-// Use Motion for animations
-import ThemeSwitcher from '../header/ThemeSwitcher';
+import ContactButton from '../header/ContactButton'
+import LanguageSwitcher from '../header/LanguageSwitcher'
+import ThemeSwitcher from '../header/ThemeSwitcher'
+import NavSection from './NavSection'
 
 export default function HeaderSection() {
-
     return (
         <header
-            className="border-b sticky top-0 z-50 backdrop-blur-sm"
+            className="border-b backdrop-blur-sm"
             style={{
                 backgroundColor: 'var(--c-nav-bg)',
                 borderColor: 'var(--c-border)',
                 color: 'var(--c-text)',
             }}
         >
-            <section>
-                {/* If NOT indexpage show back button */}
-            </section>
+            <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+                <NavSection />
 
-            <section>
-                {/* Section links here */}
-            </section>
-
-            <section>
-                {/* Theme Switcher */}
-                <ThemeSwitcher />
-            </section>
-
-            <section>
-                {/* Language Switcher */}
-            </section>
-
-            <section>
-                {/* Contact me button*/}
-            </section>
+                <div className="flex items-center gap-2 sm:gap-3">
+                    <LanguageSwitcher />
+                    <ThemeSwitcher />
+                    <ContactButton />
+                </div>
+            </div>
         </header>
     )
 }

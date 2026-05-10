@@ -1,6 +1,12 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
+export const SUPPORTED_LANGUAGES = [
+    { code: 'no', label: 'Norsk' },
+    { code: 'en', label: 'English' },
+    { code: 'es', label: 'Español' },
+] as const
+
 // ─── Norwegian ────────────────────────────────────────────
 const no: typeof en = {
     nav: {
@@ -101,6 +107,8 @@ i18n.use(initReactI18next).init({
         en: { translation: en },
         es: { translation: es },
     },
+    supportedLngs: SUPPORTED_LANGUAGES.map((language) => language.code),
+    load: 'languageOnly',
     lng: "no",
     fallbackLng: "no",
     interpolation: {
