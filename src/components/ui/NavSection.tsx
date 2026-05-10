@@ -24,31 +24,14 @@ function NavLinkList({ activeSection, onNavigate }: { activeSection: string; onN
                             e.preventDefault()
                             onNavigate(href)
                         }}
-                        className="relative whitespace-nowrap transition-colors duration-200"
-                        style={{
-                            display: 'block',
-                            padding: '0.45rem 0.85rem',
-                            borderRadius: '999px',
-                            fontSize: '0.875rem',
-                            fontWeight: 500,
-                            letterSpacing: '0.01em',
-                            textDecoration: 'none',
-                            color: activeSection === href ? '#fff' : 'rgba(255,255,255,0.55)',
-                            background: activeSection === href ? 'rgba(255,255,255,0.1)' : 'transparent',
-                            transition: 'color 0.2s, background 0.2s',
-                        }}
-                        onMouseEnter={(e) => {
-                            if (activeSection !== href) {
-                                e.currentTarget.style.color = '#fff'
-                                e.currentTarget.style.background = 'rgba(255,255,255,0.08)'
+                        className={`
+                            block px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide
+                            transition-all duration-200 whitespace-nowrap
+                            ${activeSection === href
+                                ? 'text-[var(--c-text)] bg-[rgba(255,255,255,0.1)]'
+                                : 'text-[rgba(255,255,255,0.55)] bg-transparent hover:text-[var(--c-text)] hover:bg-[rgba(255,255,255,0.08)]'
                             }
-                        }}
-                        onMouseLeave={(e) => {
-                            if (activeSection !== href) {
-                                e.currentTarget.style.color = 'rgba(255,255,255,0.55)'
-                                e.currentTarget.style.background = 'transparent'
-                            }
-                        }}
+                        `}
                     >
                         {label}
                     </a>
@@ -58,47 +41,34 @@ function NavLinkList({ activeSection, onNavigate }: { activeSection: string; onN
     )
 }
 
+
 function MobileMenuButton({ menuOpen, onToggle }: { menuOpen: boolean; onToggle: () => void }) {
     return (
         <button
-            className="flex md:hidden"
+            className={`
+                flex md:hidden flex-col items-center justify-center gap-1.25 w-9 h-9
+                rounded-full border transition-all duration-200
+                ${menuOpen
+                    ? 'bg-[rgba(255,255,255,0.15)] border-[rgba(255,255,255,0.2)]'
+                    : 'bg-[rgba(255,255,255,0.08)] border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.12)] hover:scale-[1.08]'
+                }
+            `}
             onClick={onToggle}
             aria-label={menuOpen ? 'Lukk meny' : 'Åpne meny'}
-            style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '5px',
-                width: 36,
-                height: 36,
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: '50%',
-                cursor: 'pointer',
-                transition: 'background 0.2s, transform 0.2s',
-                padding: 0,
-            }}
-            onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
-                e.currentTarget.style.transform = 'scale(1.08)'
-            }}
-            onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255,255,255,0.08)'
-                e.currentTarget.style.transform = ''
-            }}
         >
             {menuOpen ? (
-                <span style={{ color: '#fff', fontSize: '1rem', lineHeight: 1 }}>✕</span>
+                <span className="text-[var(--c-text)] text-lg leading-none">✕</span>
             ) : (
-                <span style={{ display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'center' }}>
-                    <span style={{ display: 'block', width: 16, height: 2, background: '#fff', borderRadius: 2 }} />
-                    <span style={{ display: 'block', width: 12, height: 2, background: '#fff', borderRadius: 2 }} />
-                    <span style={{ display: 'block', width: 16, height: 2, background: '#fff', borderRadius: 2 }} />
+                <span className="flex flex-col gap-1 items-center">
+                    <span className="block w-4 h-0.5 bg-[var(--c-text)] rounded-sm" />
+                    <span className="block w-3 h-0.5 bg-[var(--c-text)] rounded-sm" />
+                    <span className="block w-4 h-0.5 bg-[var(--c-text)] rounded-sm" />
                 </span>
             )}
         </button>
     )
 }
+
 
 function MobileDrawer({ menuOpen, onNavigate, onClose }: { menuOpen: boolean; onNavigate: (id: string) => void; onClose: () => void }) {
     if (!menuOpen) {
@@ -107,101 +77,64 @@ function MobileDrawer({ menuOpen, onNavigate, onClose }: { menuOpen: boolean; on
 
     return (
         <>
+            {/* Backdrop */}
             <div
                 onClick={onClose}
-                style={{
-                    position: 'fixed',
-                    inset: 0,
-                    background: 'rgba(0,0,0,0.5)',
-                    backdropFilter: 'blur(3px)',
-                    WebkitBackdropFilter: 'blur(3px)',
-                    zIndex: 250,
-                }}
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[250]"
             />
 
-            <div
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: 'min(80%, 300px)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    zIndex: 300,
-                    overflowY: 'auto',
-                    background: 'rgba(15,15,20,0.97)',
-                    backdropFilter: 'blur(24px)',
-                    WebkitBackdropFilter: 'blur(24px)',
-                    borderLeft: '1px solid rgba(255,255,255,0.07)',
-                    boxShadow: '-8px 0 40px rgba(0,0,0,0.4)',
-                    paddingTop: '5rem',
-                    paddingBottom: '2rem',
-                }}
-            >
-                <span
-                    style={{
-                        position: 'absolute',
-                        top: '1.4rem',
-                        left: '1.5rem',
-                        fontSize: '0.7rem',
-                        fontWeight: 700,
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.3)',
-                    }}
-                >
+            {/* Drawer */}
+            <div className="
+                fixed top-0 right-0 bottom-0 z-[300]
+                w-[min(80%,300px)] flex flex-col
+                overflow-y-auto
+                bg-[rgba(15,15,20,0.97)] backdrop-blur-2xl
+                border-l border-[rgba(255,255,255,0.07)]
+                shadow-[-8px_0_40px_rgba(0,0,0,0.4)]
+                pt-20 pb-8
+            ">
+                {/* Header */}
+                <span className="
+                    absolute top-[1.4rem] left-6
+                    text-xs font-bold tracking-widest uppercase
+                    text-[rgba(255,255,255,0.3)]
+                ">
                     Navigasjon
                 </span>
 
+                {/* Navigation Links */}
                 {links.map(({ href, label }) => (
                     <button
                         key={href}
                         onClick={() => onNavigate(href)}
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            borderBottom: '1px solid rgba(255,255,255,0.06)',
-                            color: 'rgba(255,255,255,0.6)',
-                            fontSize: '1rem',
-                            fontWeight: 500,
-                            padding: '1rem 1.5rem',
-                            textAlign: 'left',
-                            cursor: 'pointer',
-                            transition: 'color 0.2s, background 0.2s, padding-left 0.2s',
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.color = '#fff'
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
-                            e.currentTarget.style.paddingLeft = '2rem'
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.color = 'rgba(255,255,255,0.6)'
-                            e.currentTarget.style.background = 'none'
-                            e.currentTarget.style.paddingLeft = '1.5rem'
-                        }}
+                        className="
+                            w-full px-6 py-4
+                            border-b border-[rgba(255,255,255,0.06)]
+                            text-left text-sm font-medium
+                            text-[rgba(255,255,255,0.6)]
+                            transition-all duration-200
+                            hover:text-[var(--c-text)]
+                            hover:bg-[rgba(255,255,255,0.05)]
+                            hover:pl-8
+                        "
                     >
                         {label}
                     </button>
                 ))}
 
+                {/* Contact Button */}
                 <a
                     href="/contact"
                     onClick={onClose}
-                    style={{
-                        margin: '1rem 1.5rem 0',
-                        background: 'var(--c-accent)',
-                        color: '#fff',
-                        borderRadius: '999px',
-                        padding: '0.75rem 1rem',
-                        fontSize: '0.875rem',
-                        fontWeight: 600,
-                        textAlign: 'center',
-                        textDecoration: 'none',
-                        transition: 'filter 0.2s',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(1.12)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.filter = '')}
+                    className="
+                        mx-6 mt-4 px-4 py-3
+                        rounded-full text-xs font-semibold
+                        text-white
+                        bg-[var(--c-accent)]
+                        text-center
+                        transition-all duration-200
+                        hover:brightness-[1.12]
+                    "
                 >
                     Kontakt meg
                 </a>
@@ -209,6 +142,7 @@ function MobileDrawer({ menuOpen, onNavigate, onClose }: { menuOpen: boolean; on
         </>
     )
 }
+
 
 export default function NavSection() {
     const [activeSection, setActiveSection] = useState('')
@@ -245,25 +179,8 @@ export default function NavSection() {
     }
 
     return (
-        <nav
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '0.75rem',
-                flex: 1,
-                minWidth: 0,
-            }}
-        >
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    flex: 1,
-                    minWidth: 0,
-                }}
-            >
+        <nav className="flex items-center justify-between gap-3 flex-1 min-w-0">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
                 <NavLinkList activeSection={activeSection} onNavigate={navigate} />
 
                 <div className="hidden md:flex items-center gap-2 flex-shrink-0">
