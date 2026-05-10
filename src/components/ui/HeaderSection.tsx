@@ -1,12 +1,17 @@
 // Use Motion for animations
-import { MoonStar, SunMedium } from 'lucide-react'
-import { useTheme } from '../../hooks/useTheme'
+import ThemeSwitcher from '../header/ThemeSwitcher';
 
 export default function HeaderSection() {
-    const { isDark, toggleTheme } = useTheme()
 
     return (
-        <header className="bg-white border-b sticky top-0 z-50">
+        <header
+            className="border-b sticky top-0 z-50 backdrop-blur-sm"
+            style={{
+                backgroundColor: 'var(--c-nav-bg)',
+                borderColor: 'var(--c-border)',
+                color: 'var(--c-text)',
+            }}
+        >
             <section>
                 {/* If NOT indexpage show back button */}
             </section>
@@ -17,12 +22,7 @@ export default function HeaderSection() {
 
             <section>
                 {/* Theme Switcher */}
-                <button
-                    onClick={toggleTheme}
-                    className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-                >
-                    {isDark ? <SunMedium /> : <MoonStar />}
-                </button>
+                <ThemeSwitcher />
             </section>
 
             <section>
