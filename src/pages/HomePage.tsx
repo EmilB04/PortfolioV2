@@ -1,6 +1,7 @@
 
 import Landing from '../components/indexSections/Landing'
 import AboutMe from '../components/indexSections/AboutMe';
+import LiveDomainShowcase from '../components/indexSections/LiveDomainShowcase';
 
 export default function Home() {
     function handleScrollNextSection() {
@@ -11,6 +12,7 @@ export default function Home() {
         <main>
             <Landing onScrollNextSection={handleScrollNextSection} />
             <AboutMe />
+            <LiveDomainShowcase />
 
         </main>
     )

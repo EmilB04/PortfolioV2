@@ -4,6 +4,7 @@ type IndexSectionProps = {
     id?: string
     children: ReactNode
     className?: string
+    fullscreen?: boolean
 }
 
 /**
@@ -13,6 +14,7 @@ type IndexSectionProps = {
  * - Minimum height of 100vh (full viewport height)
  * - Content centered in all directions (horizontal and vertical)
  * - Responsive padding for different screen sizes
+ * - Optional fullscreen mode (ignores max-width and padding)
  *
  * @example
  * <IndexSection id="about">
@@ -20,7 +22,19 @@ type IndexSectionProps = {
  *   <p>Section content here</p>
  * </IndexSection>
  */
-export default function IndexLayout({ id, children, className = '' }: IndexSectionProps) {
+export default function IndexLayout({ id, children, className = '', fullscreen = false }: IndexSectionProps) {
+    if (fullscreen) {
+        return (
+            <section
+                id={id}
+                className={`w-screen h-screen flex items-center justify-center overflow-hidden ${className}`}
+                style={{ color: 'var(--text)' }}
+            >
+                {children}
+            </section>
+        )
+    }
+
     return (
         <section
             id={id}
