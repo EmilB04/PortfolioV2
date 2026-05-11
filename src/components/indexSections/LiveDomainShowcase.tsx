@@ -2,6 +2,15 @@
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Lock } from 'lucide-react'
 import IndexLayout from './_layout'
+import { resolveMediaUrl } from '../../lib/media'
+
+const showcasePreviewImage = resolveMediaUrl('/images/projects/SpillArena/spillarena-preview.jpeg', {
+    transformations: ['f_auto', 'q_auto'],
+})
+
+const showcaseLogoImage = resolveMediaUrl('/images/projects/SpillArena/logo.png', {
+    transformations: ['f_auto', 'q_auto'],
+})
 
 export default function LiveDomainShowcase() {
     const { t } = useTranslation()
@@ -53,7 +62,7 @@ export default function LiveDomainShowcase() {
                 <div
                     className="absolute inset-0 z-0 w-screen h-screen"
                     style={{
-                        backgroundImage: 'url(/images/projects/SpillArena/spillarena-preview.jpeg)',
+                        backgroundImage: `url(${showcasePreviewImage})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         filter: 'blur(18px) saturate(1.4)',
@@ -137,9 +146,10 @@ export default function LiveDomainShowcase() {
                     <div className="flex-1 flex flex-col gap-4 text-white">
                         {/* Logo */}
                         <img
-                            src="/images/projects/SpillArena/logo.png"
+                            src={showcaseLogoImage}
                             alt={t('showcase.logoAlt')}
                             className="w-18 h-18 object-contain rounded-lg shadow-[0_0_24px_rgba(170,0,255,0.4)]"
+                            loading="eager"
                         />
 
                         {/* Title and status */}
@@ -206,9 +216,10 @@ export default function LiveDomainShowcase() {
                             {/* Browser content */}
                             <div className="bg-[#0d0d1a]">
                                 <img
-                                    src="/images/projects/SpillArena/spillarena-preview.jpeg"
+                                    src={showcasePreviewImage}
                                     alt={t('showcase.previewAlt')}
                                     className="w-full block object-cover"
+                                    loading="eager"
                                 />
                             </div>
                         </div>
