@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import BackButton from '../header/BackButton'
 import LanguageSwitcher from '../header/LanguageSwitcher'
 import ThemeSwitcher from '../header/ThemeSwitcher'
+import { INDEX_NAV_ITEMS } from '../../routes/indexPaths'
 
 type LinkItem = {
     href: string
@@ -174,12 +175,7 @@ export default function NavSection() {
     const [drawerOpen, setDrawerOpen] = useState(false)
 
     const links: LinkItem[] = useMemo(
-        () => [
-            { href: 'landing', label: t('nav.home') },
-            { href: 'about', label: t('nav.about') },
-            { href: 'live-projects', label: t('nav.projects') },
-            { href: 'timeline', label: t('nav.timeline') },
-        ],
+        () => INDEX_NAV_ITEMS.map(({ href, labelKey }) => ({ href, label: t(labelKey) })),
         [t],
     )
 

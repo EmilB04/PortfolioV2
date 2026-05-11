@@ -12,6 +12,7 @@ import HotelIcon from '@mui/icons-material/Hotel';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import Typography from '@mui/material/Typography';
 import IndexLayout from './_layout';
+import { INDEX_PATHS } from '../../routes/indexPaths';
 
 export default function Timeline() {
   const { t } = useTranslation()
@@ -22,7 +23,7 @@ export default function Timeline() {
   }>
 
   return (
-    <IndexLayout id="timeline">
+    <IndexLayout id={INDEX_PATHS.TIMELINE}>
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-semibold sm:text-4xl">{t('timeline.title')}</h2>
       </div>

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import IndexLayout from "./_layout";
+import { INDEX_PATHS } from '../../routes/indexPaths'
 
 function getAge() {
     const today = new Date();
@@ -20,7 +21,7 @@ export default function AboutMe() {
     const { t } = useTranslation()
 
     return (
-        <IndexLayout id="about">
+        <IndexLayout id={INDEX_PATHS.ABOUT}>
             <div className="w-full space-y-6 ">
                 <div className="space-y-3 text-center">
                     <h2 className="text-3xl font-semibold sm:text-4xl">{t('about.title')}</h2>

@@ -2,9 +2,9 @@
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Lock } from 'lucide-react'
 import IndexLayout from './_layout'
+import { INDEX_PATHS } from '../../routes/indexPaths'
 
 const showcasePreviewImage = 'https://res.cloudinary.com/emilber-portfolio/image/upload/v1778535404/spillarena-preview_yif14p.jpg'
-
 const showcaseLogoImage = 'https://res.cloudinary.com/emilber-portfolio/image/upload/v1778535404/logo_qgrwwk.png'
 
 export default function LiveDomainShowcase() {
@@ -12,7 +12,7 @@ export default function LiveDomainShowcase() {
     const tags = t('showcase.tags', { returnObjects: true }) as string[]
 
     return (
-        <IndexLayout id="live-projects" fullscreen>
+        <IndexLayout id={INDEX_PATHS.DOMAIN} fullscreen>
             <style>{`
                 @keyframes float {
                     from {

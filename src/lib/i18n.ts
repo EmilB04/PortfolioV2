@@ -11,9 +11,12 @@ const en = {
     nav: {
         home: 'Home',
         about: 'About me',
-        projects: 'Projects',
+        domains: 'Domains',
         timeline: 'Timeline',
         contact: 'Contact',
+        projects: 'Projects',
+        knowledge: 'Knowledge',
+        gitHub: 'GitHub',
     },
     header: {
         navigation: 'Navigation',
@@ -165,9 +168,12 @@ const no: TranslationSchema = {
     nav: {
         home: 'Hjem',
         about: 'Om meg',
-        projects: 'Prosjekter',
+        domains: 'Domener',
         timeline: 'Tidslinje',
         contact: 'Kontakt',
+        projects: 'Prosjekter',
+        knowledge: 'Kunnskap',
+        gitHub: 'GitHub',
     },
     header: {
         navigation: 'Navigasjon',
@@ -317,9 +323,12 @@ const es: TranslationSchema = {
     nav: {
         home: 'Inicio',
         about: 'Sobre mí',
-        projects: 'Proyectos',
+        domains: 'Dominios',
         timeline: 'Cronología',
         contact: 'Contacto',
+        projects: 'Proyectos',
+        knowledge: 'Conocimientos',
+        gitHub: 'GitHub',
     },
     header: {
         navigation: 'Navegación',
