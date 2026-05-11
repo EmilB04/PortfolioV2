@@ -2,15 +2,10 @@
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Lock } from 'lucide-react'
 import IndexLayout from './_layout'
-import { resolveMediaUrl } from '../../lib/media'
 
-const showcasePreviewImage = resolveMediaUrl('/images/projects/SpillArena/spillarena-preview.jpeg', {
-    transformations: ['f_auto', 'q_auto'],
-})
+const showcasePreviewImage = 'https://res.cloudinary.com/emilber-portfolio/image/upload/v1778535404/spillarena-preview_yif14p.jpg'
 
-const showcaseLogoImage = resolveMediaUrl('/images/projects/SpillArena/logo.png', {
-    transformations: ['f_auto', 'q_auto'],
-})
+const showcaseLogoImage = 'https://res.cloudinary.com/emilber-portfolio/image/upload/v1778535404/logo_qgrwwk.png'
 
 export default function LiveDomainShowcase() {
     const { t } = useTranslation()
@@ -148,7 +143,7 @@ export default function LiveDomainShowcase() {
                         <img
                             src={showcaseLogoImage}
                             alt={t('showcase.logoAlt')}
-                            className="w-18 h-18 object-contain rounded-lg shadow-[0_0_24px_rgba(170,0,255,0.4)]"
+                            className="w-16 h-16 object-contain rounded-lg shadow-[0_0_24px_rgba(170,0,255,0.4)]"
                             loading="eager"
                         />
 

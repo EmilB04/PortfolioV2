@@ -1,5 +1,15 @@
 type MediaResourceType = 'image' | 'video' | 'raw'
 
+export const CLOUDINARY_SCHEMA = {
+    root: 'portfolio',
+    projects: 'portfolio/projects',
+    projectShowcase: 'portfolio/projects/spillarena',
+    branding: 'portfolio/branding',
+    social: 'portfolio/social',
+    ui: 'portfolio/ui',
+    misc: 'portfolio/misc',
+} as const
+
 type ResolveMediaUrlOptions = {
     fallback?: string
     resourceType?: MediaResourceType
@@ -14,6 +24,32 @@ function isAbsoluteMediaUrl(value: string) {
 
 function stripLeadingSlashes(value: string) {
     return value.replace(/^\/+/, '')
+}
+
+function normalizeCloudinaryPublicId(source: string) {
+    const normalizedSource = stripLeadingSlashes(source)
+
+    if (normalizedSource.startsWith('images/projects/SpillArena/')) {
+        return `${CLOUDINARY_SCHEMA.projectShowcase}/${normalizedSource.replace('images/projects/SpillArena/', '')}`
+    }
+
+    if (normalizedSource.startsWith('images/projects/')) {
+        return `${CLOUDINARY_SCHEMA.projects}/${normalizedSource.replace('images/projects/', '')}`
+    }
+
+    if (normalizedSource.startsWith('assets/icons/')) {
+        return `${CLOUDINARY_SCHEMA.branding}/${normalizedSource.replace('assets/icons/', '').replace(/\.(png|jpg|jpeg|webp|svg)$/i, '')}`
+    }
+
+    if (normalizedSource.startsWith('social/')) {
+        return `${CLOUDINARY_SCHEMA.social}/${normalizedSource.replace('social/', '')}`
+    }
+
+    if (normalizedSource.startsWith('ui/')) {
+        return `${CLOUDINARY_SCHEMA.ui}/${normalizedSource.replace('ui/', '')}`
+    }
+
+    return normalizedSource
 }
 
 function inferResourceType(source: string): MediaResourceType {
@@ -43,7 +79,7 @@ export function resolveMediaUrl(source?: string | null, options: ResolveMediaUrl
 
     if (CLOUDINARY_CLOUD_NAME) {
         const resourceType = options.resourceType ?? inferResourceType(source)
-        const normalizedPublicId = stripLeadingSlashes(source)
+        const normalizedPublicId = normalizeCloudinaryPublicId(source)
         const transformationSegment = options.transformations?.filter(Boolean).join(',')
         const transformationPrefix = transformationSegment ? `${transformationSegment}/` : ''
 

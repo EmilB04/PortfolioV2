@@ -41,6 +41,8 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 The frontend only reads `CLOUDINARY_CLOUD_NAME`. Keep the API key and secret out of the client bundle and use them only in backend upload tooling or server-side code. If you keep your Cloudinary public IDs aligned with the current `/images/...` paths, the app will use Cloudinary in production and fall back to local assets in development.
 
+The recommended folder schema lives in [docs/cloudinary-schema.md](docs/cloudinary-schema.md).
+
 5. Start development server:
 ```bash
 npm run dev
