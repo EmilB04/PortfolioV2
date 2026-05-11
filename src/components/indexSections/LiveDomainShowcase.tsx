@@ -136,7 +136,7 @@ export default function LiveDomainShowcase() {
                 </div>
 
                 {/* Content wrapper */}
-                <div className="relative z-3 w-full h-full flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16 md:px-12 md:py-20">
+                <div className="relative z-3 w-full h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16">
                     {/* Left side */}
                     <div className="flex-1 flex flex-col gap-4 text-white">
                         {/* Logo */}
