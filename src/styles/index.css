@@ -151,7 +151,7 @@ a {
   transition: color var(--transition);
 
   &:hover {
-    color: var(white);
+    color: white;
   }
 }
 
