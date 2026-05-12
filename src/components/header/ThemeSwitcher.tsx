@@ -109,8 +109,8 @@ export default function ThemeSwitcher() {
             whileTap={{ scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 320, damping: 24 }}
             style={{
-                background: 'var(--c-surface)',
-                border: '1px solid var(--c-border)',
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
                 boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',

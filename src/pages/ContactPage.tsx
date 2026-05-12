@@ -11,14 +11,14 @@ export default function Contact() {
             <section className="py-16">
                 <div className="max-w-4xl mx-auto px-4">
                     <h1
-                        className="text-4xl md:text-5xl font-extrabold text-center mb-4 text-[var(--c-text)]"
+                        className="text-4xl md:text-5xl font-extrabold text-center mb-4 text-[var(--text)]"
                         style={{
-                            background: 'var(--c-accent)',
+                            background: 'var(--accent)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                         }}
                     >{t('contactPage.title')}</h1>
-                    <p className="text-center text-[var(--c-text-subtle)] mb-12">{t('contactPage.subtitle')}</p>
+                    <p className="text-center text-[var(--text-subtle)] mb-12">{t('contactPage.subtitle')}</p>
 
                     <div className="flex flex-row flex-wrap gap-8 justify-center">
                         <ContactCard

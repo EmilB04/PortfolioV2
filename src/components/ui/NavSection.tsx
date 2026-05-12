@@ -26,13 +26,13 @@ function NavLinkList({ activeSection, onNavigate, links }: { activeSection: stri
                             e.preventDefault()
                             onNavigate(href)
                         }}
-                        style={{ color: 'var(--c-text)' }}
+                        style={{ color: 'var(--text)' }}
                         className={`
                             relative block px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide
                             transition-all duration-200 whitespace-nowrap
                             ${activeSection === href
-                                ? 'text-[var(--c-text)]'
-                                : 'text-[var(--c-text-subtle)] hover:text-[var(--c-text)]'
+                                ? 'text-[var(--text)]'
+                                : 'text-[var(--text-subtle)] hover:text-[var(--text)]'
                             }
                         `}
                     >
@@ -41,7 +41,7 @@ function NavLinkList({ activeSection, onNavigate, links }: { activeSection: stri
                             aria-hidden="true"
                             className={`
                                 pointer-events-none absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full
-                                bg-[var(--c-accent)] transition-all duration-300 ease-out motion-reduce:transition-none
+                                bg-[var(--accent)] transition-all duration-300 ease-out motion-reduce:transition-none
                                 ${activeSection === href ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'}
                             `}
                         />
@@ -59,20 +59,20 @@ function MobileMenuButton({ menuOpen, onToggle, openLabel, closeLabel }: { menuO
                 flex md:hidden flex-col items-center justify-center gap-1.25 w-9 h-9
                 rounded-full border transition-all duration-200
                 ${menuOpen
-                    ? 'bg-[var(--c-surface-card)] border-[var(--c-border-hover)]'
-                    : 'bg-[var(--c-surface)] border-[var(--c-border)] hover:bg-[var(--c-surface-card)] hover:scale-[1.08]'
+                    ? 'bg-[var(--surface-card)] border-[var(--border-hover)]'
+                    : 'bg-[var(--surface)] border-[var(--border)] hover:bg-[var(--surface-card)] hover:scale-[1.08]'
                 }
             `}
             onClick={onToggle}
             aria-label={menuOpen ? closeLabel : openLabel}
         >
             {menuOpen ? (
-                <span className="text-[var(--c-text)] text-lg leading-none">✕</span>
+                <span className="text-[var(--text)] text-lg leading-none">✕</span>
             ) : (
                 <span className="flex flex-col gap-1 items-center">
-                    <span className="block w-4 h-0.5 bg-[var(--c-text)] rounded-sm" />
-                    <span className="block w-3 h-0.5 bg-[var(--c-text)] rounded-sm" />
-                    <span className="block w-4 h-0.5 bg-[var(--c-text)] rounded-sm" />
+                    <span className="block w-4 h-0.5 bg-[var(--text)] rounded-sm" />
+                    <span className="block w-3 h-0.5 bg-[var(--text)] rounded-sm" />
+                    <span className="block w-4 h-0.5 bg-[var(--text)] rounded-sm" />
                 </span>
             )}
         </button>
@@ -115,11 +115,11 @@ function MobileDrawer({
 
     return (
         <div
-            className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(80%,300px)] flex flex-col overflow-y-auto border-l border-[var(--c-border)] shadow-[var(--shadow)] pt-20 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
-            style={{ background: 'var(--c-bg)' }}
+            className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(80%,300px)] flex flex-col overflow-y-auto border-l border-[var(--border)] shadow-[var(--shadow)] pt-20 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+            style={{ background: 'var(--bg)' }}
         >
             <section className="mb-8 flex flex-row items-center justify-between gap-4 px-6">
-                <span className="text-xs font-bold uppercase tracking-widest text-[var(--c-text-subtle)]">
+                <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
                     {navigationLabel}
                 </span>
 
@@ -127,7 +127,7 @@ function MobileDrawer({
                     type="button"
                     onClick={onClose}
                     aria-label={closeLabel}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] transition-all duration-200 hover:scale-[1.05] hover:bg-[var(--c-surface-card)]"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition-all duration-200 hover:scale-[1.05] hover:bg-[var(--surface-card)]"
                 >
                     <span className="text-lg leading-none">✕</span>
                 </button>
@@ -137,14 +137,14 @@ function MobileDrawer({
                 <button
                     key={href}
                     onClick={() => onNavigate(href)}
-                    className="w-full border-b border-[var(--c-border)] px-6 py-4 text-left text-sm font-medium text-[var(--c-text-subtle)] transition-all duration-200 hover:bg-[var(--c-surface-card)] hover:pl-8 hover:text-[var(--c-text)]"
+                    className="w-full border-b border-[var(--border)] px-6 py-4 text-left text-sm font-medium text-[var(--text-subtle)] transition-all duration-200 hover:bg-[var(--surface-card)] hover:pl-8 hover:text-[var(--text)]"
                 >
                     {label}
                 </button>
             ))}
 
-            <div className="mt-6 border-t border-[var(--c-border)] px-6 pt-5">
-                <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--c-text-subtle)]">
+            <div className="mt-6 border-t border-[var(--border)] px-6 pt-5">
+                <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
                     {settingsLabel}
                 </p>
 
@@ -157,7 +157,7 @@ function MobileDrawer({
             <a
                 href="/contact"
                 onClick={onClose}
-                className="mx-6 mt-6 rounded-full bg-[var(--c-accent)] px-4 py-3 text-center text-xs font-semibold text-black transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] active:translate-y-0 active:scale-[0.99] motion-reduce:transition-none hover:text-white"
+                className="mx-6 mt-6 rounded-full bg-[var(--accent)] px-4 py-3 text-center text-xs font-semibold text-black transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] active:translate-y-0 active:scale-[0.99] motion-reduce:transition-none hover:text-white"
             >
                 {contactLabel}
             </a>

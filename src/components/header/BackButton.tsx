@@ -16,7 +16,7 @@ export default function BackButton({ to = '/', className = '' }: BackButtonProps
             to={to}
             aria-label={t('backButton.aria')}
             className={
-                `inline-flex items-center gap-2 rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] px-4 py-2 text-xs font-medium text-[var(--c-text)] transition-all duration-200 hover:bg-[var(--c-surface-card)] hover:-translate-x-0.5 ${className}`
+                `inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-xs font-medium text-[var(--text)] transition-all duration-200 hover:bg-[var(--surface-card)] hover:-translate-x-0.5 ${className}`
             }
         >
             <ArrowLeft size={16} />

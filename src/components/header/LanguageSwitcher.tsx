@@ -56,8 +56,8 @@ export default function LanguageSwitcher() {
                     border px-4 pr-3 text-sm font-semibold tracking-[-0.01em]
                     transition-all duration-200 ease-out motion-reduce:transition-none
                     ${open
-                        ? 'border-[var(--c-accent)] bg-[var(--c-surface-card)] text-[var(--c-text)] shadow-[0_12px_30px_rgba(0,0,0,0.18)] ring-4 ring-[color:color-mix(in_srgb,var(--c-accent)_16%,transparent)]'
-                        : 'border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[0_8px_24px_rgba(0,0,0,0.14)] hover:-translate-y-[1px] hover:border-[var(--c-border-hover)] hover:bg-[var(--c-surface-card)] active:translate-y-0 active:scale-[0.985] active:shadow-[0_4px_14px_rgba(0,0,0,0.14)]'
+                        ? 'border-[var(--accent)] bg-[var(--surface-card)] text-[var(--text)] shadow-[0_12px_30px_rgba(0,0,0,0.18)] ring-4 ring-[color:color-mix(in_srgb,var(--accent)_16%,transparent)]'
+                        : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] shadow-[0_8px_24px_rgba(0,0,0,0.14)] hover:-translate-y-[1px] hover:border-[var(--border-hover)] hover:bg-[var(--surface-card)] active:translate-y-0 active:scale-[0.985] active:shadow-[0_4px_14px_rgba(0,0,0,0.14)]'
                     }
                 `}
             >
@@ -68,9 +68,9 @@ export default function LanguageSwitcher() {
                     viewBox="0 0 20 20"
                     fill="none"
                     className={`
-                        h-4 w-4 shrink-0 text-[var(--c-text-subtle)]
+                        h-4 w-4 shrink-0 text-[var(--text-subtle)]
                         transition-all duration-200 ease-out
-                        ${open ? 'rotate-180 text-[var(--c-text)]' : 'group-hover:text-[var(--c-text)]'}
+                        ${open ? 'rotate-180 text-[var(--text)]' : 'group-hover:text-[var(--text)]'}
                     `}
                 >
                     <path
@@ -86,7 +86,7 @@ export default function LanguageSwitcher() {
             <div
                 className={`
                     absolute left-0 top-[calc(100%+0.6rem)] z-[400] min-w-full overflow-hidden rounded-2xl
-                    border border-[var(--c-border)] bg-[color:color-mix(in_srgb,var(--c-surface-card)_86%,transparent)]
+                    border border-[var(--border)] bg-[color:color-mix(in_srgb,var(--surface-card)_86%,transparent)]
                     shadow-[0_18px_48px_rgba(0,0,0,0.22)]
                     backdrop-blur-2xl
                     transition-all duration-200 ease-out origin-top motion-reduce:transition-none
@@ -97,7 +97,7 @@ export default function LanguageSwitcher() {
                 `}
             >
                 <div className="p-1.5">
-                    <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--c-text-subtle)]">
+                    <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
                         {t('languageSwitcher.section')}
                     </div>
 
@@ -116,8 +116,8 @@ export default function LanguageSwitcher() {
                                         group flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left
                                         transition-all duration-200 ease-out motion-reduce:transition-none
                                         ${selected
-                                            ? 'bg-[color:color-mix(in_srgb,var(--c-accent)_16%,var(--c-surface-card))] text-[var(--c-text)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--c-accent)_30%,transparent)]'
-                                            : 'text-[var(--c-text-subtle)] hover:bg-[var(--c-surface)] hover:text-[var(--c-text)] active:scale-[0.99]'
+                                            ? 'bg-[color:color-mix(in_srgb,var(--accent)_16%,var(--surface-card))] text-[var(--text)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_30%,transparent)]'
+                                            : 'text-[var(--text-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text)] active:scale-[0.99]'
                                         }
                                     `}
                                 >
@@ -128,8 +128,8 @@ export default function LanguageSwitcher() {
                                             inline-flex h-5 w-5 items-center justify-center rounded-full
                                             transition-all duration-200
                                             ${selected
-                                                ? 'bg-[var(--c-accent)] text-black'
-                                                : 'bg-transparent text-transparent group-hover:bg-[var(--c-surface-card)] group-hover:text-[var(--c-text-subtle)]'
+                                                ? 'bg-[var(--accent)] text-black'
+                                                : 'bg-transparent text-transparent group-hover:bg-[var(--surface-card)] group-hover:text-[var(--text-subtle)]'
                                             }
                                         `}
                                     >

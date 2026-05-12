@@ -7,34 +7,30 @@
     --e-button-border-radius: 16px;
     --e-button-padding: 10px 20px;
 
-    --c-bg: var(--background);
-    --c-bg-opacity: #040409;
-    --c-surface: rgba(1, 6, 38, 0.6);
-    --c-surface-card: rgba(1, 6, 38, 0.24);
-    --c-text: #ffffff;
-    --c-text-muted: rgba(255, 255, 255, 0.75);
-    --c-text-subtle: rgba(255, 255, 255, 0.5);
-    --c-border: rgba(255, 255, 255, 0.1);
-    --c-border-hover: rgba(241, 55, 110, 0.4);
-    --c-accent: var(--accent-base);
-    --c-nav-bg: rgba(1, 6, 38, 0.75);
-    --c-mobile-menu-bg: rgba(1, 6, 38, 0.98);
-    --c-backdrop: rgba(0, 0, 0, 0.55);
-    --c-link: #ffffff;
-    --c-heading-gradient-start: var(--accent-base);
-    --c-heading-gradient-end: transparent;
-    --c-stars-bg: radial-gradient(circle at bottom, #020111 0%, #000000 100%);
+    --bg: var(--background);
+    --bg-opacity: #040409;
+    --surface: rgba(1, 6, 38, 0.6);
+    --surface-card: rgba(1, 6, 38, 0.24);
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.75);
+    --text-subtle: rgba(255, 255, 255, 0.5);
+    --border: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(241, 55, 110, 0.4);
+    --accent: var(--accent-base);
+    --nav-bg: rgba(1, 6, 38, 0.75);
+    --mobile-menu-bg: rgba(1, 6, 38, 0.98);
+    --backdrop: rgba(0, 0, 0, 0.55);
+    --link: #ffffff;
+    --heading-gradient-start: var(--accent-base);
+    --heading-gradient-end: transparent;
+    --stars-bg: radial-gradient(circle at bottom, #020111 0%, #000000 100%);
 
     /* Compatibility aliases for existing components */
-    --text: var(--c-text);
-    --text-h: var(--c-text);
-    --bg: var(--c-bg);
-    --border: var(--c-border);
-    --code-bg: var(--c-surface-card);
-    --accent: var(--c-accent);
+    --text-h: var(--text);
+    --code-bg: var(--surface-card);
     --accent-bg: rgba(241, 55, 110, 0.15);
     --accent-border: rgba(241, 55, 110, 0.5);
-    --social-bg: var(--c-surface-card);
+    --social-bg: var(--surface-card);
     --shadow:
         rgba(0, 0, 0, 0.4) 0 10px 15px -3px,
         rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
@@ -50,8 +46,8 @@
     font: 16px/145% var(--sans);
     letter-spacing: 0.18px;
     color-scheme: dark;
-    color: var(--c-text);
-    background: var(--c-bg);
+    color: var(--text);
+    background: var(--bg);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -60,33 +56,46 @@
 
 html.light,
 html.light-mode {
-    --c-bg: #f7f4f1;
-    --c-bg-opacity: rgb(220, 204, 221);
-    --c-surface: rgba(255, 252, 248, 0.82);
-    --c-surface-card: rgba(255, 252, 248, 0.96);
-    --c-text: #1c1025;
-    --c-text-muted: rgba(28, 16, 37, 0.68);
-    --c-text-subtle: rgba(28, 16, 37, 0.44);
-    --c-border: rgba(28, 16, 37, 0.09);
-    --c-border-hover: rgba(241, 55, 110, 0.45);
-    --c-accent: var(--accent-base);
-    --c-nav-bg: rgba(247, 244, 241, 0.88);
-    --c-mobile-menu-bg: rgba(247, 244, 241, 0.99);
-    --c-backdrop: rgba(28, 16, 37, 0.35);
-    --c-link: #1c1025;
-    --c-heading-gradient-start: var(--accent-base);
-    --c-heading-gradient-end: rgba(28, 16, 37, 0);
-    --c-stars-bg: radial-gradient(ellipse at bottom, #e8cdd8 0%, #ede4f0 45%, #f7f4f1 100%);
+    --bg: #f7f4f1;
+    --bg-opacity: rgb(220, 204, 221);
+    --surface: rgba(255, 252, 248, 0.82);
+    --surface-card: rgba(255, 252, 248, 0.96);
+    --text: #1c1025;
+    --text-muted: rgba(28, 16, 37, 0.68);
+    --text-subtle: rgba(28, 16, 37, 0.44);
+    --border: rgba(28, 16, 37, 0.09);
+    --border-hover: rgba(241, 55, 110, 0.45);
+    --accent: var(--accent-base);
+    --nav-bg: rgba(247, 244, 241, 0.88);
+    --mobile-menu-bg: rgba(247, 244, 241, 0.99);
+    --backdrop: rgba(28, 16, 37, 0.35);
+    --link: #1c1025;
+    --heading-gradient-start: var(--accent-base);
+    --heading-gradient-end: rgba(28, 16, 37, 0);
+    --stars-bg: radial-gradient(ellipse at bottom, #e8cdd8 0%, #ede4f0 45%, #f7f4f1 100%);
 
-    --text: var(--c-text);
-    --text-h: var(--c-text);
-    --bg: var(--c-bg);
-    --border: var(--c-border);
-    --code-bg: var(--c-surface-card);
-    --accent: var(--c-accent);
+    --c-bg: var(--bg);
+    --c-bg-opacity: var(--bg-opacity);
+    --c-surface: var(--surface);
+    --c-surface-card: var(--surface-card);
+    --c-text: var(--text);
+    --c-text-muted: var(--text-muted);
+    --c-text-subtle: var(--text-subtle);
+    --c-border: var(--border);
+    --c-border-hover: var(--border-hover);
+    --c-accent: var(--accent);
+    --c-nav-bg: var(--nav-bg);
+    --c-mobile-menu-bg: var(--mobile-menu-bg);
+    --c-backdrop: var(--backdrop);
+    --c-link: var(--link);
+    --c-heading-gradient-start: var(--heading-gradient-start);
+    --c-heading-gradient-end: var(--heading-gradient-end);
+    --c-stars-bg: var(--stars-bg);
+    --text-h: var(--text);
+    --code-bg: var(--surface-card);
     --accent-bg: rgba(241, 55, 110, 0.1);
     --accent-border: rgba(241, 55, 110, 0.5);
-    --social-bg: var(--c-surface-card);
+    --social-bg: var(--surface-card);
     --shadow:
         rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
         rgba(0, 0, 0, 0.05) 0 4px 6px -2px;

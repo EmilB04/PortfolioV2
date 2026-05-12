@@ -8,9 +8,9 @@ export default function ContactButton() {
             href="/contact"
             className="hidden md:inline-flex items-center justify-center"
             style={{
-                background: 'var(--c-accent)',
+                background: 'var(--accent)',
                 color: '#fff',
-                border: '1px solid var(--c-border)',
+                border: '1px solid var(--border)',
                 borderRadius: '999px',
                 height: '2.5rem',
                 padding: '0 1rem',

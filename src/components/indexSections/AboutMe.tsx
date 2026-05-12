@@ -31,14 +31,14 @@ export default function AboutMe() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                    <article className="rounded-3xl border border-[var(--border)] bg-[var(--c-surface-card)] p-5 shadow-[var(--shadow)] backdrop-blur-sm sm:p-6">
+                    <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface-card)] p-5 shadow-[var(--shadow)] backdrop-blur-sm sm:p-6">
                         <h3 className="mb-3 text-lg font-semibold">{t('about.studentTitle')}</h3>
                         <p className="text-sm leading-6 text-[var(--text-muted)]">
                             {t('about.student')}
                         </p>
                     </article>
 
-                    <article className="rounded-3xl border border-[var(--border)] bg-[var(--c-surface-card)] p-5 shadow-[var(--shadow)] backdrop-blur-sm sm:p-6">
+                    <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface-card)] p-5 shadow-[var(--shadow)] backdrop-blur-sm sm:p-6">
                         <h3 className="mb-3 text-lg font-semibold">{t('about.personTitle')}</h3>
                         <p className="text-sm leading-6 text-[var(--text-muted)]">
                             {t('about.person', { age: getAge() })}
@@ -46,7 +46,7 @@ export default function AboutMe() {
                     </article>
                 </div>
 
-                <article className="rounded-3xl border border-[var(--border)] bg-[var(--c-surface-card)] p-5 text-sm leading-6 text-[var(--text-muted)] shadow-[var(--shadow)] backdrop-blur-sm sm:p-6">
+                <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface-card)] p-5 text-sm leading-6 text-[var(--text-muted)] shadow-[var(--shadow)] backdrop-blur-sm sm:p-6">
                     <h3 className="mb-3 text-lg font-semibold">{t('about.leisureTitle')}</h3>
                     <p className="text-sm leading-6 text-[var(--text-muted)]">
                         {t('about.leisure')}

@@ -27,9 +27,9 @@ export default function ToTopButton() {
         ${visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
       `}
             style={{
-                background: "var(--c-surface)",
-                borderColor: "var(--c-border)",
-                color: "var(--c-text)",
+                background: "var(--surface)",
+                borderColor: "var(--border)",
+                color: "var(--text)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
                 boxShadow: "0 18px 50px rgba(0, 0, 0, 0.18)",
@@ -37,7 +37,7 @@ export default function ToTopButton() {
         >
             <span
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full"
-                style={{ background: "var(--c-accent)", color: "#fff" }}
+                style={{ background: "var(--accent)", color: "#fff" }}
             >
                 <ArrowUp size={18} />
             </span>
@@ -45,13 +45,13 @@ export default function ToTopButton() {
             <span className="hidden flex-col sm:flex">
                 <span
                     className="text-xs font-semibold uppercase tracking-[0.14em]"
-                    style={{ color: "var(--c-text-muted)" }}
+                    style={{ color: "var(--text-muted)" }}
                 >
                     {t('toTop.prefix')}
                 </span>
                 <span
                     className="text-sm font-semibold"
-                    style={{ color: "var(--c-text)" }}
+                    style={{ color: "var(--text)" }}
                 >
                     {t('toTop.label')}
                 </span>
