@@ -72,7 +72,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                 <h1 className="mb-8 text-4xl font-semibold leading-tight text-[var(--text-h)] sm:text-5xl lg:text-6xl">
                     {t('home.title')} <br />
                     <span
-                        className="inline-block px-1 py-2 text-[var(--text-h)]"
+                        className="inline-block px-0 py-2 text-[var(--text-h)]"
                         style={{ minWidth: '18ch' }}
                     >
                         {typewriterText}

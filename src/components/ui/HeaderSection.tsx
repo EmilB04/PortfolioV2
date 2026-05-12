@@ -6,7 +6,7 @@ import NavSection from './NavSection.tsx'
 export default function HeaderSection() {
     return (
         <header
-            className="fixed inset-x-0 top-0 z-50 border-b bg-transparent backdrop-blur-xl"
+            className="fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl bg-[var(--nav-bg-transparent)]"
             style={{
                 borderColor: 'var(--border)',
                 color: 'var(--text)',

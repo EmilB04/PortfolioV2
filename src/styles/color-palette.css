@@ -18,6 +18,7 @@
     --border-hover: rgba(241, 55, 110, 0.4);
     --accent: var(--accent-base);
     --nav-bg: rgba(1, 6, 38, 0.75);
+    --nav-bg-transparent: rgba(1, 6, 38, 0.3);
     --mobile-menu-bg: rgba(1, 6, 38, 0.98);
     --backdrop: rgba(0, 0, 0, 0.55);
     --link: #ffffff;
@@ -67,6 +68,7 @@ html.light-mode {
     --border-hover: rgba(241, 55, 110, 0.45);
     --accent: var(--accent-base);
     --nav-bg: rgba(247, 244, 241, 0.88);
+    --nav-bg-transparent: rgba(247, 244, 241, 0.5);
     --mobile-menu-bg: rgba(247, 244, 241, 0.99);
     --backdrop: rgba(28, 16, 37, 0.35);
     --link: #1c1025;
