@@ -23,7 +23,7 @@ export default function Timeline() {
   }>
 
   return (
-    <IndexLayout id={INDEX_PATHS.TIMELINE}>
+    <IndexLayout id={INDEX_PATHS.TIMELINE} className="flex-col items-center">
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-semibold sm:text-4xl">{t('timeline.title')}</h2>
       </div>

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 type IndexSectionProps = {
     id?: string
     children: ReactNode
+    wrapperClassName?: string
     className?: string
     fullscreen?: boolean
 }
@@ -38,10 +39,10 @@ export default function IndexLayout({ id, children, className = '', fullscreen =
     return (
         <section
             id={id}
-            className={`w-full min-h-screen flex items-center justify-center ${className}`}
+            className={`w-full min-h-screen flex items-center justify-center`}
             style={{ color: 'var(--text)' }}
         >
-            <div className="w-full max-w-6xl mx-auto flex items-center justify-center rounded-3xl backdrop-blur-sm px-4 md:px-8 lg:px-12 xl:px-16 2xl:px-24">
+            <div className={`"w-full max-w-6xl mx-auto flex items-center justify-center rounded-3xl backdrop-blur-sm px-4 md:px-8 lg:px-12 xl:px-16 2xl:px-24" ${className}`}>
                 {children}
             </div>
         </section>
