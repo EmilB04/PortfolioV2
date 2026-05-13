@@ -8,7 +8,7 @@ interface TimelineCourse {
 type Props = {
     event: {
         semester: string
-        date: string
+        description: string
         courses: TimelineCourse[]
     }
 }

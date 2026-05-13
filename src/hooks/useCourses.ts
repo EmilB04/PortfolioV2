@@ -2,7 +2,18 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import type { CourseTypes } from '../data/courseList'
 
-type SupabaseCourse = {
+export type Course = {
+    id: number
+    semester_id: number
+    name: string
+    link: string
+    code: string
+    description: string
+}
+
+type SupabaseCourseRow = {
+    id: number
+    semester_id: number
     name: string | null
     link: string | null
     code: string | null
@@ -12,80 +23,125 @@ type SupabaseCourse = {
 type SupabaseSemesterRow = {
     id: number
     semester: string
-    courses?: SupabaseCourse[] | null
+    courses: SupabaseCourseRow[] | null
 }
 
-export default function useCourses() {
-    const [data, setData] = useState<CourseTypes[] | null>(null)
+type SemesterWithCourses = {
+    id: number
+    semester: string
+    courses: Course[]
+}
+
+type UseCoursesResult = {
+    data: Course[]
+    loading: boolean
+    error: string | null
+    refetch: () => Promise<void>
+}
+
+function mapCourse(row: SupabaseCourseRow): Course {
+    return {
+        id: row.id,
+        semester_id: row.semester_id,
+        name: row.name ?? '',
+        link: row.link ?? '',
+        code: row.code ?? '',
+        description: row.description ?? '',
+    }
+}
+
+function mapSemester(row: SupabaseSemesterRow): CourseTypes {
+    return {
+        semester: row.semester,
+        courses: (row.courses ?? []).map((course) => ({
+            name: course.name ?? '',
+            link: course.link ?? '',
+            code: course.code ?? '',
+            description: course.description ?? '',
+        })),
+    }
+}
+
+export async function fetchCoursesOnce(): Promise<SemesterWithCourses[]> {
+    const { data, error } = await supabase
+        .from('semesters')
+        .select('id, semester, courses(id, semester_id, name, link, code, description)')
+        .order('id', { ascending: true })
+
+    if (error) {
+        throw new Error(error.message)
+    }
+
+    return ((data ?? []) as SupabaseSemesterRow[]).map((row) => ({
+        id: row.id,
+        semester: row.semester,
+        courses: (row.courses ?? []).map(mapCourse),
+    }))
+}
+
+export async function fetchCourseWithId(semesterId: number): Promise<CourseTypes | null> {
+    const { data, error } = await supabase
+        .from('semesters')
+        .select('id, semester, courses(id, semester_id, name, link, code, description)')
+        .eq('id', semesterId)
+        .maybeSingle()
+
+    if (error) {
+        throw new Error(error.message)
+    }
+
+    if (!data) return null
+
+    return mapSemester(data as SupabaseSemesterRow)
+}
+
+export async function fetchCoursesBySemester(semesterId: number): Promise<Course[]> {
+    const { data, error } = await supabase
+        .from('courses')
+        .select('id, semester_id, name, link, code, description')
+        .eq('semester_id', semesterId)
+        .order('id', { ascending: true })
+
+    if (error) throw new Error(error.message)
+    return ((data ?? []) as SupabaseCourseRow[]).map(mapCourse)
+}
+
+export default function useCourses(semesterId?: number): UseCoursesResult {
+    const [data, setData] = useState<Course[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
+    const fetchData = async () => {
+        setLoading(true)
+        setError(null)
+
+        let query = supabase
+            .from('courses')
+            .select('id, semester_id, name, link, code, description')
+            .order('id', { ascending: true })
+
+        if (typeof semesterId === 'number') {
+            query = query.eq('semester_id', semesterId)
+        }
+
+        const { data, error } = await query
+
+        if (error) {
+            setError(error.message)
+            setData([])
+            setLoading(false)
+            return
+        }
+
+        setData(((data ?? []) as SupabaseCourseRow[]).map(mapCourse))
+        setLoading(false)
+    }
+
     useEffect(() => {
-        let mounted = true
+        queueMicrotask(() => {
+            void fetchData()
+        })
+    }, [semesterId])
 
-        const fetchData = async () => {
-            try {
-
-                const { data, error } = await supabase
-                    .from('semesters')
-                    .select('id, semester, courses(name, link, code, description)')
-                    .order('id', { ascending: true })
-
-                if (!mounted) return
-                if (error) {
-                    setError(error.message)
-                    return
-                }
-
-                const rows = (data ?? []) as SupabaseSemesterRow[]
-
-                const mapped: CourseTypes[] = rows.map((row) => ({
-                    semester: row.semester,
-                    courses: (row.courses ?? []).map((c) => ({
-                        name: c.name ?? '',
-                        link: c.link ?? '',
-                        code: c.code ?? '',
-                        description: c.description ?? '',
-                    })),
-                }))
-
-                setData(mapped)
-            } catch (err) {
-                if (!mounted) return
-                setError((err as Error).message)
-            } finally {
-                if (!mounted) return
-                setLoading(false)
-            }
-        }
-
-        void fetchData()
-
-        return () => {
-            mounted = false
-        }
-    }, [])
-
-    return { data, loading, error }
-}
-
-export async function fetchCoursesOnce(): Promise<CourseTypes[]> {
-    const { data, error } = await supabase
-        .from('semesters')
-        .select('id, semester, courses(name, link, code, description)')
-        .order('id', { ascending: true })
-
-    if (error) throw error
-
-    const rows = (data ?? []) as SupabaseSemesterRow[]
-
-    return rows.map((row) => ({
-        semester: row.semester,
-        courses: (row.courses ?? []).map((c) => ({
-            name: c.name ?? '',
-            link: c.link ?? '',
-            code: c.code ?? '',
-            description: c.description ?? '',
-        })),
-    })) as CourseTypes[]
+    return { data, loading, error, refetch: fetchData }
 }

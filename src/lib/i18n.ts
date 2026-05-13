@@ -97,6 +97,14 @@ const en = {
     },
     timeline: {
         title: 'Timeline',
+        intro: 'An overview of the courses I have completed during my studies at HiØ.',
+        loading: 'Loading timeline…',
+        error: 'Could not load timeline: {{error}}',
+        semesterLabel: 'Semester {{number}}',
+        seasons: {
+            spring: 'Spring',
+            autumn: 'Autumn',
+        },
         items: [
             {
                 time: '2023',
@@ -254,6 +262,14 @@ const no: TranslationSchema = {
     },
     timeline: {
         title: 'Tidslinje',
+        intro: 'En oversikt over emnene jeg har gjennomført under studiene mine på HiØ.',
+        loading: 'Laster tidslinje…',
+        error: 'Kunne ikke laste tidslinje: {{error}}',
+        semesterLabel: '{{number}}. semester',
+        seasons: {
+            spring: 'Vår',
+            autumn: 'Høst',
+        },
         items: [
             {
                 time: '2023',
@@ -409,6 +425,14 @@ const es: TranslationSchema = {
     },
     timeline: {
         title: 'Cronología',
+        intro: 'Una visión general de las asignaturas que he completado durante mis estudios en HiØ.',
+        loading: 'Cargando cronología…',
+        error: 'No se pudo cargar la cronología: {{error}}',
+        semesterLabel: 'Semestre {{number}}',
+        seasons: {
+            spring: 'Primavera',
+            autumn: 'Otoño',
+        },
         items: [
             {
                 time: '2023',
