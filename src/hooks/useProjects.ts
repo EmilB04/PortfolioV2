@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 
 export interface Project {
-    id: string
+    id: number
     title: string
+    languages: string[]
     description: string
-    tech_stack: string[]
-    github_url?: string
-    live_url?: string
-    image_url?: string
+    details: string
+    local_path: string
+    url: string
+    images: string[]
+    videos: string[]
+    tags: string[]
 }
 
 export function useProjects() {
@@ -22,7 +25,7 @@ export function useProjects() {
                 const { data, error } = await supabase
                     .from('projects')
                     .select('*')
-                    .order('created_at', { ascending: false })
+                    .order('id', { ascending: true })
 
                 if (error) {
                     console.error(error)

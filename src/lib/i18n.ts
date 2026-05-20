@@ -128,6 +128,11 @@ const en = {
             },
         ],
     },
+    projectsSection: {
+        title: 'Selected projects',
+        intro: 'An overview of projects I have worked on during my studies, including both school and personal projects.',
+        cta: 'See all projects',
+    },
     projectsPage: {
         title: 'Projects',
         loading: 'Loading…',
@@ -293,6 +298,11 @@ const no: TranslationSchema = {
             },
         ],
     },
+    projectsSection: {
+        title: 'Utvalgte prosjekter',
+        intro: 'En oversikt over prosjekter jeg har jobbet med under studiene. Dette inkluderer både skoleprosjekter og personlige prosjekter.',
+        cta: 'Se alle prosjekter',
+    },
     projectsPage: {
         title: 'Prosjekter',
         loading: 'Laster…',
@@ -455,6 +465,11 @@ const es: TranslationSchema = {
                 description: 'Terminando mis estudios y preparándome para el siguiente puesto.',
             },
         ],
+    },
+    projectsSection: {
+        title: 'Proyectos destacados',
+        intro: 'Un resumen de los proyectos en los que he trabajado durante mis estudios, incluyendo proyectos escolares y personales.',
+        cta: 'Ver todos los proyectos',
     },
     projectsPage: {
         title: 'Proyectos',
