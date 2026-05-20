@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import IndexLayout from './_layout'
 import ProjectCard from '../ProjectCard'
+import LoadingSpinner from '../ui/LoadingSpinner'
 import { supabase } from '../../lib/supabase'
 import type { Project } from '../../hooks/useProjects'
 import { INDEX_PATHS } from '../../routes/indexPaths'
@@ -45,7 +46,7 @@ export default function ProjectsSection() {
             </header>
 
             {loading ? (
-                <p className="text-center text-sm text-[var(--text-muted)]">{t('projectsPage.loading')}</p>
+                <LoadingSpinner />
             ) : (
                 <div className="grid w-full max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2">
                     {projects.map((project) => (

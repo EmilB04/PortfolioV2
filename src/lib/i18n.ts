@@ -134,13 +134,15 @@ const en = {
         cta: 'See all projects',
     },
     projectsPage: {
-        title: 'Projects',
+        title: 'My projects',
+        subtitle: 'Explore my projects and see what I have been working on',
         loading: 'Loading…',
         empty: 'No projects found.',
     },
     projectCard: {
         github: 'GitHub',
         live: 'Live',
+        readMore: 'Read more',
     },
     projectDetails: {
         title: 'Project title',
@@ -304,13 +306,15 @@ const no: TranslationSchema = {
         cta: 'Se alle prosjekter',
     },
     projectsPage: {
-        title: 'Prosjekter',
+        title: 'Mine prosjekter',
+        subtitle: 'Utforsk mine prosjekter og se hva jeg har jobbet med',
         loading: 'Laster…',
         empty: 'Ingen prosjekter funnet.',
     },
     projectCard: {
         github: 'GitHub',
         live: 'Live',
+        readMore: 'Les mer',
     },
     projectDetails: {
         title: 'Prosjekttittel',
@@ -472,13 +476,15 @@ const es: TranslationSchema = {
         cta: 'Ver todos los proyectos',
     },
     projectsPage: {
-        title: 'Proyectos',
+        title: 'Mis proyectos',
+        subtitle: 'Explora mis proyectos y mira en qué he estado trabajando',
         loading: 'Cargando…',
         empty: 'No se encontraron proyectos.',
     },
     projectCard: {
         github: 'GitHub',
         live: 'En vivo',
+        readMore: 'Leer más',
     },
     projectDetails: {
         title: 'Título del proyecto',

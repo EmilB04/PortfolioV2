@@ -5,7 +5,7 @@ export default function SpesificProjectPage() {
     const { t } = useTranslation()
 
     return (
-        <main className="max-w-4xl mx-auto px-4 py-8">
+        <main className="min-h-screen flex flex-col">
             <h1 className="text-3xl font-bold mb-4">{t('projectDetails.title')}</h1>
             <p className="mb-4">{t('projectDetails.description')}</p>
             <h2 className="text-2xl font-semibold mb-2">{t('projectDetails.techTitle')}</h2>
