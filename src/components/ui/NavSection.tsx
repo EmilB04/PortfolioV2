@@ -84,6 +84,7 @@ function MobileDrawer({
     onNavigate,
     onClose,
     links,
+    showNavLinks,
     navigationLabel,
     settingsLabel,
     contactLabel,
@@ -93,6 +94,7 @@ function MobileDrawer({
     onNavigate: (id: string) => void
     onClose: () => void
     links: LinkItem[]
+    showNavLinks: boolean
     navigationLabel: string
     settingsLabel: string
     contactLabel: string
@@ -115,7 +117,7 @@ function MobileDrawer({
 
     return (
         <div
-            className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(80%,300px)] flex flex-col overflow-y-auto border-l border-[var(--border)] shadow-[var(--shadow)] pt-20 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+            className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(80%,300px)] flex flex-col overflow-y-auto border-l border-[var(--border)] shadow-[var(--shadow)] pt-3 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
             style={{ background: 'var(--bg)' }}
         >
             <section className="mb-8 flex flex-row items-center justify-between gap-4 px-6">
@@ -133,7 +135,7 @@ function MobileDrawer({
                 </button>
             </section>
 
-            {links.map(({ href, label }) => (
+            {showNavLinks && links.map(({ href, label }) => (
                 <button
                     key={href}
                     onClick={() => onNavigate(href)}
@@ -259,35 +261,24 @@ export default function NavSection() {
                     <BackButton />
                 )}
 
-                {isHomePage ? (
-                    <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-                        <MobileMenuButton
-                            menuOpen={menuOpen}
-                            onToggle={toggleMenu}
-                            openLabel={t('header.openMenu')}
-                            closeLabel={t('header.closeMenu')}
-                        />
-                    </div>
-                ) : null}
             </div>
 
-            {isHomePage ? (
-                <div className="flex items-center gap-2 md:hidden">
-                    <MobileMenuButton
-                        menuOpen={menuOpen}
-                        onToggle={toggleMenu}
-                        openLabel={t('header.openMenu')}
-                        closeLabel={t('header.closeMenu')}
-                    />
-                </div>
-            ) : null}
+            <div className="flex items-center gap-2 md:hidden">
+                <MobileMenuButton
+                    menuOpen={menuOpen}
+                    onToggle={toggleMenu}
+                    openLabel={t('header.openMenu')}
+                    closeLabel={t('header.closeMenu')}
+                />
+            </div>
 
-            {isHomePage && drawerMounted ? (
+            {drawerMounted ? (
                 <MobileDrawer
                     isOpen={drawerOpen}
                     onNavigate={navigate}
                     onClose={closeMenu}
                     links={links}
+                    showNavLinks={isHomePage}
                     navigationLabel={t('header.navigation')}
                     settingsLabel={t('header.settings')}
                     contactLabel={t('contactButton.label')}
