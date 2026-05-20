@@ -40,6 +40,7 @@ export default function LanguageSwitcher() {
 
     async function handleLanguageSelect(code: string) {
         await i18n.changeLanguage(code)
+        localStorage.setItem('portfolio-lang', code)
         setOpen(false)
     }
 
