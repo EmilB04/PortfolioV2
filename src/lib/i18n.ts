@@ -147,6 +147,7 @@ const en = {
     projectCard: {
         github: 'GitHub',
         live: 'Live',
+        sourceCode: 'Source code',
         readMore: 'Read more',
     },
     projectDetails: {
@@ -333,6 +334,7 @@ const no: TranslationSchema = {
     projectCard: {
         github: 'GitHub',
         live: 'Live',
+        sourceCode: 'Kildekode',
         readMore: 'Les mer',
     },
     projectDetails: {
@@ -517,6 +519,7 @@ const es: TranslationSchema = {
     projectCard: {
         github: 'GitHub',
         live: 'En vivo',
+        sourceCode: 'Código fuente',
         readMore: 'Leer más',
     },
     projectDetails: {

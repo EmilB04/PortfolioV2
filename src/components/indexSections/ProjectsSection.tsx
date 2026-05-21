@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, ExternalLink, Lock } from 'lucide-react'
+import { ArrowRight, ExternalLink, Github, Lock } from 'lucide-react'
 import IndexLayout from './_layout'
 import LoadingSpinner from '../ui/LoadingSpinner'
 import { supabase } from '../../lib/supabase'
@@ -167,6 +167,15 @@ export default function ProjectsSection() {
                                                 </p>
 
                                                 <div className="flex flex-wrap gap-3">
+                                                    <a
+                                                        href={active.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                                                    >
+                                                        {t('projectCard.sourceCode')}
+                                                        <Github size={14} />
+                                                    </a>
                                                     <Link
                                                         to={ROUTES.PROJECT_DETAILS.path.replace(':projectId', active.local_path)}
                                                         className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
