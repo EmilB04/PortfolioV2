@@ -1,5 +1,5 @@
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowDown, Github, Linkedin } from 'lucide-react'
 import IndexLayout from './_layout'
@@ -9,21 +9,17 @@ type LandingProps = {
     onScrollNextSection?: () => void
 }
 
-export default function Landing({ shouldUseAos = false, onScrollNextSection }: LandingProps) {
-    const { t, i18n } = useTranslation()
-    const typewriterLines = useMemo(() => t('home.roles', { returnObjects: true }) as string[], [i18n.language, t])
+type TypewriterProps = {
+    lines: string[]
+}
+
+function Typewriter({ lines }: TypewriterProps) {
     const [lineIndex, setLineIndex] = useState(0)
     const [typewriterText, setTypewriterText] = useState('')
     const [isDeleting, setIsDeleting] = useState(false)
 
     useEffect(() => {
-        setLineIndex(0)
-        setTypewriterText('')
-        setIsDeleting(false)
-    }, [typewriterLines])
-
-    useEffect(() => {
-        const currentLine = typewriterLines[lineIndex]
+        const currentLine = lines[lineIndex]
         let timeoutMs = isDeleting ? 40 : 80
 
         if (!isDeleting && typewriterText === currentLine) {
@@ -47,7 +43,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
 
             if (typewriterText === '') {
                 setIsDeleting(false)
-                setLineIndex((current) => (current + 1) % typewriterLines.length)
+                setLineIndex((current) => (current + 1) % lines.length)
                 return
             }
 
@@ -55,7 +51,19 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
         }, timeoutMs)
 
         return () => clearTimeout(timeoutId)
-    }, [isDeleting, lineIndex, typewriterLines, typewriterText])
+    }, [isDeleting, lineIndex, lines, typewriterText])
+
+    return (
+        <span className="inline-block px-0 py-2 text-[var(--text-h)]" style={{ minWidth: '18ch' }}>
+            {typewriterText}
+            <span className="ml-1 inline-block animate-[blink_0.7s_step-end_infinite] text-[var(--accent)]">|</span>
+        </span>
+    )
+}
+
+export default function Landing({ shouldUseAos = false, onScrollNextSection }: LandingProps) {
+    const { t, i18n } = useTranslation()
+    const typewriterLines = t('home.roles', { returnObjects: true }) as string[]
 
     function handleScrollNextSection() {
         if (onScrollNextSection) {
@@ -71,13 +79,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
             <section className="about-me w-full max-w-4xl">
                 <h1 className="mb-8 text-4xl font-semibold leading-tight text-[var(--text-h)] sm:text-5xl lg:text-6xl">
                     {t('home.title')} <br />
-                    <span
-                        className="inline-block px-0 py-2 text-[var(--text-h)]"
-                        style={{ minWidth: '18ch' }}
-                    >
-                        {typewriterText}
-                        <span className="ml-1 inline-block animate-[blink_0.7s_step-end_infinite] text-[var(--accent)]">|</span>
-                    </span>
+                    <Typewriter key={i18n.language} lines={typewriterLines} />
                 </h1>
 
                 <p className="mb-10 max-w-5xl text-lg leading-relaxed sm:text-2xl">
@@ -90,7 +92,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                         target="_blank"
                         rel="noreferrer"
                         aria-label={t('home.githubAria')}
-                        className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5"
+                        className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent)] hover:text-white"
                     >
                         <Github size={28} />
                     </a>
@@ -100,7 +102,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                         target="_blank"
                         rel="noreferrer"
                         aria-label={t('home.linkedinAria')}
-                        className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5"
+                        className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent)] hover:text-white"
                     >
                         <Linkedin size={28} />
                     </a>

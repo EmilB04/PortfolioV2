@@ -6,10 +6,11 @@ import ProjectsSection from '../components/indexSections/ProjectsSection';
 import Knowledge from '../components/indexSections/Knowledge';
 import GitHub from '../components/indexSections/GitHub';
 import Timeline from '../components/indexSections/Timeline';
+import { INDEX_PATHS } from '../routes/indexPaths'
 
 export default function Home() {
     function handleScrollNextSection() {
-        document.getElementById('next-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        document.getElementById(INDEX_PATHS.ABOUT)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
 
     return (
