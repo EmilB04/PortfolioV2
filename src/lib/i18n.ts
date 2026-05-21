@@ -136,6 +136,7 @@ const en = {
         title: 'Selected projects',
         intro: 'An overview of projects I have worked on during my studies, including both school and personal projects.',
         cta: 'See all projects',
+        visitSite: 'Visit site',
     },
     projectsPage: {
         title: 'My projects',
@@ -181,7 +182,7 @@ const en = {
     },
     knowledge: {
         title: 'Skills & Technologies',
-        intro: 'Technologies and tools I work with regularly across frontend, backend, and tooling.',
+        intro: 'Technologies and tools I have experience with across frontend, backend, and tooling.',
         categories: {
             frontend: 'Frontend',
             backend: 'Backend',
@@ -321,6 +322,7 @@ const no: TranslationSchema = {
         title: 'Utvalgte prosjekter',
         intro: 'En oversikt over prosjekter jeg har jobbet med under studiene. Dette inkluderer både skoleprosjekter og personlige prosjekter.',
         cta: 'Se alle prosjekter',
+        visitSite: 'Besøk siden',
     },
     projectsPage: {
         title: 'Mine prosjekter',
@@ -366,7 +368,7 @@ const no: TranslationSchema = {
     },
     knowledge: {
         title: 'Ferdigheter & teknologier',
-        intro: 'Teknologier og verktøy jeg jobber med jevnlig innen frontend, backend og verktøy.',
+        intro: 'Teknologier og verktøy jeg har erfaring med innen frontend, backend og verktøy.',
         categories: {
             frontend: 'Frontend',
             backend: 'Backend',
@@ -504,6 +506,7 @@ const es: TranslationSchema = {
         title: 'Proyectos destacados',
         intro: 'Un resumen de los proyectos en los que he trabajado durante mis estudios, incluyendo proyectos escolares y personales.',
         cta: 'Ver todos los proyectos',
+        visitSite: 'Visitar sitio',
     },
     projectsPage: {
         title: 'Mis proyectos',
@@ -549,7 +552,7 @@ const es: TranslationSchema = {
     },
     knowledge: {
         title: 'Habilidades & tecnologías',
-        intro: 'Tecnologías y herramientas con las que trabajo habitualmente en frontend, backend y herramientas.',
+        intro: 'Tecnologías y herramientas con las que tengo experiencia en frontend, backend y herramientas.',
         categories: {
             frontend: 'Frontend',
             backend: 'Backend',

@@ -9,6 +9,7 @@ export interface Project {
     details: string
     local_path: string
     url: string
+    live_url: string | null
     images: string[]
     videos: string[]
     tags: string[]
