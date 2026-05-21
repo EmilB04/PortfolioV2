@@ -190,6 +190,14 @@ const en = {
             tools: 'Tools & Platforms',
         },
     },
+    github: {
+        title: 'GitHub',
+        intro: 'Some of my most active repositories. Visit my profile to see everything.',
+        noDescription: 'No description available.',
+        loading: 'Loading repositories…',
+        viewRepo: 'View repository',
+        visitProfile: 'Go to GitHub',
+    },
 }
 
 type TranslationSchema = typeof en
@@ -377,6 +385,14 @@ const no: TranslationSchema = {
             tools: 'Verktøy & plattformer',
         },
     },
+    github: {
+        title: 'GitHub',
+        intro: 'Noen av mine mest aktive repositories. Besøk profilen min for å se alt.',
+        noDescription: 'Ingen beskrivelse tilgjengelig.',
+        loading: 'Laster repositories…',
+        viewRepo: 'Se repository',
+        visitProfile: 'Gå til GitHub',
+    },
 }
 
 const es: TranslationSchema = {
@@ -561,6 +577,14 @@ const es: TranslationSchema = {
             backend: 'Backend',
             tools: 'Herramientas & plataformas',
         },
+    },
+    github: {
+        title: 'GitHub',
+        intro: 'Algunos de mis repositorios más activos. Visita mi perfil para verlos todos.',
+        noDescription: 'Sin descripción disponible.',
+        loading: 'Cargando repositorios…',
+        viewRepo: 'Ver repositorio',
+        visitProfile: 'Ir a GitHub',
     },
 }
 
