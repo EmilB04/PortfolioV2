@@ -43,7 +43,7 @@ const en = {
         tagline: 'Available for collaboration and new projects',
         github: 'See source code on GitHub',
         madeBy: 'Made with ❤️ by',
-        updated: 'Last updated: April {{year}}',
+        updated: 'Last updated: {{month}} {{year}}',
     },
     aiWidget: {
         assistant: 'AI assistant',
@@ -179,6 +179,15 @@ const en = {
             },
         },
     },
+    knowledge: {
+        title: 'Skills & Technologies',
+        intro: 'Technologies and tools I work with regularly across frontend, backend, and tooling.',
+        categories: {
+            frontend: 'Frontend',
+            backend: 'Backend',
+            tools: 'Tools & Platforms',
+        },
+    },
 }
 
 type TranslationSchema = typeof en
@@ -219,7 +228,7 @@ const no: TranslationSchema = {
         tagline: 'Tilgjengelig for samarbeid og nye prosjekter',
         github: 'Se kildekode på GitHub',
         madeBy: 'Laget med ❤️ av',
-        updated: 'Sist oppdatert: april {{year}}',
+        updated: 'Sist oppdatert: {{month}} {{year}}',
     },
     aiWidget: {
         assistant: 'AI-assistent',
@@ -355,6 +364,15 @@ const no: TranslationSchema = {
             },
         },
     },
+    knowledge: {
+        title: 'Ferdigheter & teknologier',
+        intro: 'Teknologier og verktøy jeg jobber med jevnlig innen frontend, backend og verktøy.',
+        categories: {
+            frontend: 'Frontend',
+            backend: 'Backend',
+            tools: 'Verktøy & plattformer',
+        },
+    },
 }
 
 const es: TranslationSchema = {
@@ -393,7 +411,7 @@ const es: TranslationSchema = {
         tagline: 'Disponible para colaborar y nuevos proyectos',
         github: 'Ver el código fuente en GitHub',
         madeBy: 'Hecho con ❤️ por',
-        updated: 'Última actualización: abril de {{year}}',
+        updated: 'Última actualización: {{month}} de {{year}}',
     },
     aiWidget: {
         assistant: 'Asistente de IA',
@@ -527,6 +545,15 @@ const es: TranslationSchema = {
                 description: 'Envíame un mensaje directo',
                 button: 'ENVIAR CORREO',
             },
+        },
+    },
+    knowledge: {
+        title: 'Habilidades & tecnologías',
+        intro: 'Tecnologías y herramientas con las que trabajo habitualmente en frontend, backend y herramientas.',
+        categories: {
+            frontend: 'Frontend',
+            backend: 'Backend',
+            tools: 'Herramientas & plataformas',
         },
     },
 }
