@@ -1,0 +1,110 @@
+:root {
+    --background: #000000;
+    --accent-base: #f1376e;
+    --max-width: 1280px;
+
+    --e-button-font-size: 1rem;
+    --e-button-border-radius: 16px;
+    --e-button-padding: 10px 20px;
+
+    --bg: var(--background);
+    --bg-opacity: #040409;
+    --surface: rgba(1, 6, 38, 0.6);
+    --surface-card: rgba(1, 6, 38, 0.24);
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.75);
+    --text-subtle: rgba(255, 255, 255, 0.5);
+    --border: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(241, 55, 110, 0.4);
+    --accent: var(--accent-base);
+    --nav-bg: rgba(1, 6, 38, 0.75);
+    --nav-bg-transparent: rgba(1, 6, 38, 0.3);
+    --mobile-menu-bg: rgba(1, 6, 38, 0.98);
+    --backdrop: rgba(0, 0, 0, 0.55);
+    --link: #ffffff;
+    --heading-gradient-start: var(--accent-base);
+    --heading-gradient-end: transparent;
+    --stars-bg: radial-gradient(circle at bottom, #020111 0%, #000000 100%);
+
+    /* Compatibility aliases for existing components */
+    --text-h: var(--text);
+    --code-bg: var(--surface-card);
+    --accent-bg: rgba(241, 55, 110, 0.15);
+    --accent-border: rgba(241, 55, 110, 0.5);
+    --social-bg: var(--surface-card);
+    --shadow:
+        rgba(0, 0, 0, 0.4) 0 10px 15px -3px,
+        rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+
+    --sans: 'Roboto', sans-serif;
+    --heading: 'Roboto', sans-serif;
+    --mono: ui-monospace, Consolas, monospace;
+
+    --radius: 12px;
+    --radius-sm: 6px;
+    --transition: 0.3s ease;
+
+    font: 16px/145% var(--sans);
+    letter-spacing: 0.18px;
+    color-scheme: dark;
+    color: var(--text);
+    background: var(--bg);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html.light,
+html.light-mode {
+    --bg: #f7f4f1;
+    --bg-opacity: rgb(220, 204, 221);
+    --surface: rgba(255, 252, 248, 0.82);
+    --surface-card: rgba(255, 252, 248, 0.96);
+    --text: #1c1025;
+    --text-muted: rgba(28, 16, 37, 0.68);
+    --text-subtle: rgba(28, 16, 37, 0.44);
+    --border: rgba(28, 16, 37, 0.09);
+    --border-hover: rgba(241, 55, 110, 0.45);
+    --accent: var(--accent-base);
+    --nav-bg: rgba(247, 244, 241, 0.88);
+    --nav-bg-transparent: rgba(247, 244, 241, 0.5);
+    --mobile-menu-bg: rgba(247, 244, 241, 0.99);
+    --backdrop: rgba(28, 16, 37, 0.35);
+    --link: #1c1025;
+    --heading-gradient-start: var(--accent-base);
+    --heading-gradient-end: rgba(28, 16, 37, 0);
+    --stars-bg: radial-gradient(ellipse at bottom, #e8cdd8 0%, #ede4f0 45%, #f7f4f1 100%);
+
+    --c-bg: var(--bg);
+    --c-bg-opacity: var(--bg-opacity);
+    --c-surface: var(--surface);
+    --c-surface-card: var(--surface-card);
+    --c-text: var(--text);
+    --c-text-muted: var(--text-muted);
+    --c-text-subtle: var(--text-subtle);
+    --c-border: var(--border);
+    --c-border-hover: var(--border-hover);
+    --c-accent: var(--accent);
+    --c-nav-bg: var(--nav-bg);
+    --c-mobile-menu-bg: var(--mobile-menu-bg);
+    --c-backdrop: var(--backdrop);
+    --c-link: var(--link);
+    --c-heading-gradient-start: var(--heading-gradient-start);
+    --c-heading-gradient-end: var(--heading-gradient-end);
+    --c-stars-bg: var(--stars-bg);
+    --text-h: var(--text);
+    --code-bg: var(--surface-card);
+    --accent-bg: rgba(241, 55, 110, 0.1);
+    --accent-border: rgba(241, 55, 110, 0.5);
+    --social-bg: var(--surface-card);
+    --shadow:
+        rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
+        rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+    color-scheme: light;
+}
+
+html.dark {
+    color-scheme: dark;
+}
