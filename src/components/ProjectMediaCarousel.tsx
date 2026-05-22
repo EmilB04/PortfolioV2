@@ -117,7 +117,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                             />
                         ))}
                     </div>
-                    <span className="text-[11px] text-[var(--text-subtle)]">
+                    <span className="text-sm text-[var(--text-subtle)]">
                         {index + 1} / {items.length}
                     </span>
                 </div>
@@ -142,11 +142,11 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                                 }`}
                             >
                                 {item.type === 'live' ? (
-                                    <div className="flex h-[50px] w-[80px] items-center justify-center bg-[var(--surface-card)] text-[10px] font-medium text-[var(--accent)]">
+                                    <div className="flex h-[50px] w-[80px] items-center justify-center bg-[var(--surface-card)] text-sm font-medium text-[var(--accent)]">
                                         Live
                                     </div>
                                 ) : item.type === 'video' ? (
-                                    <div className="flex h-[50px] w-[80px] items-center justify-center bg-[var(--surface-card)] text-[10px] text-[var(--text-subtle)]">
+                                    <div className="flex h-[50px] w-[80px] items-center justify-center bg-[var(--surface-card)] text-sm text-[var(--text-subtle)]">
                                         Video
                                     </div>
                                 ) : (

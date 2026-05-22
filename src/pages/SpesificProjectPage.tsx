@@ -166,7 +166,7 @@ export default function SpesificProjectPage() {
                 {/* Tech stack — below title */}
                 {project.languages?.length > 0 && (
                     <div className="mb-8 flex flex-col items-center gap-2">
-                        <span className="text-[11px] font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
+                        <span className="text-sm font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
                             {t('projectDetails.stack')}
                         </span>
                         <div className="flex flex-wrap justify-center gap-1.5">
@@ -206,7 +206,7 @@ export default function SpesificProjectPage() {
                         {/* Tags — bottom */}
                         {project.tags?.length > 0 && (
                             <div className="flex flex-col gap-2 pt-2">
-                                <span className="text-[11px] font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
+                                <span className="text-sm font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
                                     {t('projectDetails.tags')}
                                 </span>
                                 <div className="flex flex-wrap gap-1.5">
@@ -308,7 +308,7 @@ export default function SpesificProjectPage() {
                         <p className="mt-2 text-xs text-red-400">Upload failed. Check console.</p>
                     )}
 
-                    <p className="mt-3 text-[10px] text-[var(--text-subtle)]">
+                    <p className="mt-3 text-sm text-[var(--text-subtle)]">
                         Uploads to <code className="text-[var(--accent)]">portfolio/projects/{project.local_path}/</code>
                     </p>
                 </div>

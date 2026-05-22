@@ -28,7 +28,7 @@ export default function BrowserPreview({ url, imageUrl }: Props) {
                     <div className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
                     <div className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
                 </div>
-                <div className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[var(--surface-card)] px-3 py-1 text-[11px] text-[var(--text-subtle)]">
+                <div className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[var(--surface-card)] px-3 py-1 text-sm text-[var(--text-subtle)]">
                     <Lock size={10} className="opacity-50" />
                     {hostname}
                 </div>

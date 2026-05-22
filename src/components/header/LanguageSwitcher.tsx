@@ -98,7 +98,7 @@ export default function LanguageSwitcher() {
                 `}
             >
                 <div className="p-1.5">
-                    <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                    <div className="px-3 py-2 text-sm font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
                         {t('languageSwitcher.section')}
                     </div>
 

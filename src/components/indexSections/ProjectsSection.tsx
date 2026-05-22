@@ -98,7 +98,7 @@ export default function ProjectsSection() {
                                         {p.title}
                                     </span>
                                     {p.live_url && (
-                                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
+                                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 text-sm font-semibold text-green-400">
                                             <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
                                             {t('projectCard.live')}
                                         </span>
@@ -128,7 +128,7 @@ export default function ProjectsSection() {
                                                 {active.title}
                                             </h3>
                                             {active.live_url && (
-                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/15 px-2.5 py-1 text-[11px] font-semibold text-green-400">
+                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/15 px-2.5 py-1 text-sm font-semibold text-green-400">
                                                     <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
                                                     {t('projectCard.live')}
                                                 </span>
@@ -141,7 +141,7 @@ export default function ProjectsSection() {
                                                 {active.tags.map((tag) => (
                                                     <span
                                                         key={tag}
-                                                        className="rounded-full border border-[var(--border)] px-2.5 py-0.5 text-[11px] font-medium text-[var(--text-muted)]"
+                                                        className="rounded-full border border-[var(--border)] px-2.5 py-0.5 text-sm font-medium text-[var(--text-muted)]"
                                                     >
                                                         {tag}
                                                     </span>

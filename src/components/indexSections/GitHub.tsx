@@ -119,13 +119,13 @@ export default function GitHub() {
                                 {/* Footer: language pill + link */}
                                 <div className="mt-auto flex items-center justify-between gap-2 border-t border-[var(--border)] pt-3">
                                     {repo.language ? (
-                                        <span className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-[11px] font-medium text-[var(--accent)]">
+                                        <span className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-sm font-medium text-[var(--accent)]">
                                             {repo.language}
                                         </span>
                                     ) : (
                                         <span />
                                     )}
-                                    <span className="flex items-center gap-1 text-[11px] font-medium text-[var(--accent)] transition-[gap] duration-200 group-hover:gap-2">
+                                    <span className="flex items-center gap-1 text-sm font-medium text-[var(--accent)] transition-[gap] duration-200 group-hover:gap-2">
                                         {t('github.viewRepo')}
                                         <ExternalLink size={11} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                                     </span>
