@@ -151,14 +151,9 @@ const en = {
         readMore: 'Read more',
     },
     projectDetails: {
-        title: 'Project title',
-        description:
-            'This is a detailed description of the project. It includes the technologies used, the challenges faced, and the outcomes achieved.',
-        techTitle: 'Technologies used',
-        highlightsTitle: 'Project highlights',
-        highlight:
-            'This project was particularly challenging due to [specific challenge], but it was rewarding to see it come together successfully.',
-        back: 'Back to Projects',
+        notFound: 'Project not found.',
+        stack: 'Tech stack',
+        tags: 'Tags',
     },
     contactPage: {
         title: 'Let us get in touch',
@@ -346,14 +341,9 @@ const no: TranslationSchema = {
         readMore: 'Les mer',
     },
     projectDetails: {
-        title: 'Prosjekttittel',
-        description:
-            'Dette er en detaljert beskrivelse av prosjektet. Det inkluderer teknologiene som ble brukt, utfordringene som oppstod og resultatene som ble oppnådd.',
-        techTitle: 'Teknologier brukt',
-        highlightsTitle: 'Høydepunkter',
-        highlight:
-            'Dette prosjektet var spesielt utfordrende på grunn av [spesifikk utfordring], men det var givende å se det komme sammen på en vellykket måte.',
-        back: 'Tilbake til prosjekter',
+        notFound: 'Prosjekt ikke funnet.',
+        stack: 'Teknologi',
+        tags: 'Stikkord',
     },
     contactPage: {
         title: 'La oss komme i kontakt',
@@ -539,14 +529,9 @@ const es: TranslationSchema = {
         readMore: 'Leer más',
     },
     projectDetails: {
-        title: 'Título del proyecto',
-        description:
-            'Esta es una descripción detallada del proyecto. Incluye las tecnologías usadas, los desafíos enfrentados y los resultados obtenidos.',
-        techTitle: 'Tecnologías usadas',
-        highlightsTitle: 'Aspectos destacados',
-        highlight:
-            'Este proyecto fue especialmente desafiante debido a [desafío específico], pero fue gratificante verlo completarse con éxito.',
-        back: 'Volver a proyectos',
+        notFound: 'Proyecto no encontrado.',
+        stack: 'Tecnologías',
+        tags: 'Etiquetas',
     },
     contactPage: {
         title: 'Pongámonos en contacto',
