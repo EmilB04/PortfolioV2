@@ -3,10 +3,6 @@ import { ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react'
 import { resolveMediaUrl } from '../lib/media'
 import BrowserPreview from './BrowserPreview'
 
-function isVideo(src: string) {
-    return /\.(mp4|webm|mov|m4v|ogv)(\?|$)/i.test(src) || src.includes('/video/upload/')
-}
-
 type MediaItem =
     | { type: 'live'; url: string }
     | { type: 'image' | 'video'; src: string }
