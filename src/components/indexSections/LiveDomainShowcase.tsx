@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Lock, ChevronLeft, ChevronRight } from 'lucide-react'
 import IndexLayout from './_layout'
@@ -39,10 +39,15 @@ const DOMAINS: DomainConfig[] = [
     },
 ]
 
+const FADE_MS = 280
+
 export default function LiveDomainShowcase() {
     const { t } = useTranslation()
     const [active, setActive] = useState(0)
     const [paused, setPaused] = useState(false)
+    const [contentVisible, setContentVisible] = useState(true)
+    const [slideDir, setSlideDir] = useState(1)
+    const navigatingRef = useRef(false)
 
     const items = t('showcase.items', { returnObjects: true }) as ShowcaseItem[]
     const domain = DOMAINS[active]
@@ -51,13 +56,23 @@ export default function LiveDomainShowcase() {
     useEffect(() => {
         if (paused) return
         const interval = setInterval(() => {
-            setActive(prev => (prev + 1) % DOMAINS.length)
+            navigate((active + 1) % DOMAINS.length)
         }, 6000)
         return () => clearInterval(interval)
-    }, [paused])
+    }, [paused, active])
 
-    function navigate(index: number) {
-        setActive(((index % DOMAINS.length) + DOMAINS.length) % DOMAINS.length)
+    function navigate(rawIndex: number) {
+        if (navigatingRef.current) return
+        const newIndex = ((rawIndex % DOMAINS.length) + DOMAINS.length) % DOMAINS.length
+        if (newIndex === active) return
+        navigatingRef.current = true
+        setSlideDir(rawIndex >= active ? 1 : -1)
+        setContentVisible(false)
+        setTimeout(() => {
+            setActive(newIndex)
+            setContentVisible(true)
+            navigatingRef.current = false
+        }, FADE_MS)
     }
 
     return (
@@ -94,7 +109,7 @@ export default function LiveDomainShowcase() {
                     d.previewImage ? (
                         <div
                             key={i}
-                            className="absolute inset-0 z-0 w-screen h-screen transition-opacity duration-700"
+                            className="absolute inset-0 z-0 w-screen h-screen"
                             style={{
                                 backgroundImage: `url(${d.previewImage})`,
                                 backgroundSize: 'cover',
@@ -102,15 +117,17 @@ export default function LiveDomainShowcase() {
                                 filter: 'blur(18px) saturate(1.4)',
                                 transform: 'scale(1.08)',
                                 opacity: active === i ? 1 : 0,
+                                transition: 'opacity 600ms ease',
                             }}
                         />
                     ) : (
                         <div
                             key={i}
-                            className="absolute inset-0 z-0 transition-opacity duration-700"
+                            className="absolute inset-0 z-0"
                             style={{
                                 background: 'linear-gradient(135deg, #050a1e 0%, #00213d 50%, #050a1e 100%)',
                                 opacity: active === i ? 1 : 0,
+                                transition: 'opacity 600ms ease',
                             }}
                         />
                     )
@@ -118,29 +135,37 @@ export default function LiveDomainShowcase() {
 
                 {/* Dark overlay */}
                 <div
-                    className="absolute inset-0 z-1 transition-all duration-700"
+                    className="absolute inset-0 z-1"
                     style={{
                         background: active === 0
                             ? 'linear-gradient(135deg, rgba(10,5,25,0.92) 0%, rgba(40,10,60,0.85) 50%, rgba(10,5,25,0.92) 100%)'
                             : 'linear-gradient(135deg, rgba(5,10,30,0.92) 0%, rgba(0,20,50,0.85) 50%, rgba(5,10,30,0.92) 100%)',
+                        transition: 'background 600ms ease',
                     }}
                 />
 
                 {/* Decorative circles */}
                 <div
-                    className="absolute z-2 float-1 pointer-events-none opacity-15 transition-all duration-700"
-                    style={{ width: '180px', height: '180px', borderRadius: '50%', background: `radial-gradient(circle, ${domain.accentFrom}, ${domain.accentTo})`, top: '-60px', right: '8%' }}
+                    className="absolute z-2 float-1 pointer-events-none opacity-15"
+                    style={{ width: '180px', height: '180px', borderRadius: '50%', background: `radial-gradient(circle, ${domain.accentFrom}, ${domain.accentTo})`, top: '-60px', right: '8%', transition: 'background 600ms ease' }}
                 />
                 <div
-                    className="absolute z-2 float-2 pointer-events-none opacity-15 transition-all duration-700"
-                    style={{ width: '80px', height: '80px', borderRadius: '50%', background: `radial-gradient(circle, ${domain.accentTo}, ${domain.accentFrom})`, bottom: '10%', left: '5%' }}
+                    className="absolute z-2 float-2 pointer-events-none opacity-15"
+                    style={{ width: '80px', height: '80px', borderRadius: '50%', background: `radial-gradient(circle, ${domain.accentTo}, ${domain.accentFrom})`, bottom: '10%', left: '5%', transition: 'background 600ms ease' }}
                 />
                 <div className="absolute z-2 float-3 pointer-events-none opacity-15 text-[#cc44ff]" style={{ fontSize: '3rem', top: '12%', left: '3%' }}>+</div>
                 <div className="absolute z-2 float-4 pointer-events-none opacity-15 text-[#cc44ff]" style={{ fontSize: '2rem', bottom: '15%', right: '4%' }}>+</div>
                 <div className="absolute z-2 float-5 pointer-events-none opacity-15 text-[#cc44ff]" style={{ fontSize: '2.5rem', top: '55%', left: '1.5%' }}>×</div>
 
-                {/* Content */}
-                <div className="relative z-3 w-full h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16">
+                {/* Content — fades + slides on transition */}
+                <div
+                    className="relative z-3 w-full h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16"
+                    style={{
+                        opacity: contentVisible ? 1 : 0,
+                        transform: contentVisible ? 'translateX(0px)' : `translateX(${slideDir * -28}px)`,
+                        transition: `opacity ${FADE_MS}ms ease, transform ${FADE_MS}ms ease`,
+                    }}
+                >
                     {/* Left */}
                     <div className="flex-1 flex flex-col gap-4 text-white">
                         {domain.logoImage ? (
@@ -148,12 +173,12 @@ export default function LiveDomainShowcase() {
                                 src={domain.logoImage}
                                 alt={item.logoAlt}
                                 className="w-16 h-16 object-contain rounded-lg"
-                                style={{ boxShadow: `0 0 24px ${domain.accentFrom}66`, transition: 'box-shadow 0.7s' }}
+                                style={{ boxShadow: `0 0 24px ${domain.accentFrom}66` }}
                                 loading="eager"
                             />
                         ) : (
                             <div
-                                className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-xl transition-all duration-700"
+                                className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-xl"
                                 style={{ background: `linear-gradient(135deg, ${domain.accentFrom}, ${domain.accentTo})`, boxShadow: `0 0 24px ${domain.accentFrom}66` }}
                             >
                                 {item.title.charAt(0)}
@@ -162,7 +187,7 @@ export default function LiveDomainShowcase() {
 
                         <div className="flex items-center gap-4">
                             <h2
-                                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent transition-all duration-700"
+                                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent"
                                 style={{ backgroundImage: `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})` }}
                             >
                                 {item.title}
@@ -181,7 +206,7 @@ export default function LiveDomainShowcase() {
                             {item.tags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border transition-all duration-700"
+                                    className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border"
                                     style={{ background: `${domain.accentFrom}26`, borderColor: `${domain.accentFrom}59`, color: '#e0aaff' }}
                                 >
                                     {tag}
@@ -204,7 +229,7 @@ export default function LiveDomainShowcase() {
                     {/* Right — browser mockup */}
                     <div className="flex-1 w-full md:w-auto flex justify-center">
                         <div
-                            className="float-mockup w-full max-w-[640px] rounded-2xl overflow-hidden transition-all duration-700"
+                            className="float-mockup w-full max-w-[640px] rounded-2xl overflow-hidden"
                             style={{ boxShadow: `0 0 0 1px rgba(255,255,255,0.08), 0 24px 60px rgba(0,0,0,0.6), 0 0 60px ${domain.accentFrom}33` }}
                         >
                             <div className="flex items-center gap-3 px-4 py-3 bg-[#1e1e2e] border-b border-white/5">
@@ -239,35 +264,52 @@ export default function LiveDomainShowcase() {
                     </div>
                 </div>
 
-                {/* Prev / Next */}
+                {/* Prev / Next — larger, accent-glow */}
                 <button
                     onClick={() => navigate(active - 1)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all"
+                    className="absolute left-5 top-1/2 -translate-y-1/2 z-10 w-13 h-13 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:scale-110 active:scale-95"
+                    style={{
+                        width: '52px',
+                        height: '52px',
+                        background: `linear-gradient(135deg, ${domain.accentFrom}55, ${domain.accentTo}33)`,
+                        border: `1.5px solid ${domain.accentFrom}88`,
+                        boxShadow: `0 0 20px ${domain.accentFrom}44, inset 0 0 12px ${domain.accentFrom}22`,
+                    }}
                     aria-label={t('showcase.prev')}
                 >
-                    <ChevronLeft size={20} />
+                    <ChevronLeft size={24} />
                 </button>
                 <button
                     onClick={() => navigate(active + 1)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 active:scale-95"
+                    style={{
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '50%',
+                        background: `linear-gradient(135deg, ${domain.accentFrom}55, ${domain.accentTo}33)`,
+                        border: `1.5px solid ${domain.accentFrom}88`,
+                        boxShadow: `0 0 20px ${domain.accentFrom}44, inset 0 0 12px ${domain.accentFrom}22`,
+                    }}
                     aria-label={t('showcase.next')}
                 >
-                    <ChevronRight size={20} />
+                    <ChevronRight size={24} />
                 </button>
 
                 {/* Dots */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2 items-center">
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-3 items-center">
                     {DOMAINS.map((_, i) => (
                         <button
                             key={i}
                             onClick={() => navigate(i)}
-                            className="rounded-full transition-all duration-300"
+                            className="rounded-full transition-all duration-300 hover:opacity-100"
                             style={{
-                                width: active === i ? '24px' : '8px',
-                                height: '8px',
+                                width: active === i ? '28px' : '10px',
+                                height: '10px',
                                 background: active === i
                                     ? `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})`
-                                    : 'rgba(255,255,255,0.3)',
+                                    : 'rgba(255,255,255,0.35)',
+                                boxShadow: active === i ? `0 0 10px ${domain.accentFrom}99` : 'none',
+                                opacity: active === i ? 1 : 0.6,
                             }}
                             aria-label={`Go to slide ${i + 1}`}
                         />
