@@ -91,7 +91,7 @@ const en = {
         intro: 'A short version of who I am, what I study, and what I like to spend my time on.',
         studentTitle: 'As a student',
         student:
-            'I study computer science with a specialization in design and development of IT systems at Østfold University College in Halden. The program started in autumn 2023, and I finish in spring 2026. I like diving into programming and spend my free time exploring Vue, Quasar, and other technologies.',
+            'I study computer science with a specialization in design and development of IT systems at Østfold University of Applied Sciences in Halden. The program started in autumn 2023, and I finish in spring 2026. I like diving into programming and spend my free time exploring Vue, Quasar, and other technologies.',
         personTitle: 'As a person',
         person:
             'I am {{age}} years old and live in Halden. Technology has always fascinated me, and I enjoy the process of learning, improving, and finding solutions that work in practice. I thrive best when I can combine creativity with structure.',
@@ -130,6 +130,11 @@ const en = {
         loading: 'Loading timeline…',
         error: 'Could not load timeline: {{error}}',
         semesterLabel: 'Semester {{number}}',
+        stats: {
+            years: 'Years of IT education',
+            courses: 'Courses completed',
+            institution: 'Østfold University of Applied Sciences',
+        },
         seasons: {
             spring: 'Spring',
             autumn: 'Autumn',
@@ -362,6 +367,11 @@ const no: TranslationSchema = {
         loading: 'Laster tidslinje…',
         error: 'Kunne ikke laste tidslinje: {{error}}',
         semesterLabel: '{{number}}. semester',
+        stats: {
+            years: 'År med IT-utdanning',
+            courses: 'Emner fullført',
+            institution: 'Høgskolen i Østfold',
+        },
         seasons: {
             spring: 'Vår',
             autumn: 'Høst',
@@ -553,7 +563,7 @@ const es: TranslationSchema = {
         intro: 'Una versión breve de quién soy, qué estudio y en qué me gusta emplear mi tiempo.',
         studentTitle: 'Como estudiante',
         student:
-            'Estudio informática con especialización en diseño y desarrollo de sistemas informáticos en Østfold University College, en Halden. El programa comenzó en otoño de 2023 y termino en primavera de 2026. Me gusta profundizar en programación y uso mi tiempo libre para explorar Vue, Quasar y otras tecnologías.',
+            'Estudio informática con especialización en diseño y desarrollo de sistemas informáticos en Østfold University of Applied Sciences, en Halden. El programa comenzó en otoño de 2023 y termino en primavera de 2026. Me gusta profundizar en programación y uso mi tiempo libre para explorar Vue, Quasar y otras tecnologías.',
         personTitle: 'Como persona',
         person:
             'Tengo {{age}} años y vivo en Halden. La tecnología siempre me ha fascinado, y disfruto del proceso de aprender, mejorar y encontrar soluciones que funcionen en la práctica. Me siento mejor cuando puedo combinar creatividad con estructura.',
@@ -592,6 +602,11 @@ const es: TranslationSchema = {
         loading: 'Cargando cronología…',
         error: 'No se pudo cargar la cronología: {{error}}',
         semesterLabel: 'Semestre {{number}}',
+        stats: {
+            years: 'Años de formación en TI',
+            courses: 'Asignaturas completadas',
+            institution: 'Østfold University of Applied Sciences',
+        },
         seasons: {
             spring: 'Primavera',
             autumn: 'Otoño',

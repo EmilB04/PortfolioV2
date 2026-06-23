@@ -86,6 +86,14 @@ export default function Timeline() {
         courses: row.courses,
     }))
 
+    const totalCourses = courseData.reduce((sum, row) => sum + row.courses.length, 0)
+
+    const stats = [
+        { value: '3', label: t('timeline.stats.years') },
+        { value: totalCourses > 0 ? String(totalCourses) : '—', label: t('timeline.stats.courses') },
+        { value: 'HiØ', label: t('timeline.stats.institution') },
+    ]
+
     const renderEntryContent = (entry: TimelineEntry, isLeft: boolean) => {
         if (entry.kind === 'semester') {
             return (
@@ -126,6 +134,19 @@ export default function Timeline() {
                     {t('timeline.intro')}
                 </p>
             </header>
+
+            <div className="mb-12 grid w-full max-w-3xl grid-cols-3 divide-x divide-[var(--border)] rounded-[1.75rem] border border-[var(--border)] bg-[var(--surface-card)] px-2 py-6 sm:px-4 sm:py-8">
+                {stats.map((stat) => (
+                    <div key={stat.label} className="flex flex-col items-center px-2 text-center sm:px-4">
+                        <span className="text-3xl font-extrabold leading-none text-[var(--accent)] sm:text-4xl">
+                            {stat.value}
+                        </span>
+                        <span className="mt-2 text-xs font-medium text-[var(--text-subtle)] sm:text-sm">
+                            {stat.label}
+                        </span>
+                    </div>
+                ))}
+            </div>
 
             <section aria-label="Tidslinje over studieemner" className="relative w-full max-w-6xl">
                 <div aria-hidden="true" className="absolute left-4 top-0 bottom-0 w-px -translate-x-1/2 bg-[var(--accent)] md:left-1/2" />
