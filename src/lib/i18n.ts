@@ -16,6 +16,7 @@ const en = {
         contact: 'Contact',
         projects: 'Projects',
         knowledge: 'Knowledge',
+        certifications: 'Courses',
         gitHub: 'GitHub',
     },
     header: {
@@ -67,7 +68,18 @@ const en = {
     },
     home: {
         title: 'Hi! I am Emil Berglund',
-        roles: ['Computer science student', 'Full-stack developer', 'Frontend developer', 'Backend developer'],
+        roles: [
+            'Computer science student',
+            'Computer science graduate',
+            'Full-stack developer',
+            'Interested in full-stack',
+            'Frontend developer',
+            'Interested in frontend',
+            'Backend developer',
+            'Interested in backend',
+            'Interested in AI',
+            'AI user',
+        ],
         intro:
             'I am a person with a passion for technology and a desire to learn and grow. I believe there are multiple ways to reach a goal or find a solution, and I enjoy exploring innovative approaches to tackle challenges.',
         githubAria: 'GitHub profile',
@@ -79,7 +91,7 @@ const en = {
         intro: 'A short version of who I am, what I study, and what I like to spend my time on.',
         studentTitle: 'As a student',
         student:
-            'I study computer science with a specialization in design and development of IT systems at Østfold University College in Halden. The program started in autumn 2023, and I finish in spring 2026. I like diving into programming and spend my free time exploring Vue, Quasar, and other technologies.',
+            'I study computer science with a specialization in design and development of IT systems at Østfold University of Applied Sciences in Halden. The program started in autumn 2023, and I finish in spring 2026. I like diving into programming and spend my free time exploring Vue, Quasar, and other technologies.',
         personTitle: 'As a person',
         person:
             'I am {{age}} years old and live in Halden. Technology has always fascinated me, and I enjoy the process of learning, improving, and finding solutions that work in practice. I thrive best when I can combine creativity with structure.',
@@ -118,6 +130,11 @@ const en = {
         loading: 'Loading timeline…',
         error: 'Could not load timeline: {{error}}',
         semesterLabel: 'Semester {{number}}',
+        stats: {
+            years: 'Years of IT education',
+            courses: 'Courses completed',
+            institution: 'Østfold University of Applied Sciences',
+        },
         seasons: {
             spring: 'Spring',
             autumn: 'Autumn',
@@ -198,6 +215,23 @@ const en = {
             tools: 'Tools & Platforms',
         },
     },
+    certifications: {
+        title: 'Courses & Certifications',
+        intro: 'Internal courses and certifications I have completed at Elkjøp, spanning compliance, sales, services, and systems.',
+        totalLabel: '{{count}} completed courses',
+        categories: {
+            compliance: 'Compliance',
+            hr: 'HR',
+            b2b: 'B2B',
+            services: 'Services',
+            system: 'System',
+            program: 'Program',
+            selfDev: 'Self Development',
+            sales: 'Sales',
+            intro: 'Introduction',
+            other: 'Products & Other',
+        },
+    },
     github: {
         title: 'GitHub',
         intro: 'Some of my most active repositories. Visit my profile to see everything.',
@@ -219,6 +253,7 @@ const no: TranslationSchema = {
         contact: 'Kontakt',
         projects: 'Prosjekter',
         knowledge: 'Kunnskap',
+        certifications: 'Kurs',
         gitHub: 'GitHub',
     },
     header: {
@@ -270,7 +305,18 @@ const no: TranslationSchema = {
     },
     home: {
         title: 'Hei! Jeg er Emil Berglund',
-        roles: ['Informatikkstudent', 'Fullstackutvikler', 'Frontendutvikler', 'Backendutvikler'],
+        roles: [
+            'Informatikkstudent',
+            'Informatikkandidat',
+            'Fullstackutvikler',
+            'Interessert i fullstack',
+            'Frontendutvikler',
+            'Interessert i frontend',
+            'Backendutvikler',
+            'Interessert i backend',
+            'Interessert i AI',
+            'AI-bruker',
+        ],
         intro:
             'Jeg er en person med lidenskap for teknologi og et ønske om å lære og vokse. Jeg tror det finnes flere måter å nå et mål eller finne en løsning på, og jeg liker å utforske innovative tilnærminger for å takle utfordringer.',
         githubAria: 'GitHub-profil',
@@ -321,6 +367,11 @@ const no: TranslationSchema = {
         loading: 'Laster tidslinje…',
         error: 'Kunne ikke laste tidslinje: {{error}}',
         semesterLabel: '{{number}}. semester',
+        stats: {
+            years: 'År med IT-utdanning',
+            courses: 'Emner fullført',
+            institution: 'Høgskolen i Østfold',
+        },
         seasons: {
             spring: 'Vår',
             autumn: 'Høst',
@@ -401,6 +452,23 @@ const no: TranslationSchema = {
             tools: 'Verktøy & plattformer',
         },
     },
+    certifications: {
+        title: 'Kurs & sertifiseringer',
+        intro: 'Interne kurs og sertifiseringer jeg har fullført hos Elkjøp, innen compliance, salg, tjenester og systemer.',
+        totalLabel: '{{count}} fullførte kurs',
+        categories: {
+            compliance: 'Compliance',
+            hr: 'HR',
+            b2b: 'B2B',
+            services: 'Tjenester',
+            system: 'System',
+            program: 'Program',
+            selfDev: 'Egenutvikling',
+            sales: 'Salg',
+            intro: 'Introduksjon',
+            other: 'Produkter & annet',
+        },
+    },
     github: {
         title: 'GitHub',
         intro: 'Noen av mine mest aktive repositories. Besøk profilen min for å se alt.',
@@ -420,6 +488,7 @@ const es: TranslationSchema = {
         contact: 'Contacto',
         projects: 'Proyectos',
         knowledge: 'Conocimientos',
+        certifications: 'Cursos',
         gitHub: 'GitHub',
     },
     header: {
@@ -471,7 +540,18 @@ const es: TranslationSchema = {
     },
     home: {
         title: 'Hola. Soy Emil Berglund',
-        roles: ['Estudiante de informática', 'Desarrollador full-stack', 'Desarrollador frontend', 'Desarrollador backend'],
+        roles: [
+            'Estudiante de informática',
+            'Graduado en informática',
+            'Desarrollador full-stack',
+            'Interesado en full-stack',
+            'Desarrollador frontend',
+            'Interesado en frontend',
+            'Desarrollador backend',
+            'Interesado en backend',
+            'Interesado en IA',
+            'Usuario de IA',
+        ],
         intro:
             'Soy una persona apasionada por la tecnología y con ganas de aprender y crecer. Creo que hay varias maneras de alcanzar un objetivo o encontrar una solución, y me gusta explorar enfoques innovadores para afrontar los retos.',
         githubAria: 'Perfil de GitHub',
@@ -483,7 +563,7 @@ const es: TranslationSchema = {
         intro: 'Una versión breve de quién soy, qué estudio y en qué me gusta emplear mi tiempo.',
         studentTitle: 'Como estudiante',
         student:
-            'Estudio informática con especialización en diseño y desarrollo de sistemas informáticos en Østfold University College, en Halden. El programa comenzó en otoño de 2023 y termino en primavera de 2026. Me gusta profundizar en programación y uso mi tiempo libre para explorar Vue, Quasar y otras tecnologías.',
+            'Estudio informática con especialización en diseño y desarrollo de sistemas informáticos en Østfold University of Applied Sciences, en Halden. El programa comenzó en otoño de 2023 y termino en primavera de 2026. Me gusta profundizar en programación y uso mi tiempo libre para explorar Vue, Quasar y otras tecnologías.',
         personTitle: 'Como persona',
         person:
             'Tengo {{age}} años y vivo en Halden. La tecnología siempre me ha fascinado, y disfruto del proceso de aprender, mejorar y encontrar soluciones que funcionen en la práctica. Me siento mejor cuando puedo combinar creatividad con estructura.',
@@ -522,6 +602,11 @@ const es: TranslationSchema = {
         loading: 'Cargando cronología…',
         error: 'No se pudo cargar la cronología: {{error}}',
         semesterLabel: 'Semestre {{number}}',
+        stats: {
+            years: 'Años de formación en TI',
+            courses: 'Asignaturas completadas',
+            institution: 'Østfold University of Applied Sciences',
+        },
         seasons: {
             spring: 'Primavera',
             autumn: 'Otoño',
@@ -600,6 +685,23 @@ const es: TranslationSchema = {
             frontend: 'Frontend',
             backend: 'Backend',
             tools: 'Herramientas & plataformas',
+        },
+    },
+    certifications: {
+        title: 'Cursos & certificaciones',
+        intro: 'Cursos y certificaciones internas que he completado en Elkjøp, sobre cumplimiento, ventas, servicios y sistemas.',
+        totalLabel: '{{count}} cursos completados',
+        categories: {
+            compliance: 'Cumplimiento',
+            hr: 'RR. HH.',
+            b2b: 'B2B',
+            services: 'Servicios',
+            system: 'Sistemas',
+            program: 'Programa',
+            selfDev: 'Desarrollo personal',
+            sales: 'Ventas',
+            intro: 'Introducción',
+            other: 'Productos & otros',
         },
     },
     github: {

@@ -41,17 +41,32 @@ const DOMAINS: DomainConfig[] = [
 
 const FADE_MS = 280
 
+// Live page screenshot via microlink — probes the actual page instead of a static image.
+function screenshotSrc(href: string) {
+    return `https://api.microlink.io/?url=${encodeURIComponent(href)}&screenshot=true&meta=false&embed=screenshot.url`
+}
+
 export default function LiveDomainShowcase() {
     const { t } = useTranslation()
     const [active, setActive] = useState(0)
     const [paused, setPaused] = useState(false)
     const [contentVisible, setContentVisible] = useState(true)
     const [slideDir, setSlideDir] = useState(1)
+    const [failed, setFailed] = useState<Record<number, boolean>>({})
     const navigatingRef = useRef(false)
 
     const items = t('showcase.items', { returnObjects: true }) as ShowcaseItem[]
     const domain = DOMAINS[active]
     const item = items[active]
+
+    // Live screenshot first; on failure fall back to the static previewImage (may be null → gradient).
+    function previewSrc(d: DomainConfig, i: number): string | null {
+        return failed[i] ? d.previewImage : screenshotSrc(d.href)
+    }
+
+    function handlePreviewError(i: number) {
+        setFailed((prev) => (prev[i] ? prev : { ...prev, [i]: true }))
+    }
 
     useEffect(() => {
         if (paused) return
@@ -104,16 +119,18 @@ export default function LiveDomainShowcase() {
                 onMouseEnter={() => setPaused(true)}
                 onMouseLeave={() => setPaused(false)}
             >
-                {/* Backgrounds — cross-fade per domain */}
-                {DOMAINS.map((d, i) =>
-                    d.previewImage ? (
-                        <div
+                {/* Backgrounds — cross-fade per domain (live screenshot, blurred) */}
+                {DOMAINS.map((d, i) => {
+                    const bg = previewSrc(d, i)
+                    return bg ? (
+                        <img
                             key={i}
-                            className="absolute inset-0 z-0 w-screen h-screen"
+                            src={bg}
+                            alt=""
+                            aria-hidden="true"
+                            onError={() => handlePreviewError(i)}
+                            className="absolute inset-0 z-0 h-screen w-screen object-cover"
                             style={{
-                                backgroundImage: `url(${d.previewImage})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
                                 filter: 'blur(18px) saturate(1.4)',
                                 transform: 'scale(1.08)',
                                 opacity: active === i ? 1 : 0,
@@ -131,7 +148,7 @@ export default function LiveDomainShowcase() {
                             }}
                         />
                     )
-                )}
+                })}
 
                 {/* Dark overlay */}
                 <div
@@ -244,11 +261,12 @@ export default function LiveDomainShowcase() {
                                 </div>
                             </div>
                             <div className="bg-[#0d0d1a]">
-                                {domain.previewImage ? (
+                                {previewSrc(domain, active) ? (
                                     <img
-                                        src={domain.previewImage}
+                                        src={previewSrc(domain, active) as string}
                                         alt={item.previewAlt}
-                                        className="w-full block object-cover"
+                                        onError={() => handlePreviewError(active)}
+                                        className="block aspect-[16/10] w-full object-cover object-top"
                                         loading="eager"
                                     />
                                 ) : (

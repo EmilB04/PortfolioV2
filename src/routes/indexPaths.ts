@@ -12,6 +12,7 @@ export const INDEX_PATHS = {
     TIMELINE: 'timeline',
     PROJECTS: 'projects',
     KNOWLEDGE: 'knowledge',
+    CERTIFICATIONS: 'certifications',
     GITHUB: 'github',
 } as const
 
@@ -24,5 +25,6 @@ export const INDEX_NAV_ITEMS = [
     { href: INDEX_PATHS.TIMELINE, labelKey: 'nav.timeline' },
     { href: INDEX_PATHS.PROJECTS, labelKey: 'nav.projects' },
     { href: INDEX_PATHS.KNOWLEDGE, labelKey: 'nav.knowledge' },
+    { href: INDEX_PATHS.CERTIFICATIONS, labelKey: 'nav.certifications' },
     { href: INDEX_PATHS.GITHUB, labelKey: 'nav.gitHub' },
 ] as const
