@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FiGlobe } from 'react-icons/fi'
 import { SUPPORTED_LANGUAGES } from '../../lib/i18n.ts'
 
 export default function LanguageSwitcher() {
@@ -11,10 +12,6 @@ export default function LanguageSwitcher() {
         SUPPORTED_LANGUAGES.find((language) => language.code === i18n.language)?.code ??
         i18n.resolvedLanguage ??
         'no'
-
-    const currentLabel =
-        SUPPORTED_LANGUAGES.find((language) => language.code === currentLanguage)?.label ??
-        'Norsk'
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -53,8 +50,8 @@ export default function LanguageSwitcher() {
                 aria-label={t('languageSwitcher.choose')}
                 onClick={() => setOpen((value) => !value)}
                 className={`
-                    group relative inline-flex h-10 min-w-[7rem] items-center justify-between gap-2 rounded-full
-                    border px-4 pr-3 text-sm font-semibold tracking-[-0.01em]
+                    group relative inline-flex h-10 items-center justify-center gap-1.5 rounded-full
+                    border px-3 text-sm font-semibold tracking-[-0.01em]
                     transition-all duration-200 ease-out motion-reduce:transition-none
                     ${open
                         ? 'border-[var(--accent)] bg-[var(--surface-card)] text-[var(--text)] shadow-[0_12px_30px_rgba(0,0,0,0.18)] ring-4 ring-[color:color-mix(in_srgb,var(--accent)_16%,transparent)]'
@@ -62,7 +59,14 @@ export default function LanguageSwitcher() {
                     }
                 `}
             >
-                <span className="truncate">{currentLabel}</span>
+                <FiGlobe
+                    aria-hidden="true"
+                    className={`
+                        h-4 w-4 shrink-0
+                        transition-colors duration-200 ease-out
+                        ${open ? 'text-[var(--accent)]' : 'text-[var(--text-subtle)] group-hover:text-[var(--text)]'}
+                    `}
+                />
 
                 <svg
                     aria-hidden="true"
