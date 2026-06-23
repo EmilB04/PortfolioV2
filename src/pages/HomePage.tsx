@@ -4,6 +4,7 @@ import AboutMe from '../components/indexSections/AboutMe';
 import LiveDomainShowcase from '../components/indexSections/LiveDomainShowcase';
 import ProjectsSection from '../components/indexSections/ProjectsSection';
 import Knowledge from '../components/indexSections/Knowledge';
+import Certifications from '../components/indexSections/Certifications';
 import GitHub from '../components/indexSections/GitHub';
 import Timeline from '../components/indexSections/Timeline';
 import { INDEX_PATHS } from '../routes/indexPaths'
@@ -21,6 +22,7 @@ export default function Home() {
             <Timeline />
             <ProjectsSection />
             <Knowledge />
+            <Certifications />
             <GitHub />
         </main>
     )
