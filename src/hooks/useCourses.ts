@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import type { CourseTypes } from '../data/courseList'
+export type CourseTypes = {
+    semester: string
+    courses: { name: string; link: string; code: string; description: string }[]
+}
 
 export type Course = {
     id: number
