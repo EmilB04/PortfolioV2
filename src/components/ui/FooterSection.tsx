@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Github } from '../../lib/icons'
-
-const LAST_UPDATED_MONTH_INDEX = 4
+// Starter på 0
+const LAST_UPDATED_MONTH_INDEX = 5
 const LAST_UPDATED_YEAR = 2026
 
 export default function FooterSection() {
