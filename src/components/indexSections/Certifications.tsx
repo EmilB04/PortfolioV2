@@ -161,7 +161,7 @@ export default function Certifications() {
             </header>
 
             <motion.div
-                className="grid w-full max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+                className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5"
                 variants={containerVariants}
                 initial="hidden"
                 whileInView="show"
@@ -181,28 +181,28 @@ function CategoryCard({ category, label }: { category: CourseCategory; label: st
     return (
         <motion.div
             variants={cardVariants}
-            className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+            className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
             style={{ boxShadow: `0 0 0 1px color-mix(in srgb, ${category.color} 14%, transparent)` }}
         >
-            <div className="mb-4 flex items-center gap-3">
+            <div className="mb-3 flex items-center gap-2">
                 <div
-                    className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl"
+                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg"
                     style={{
                         background: `color-mix(in srgb, ${category.color} 16%, var(--surface-card))`,
                         boxShadow: `0 0 0 1px color-mix(in srgb, ${category.color} 28%, transparent)`,
                     }}
                 >
-                    <Icon size={20} style={{ color: category.color }} />
+                    <Icon size={16} style={{ color: category.color }} />
                 </div>
                 <div className="min-w-0">
-                    <p className="truncate text-sm font-bold uppercase tracking-[0.12em] text-[var(--text)]">{label}</p>
-                    <p className="text-xs text-[var(--text-subtle)]">{category.courses.length}</p>
+                    <p className="truncate text-xs font-bold uppercase tracking-[0.10em] text-[var(--text)]">{label}</p>
+                    <p className="text-xs text-[var(--text-subtle)]">{category.courses.length} {category.courses.length === 1 ? 'course' : 'courses'}</p>
                 </div>
             </div>
 
-            <ul className="flex flex-col gap-1.5">
+            <ul className="flex flex-col gap-1">
                 {category.courses.map((course) => (
-                    <li key={course} className="flex items-start gap-2 text-sm leading-snug text-[var(--text-muted)]">
+                    <li key={course} className="flex items-start gap-1.5 text-xs leading-snug text-[var(--text-muted)]">
                         <span
                             aria-hidden="true"
                             className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full"
