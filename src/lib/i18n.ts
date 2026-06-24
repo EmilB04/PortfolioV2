@@ -217,7 +217,8 @@ const en = {
     },
     certifications: {
         title: 'Courses & Certifications',
-        intro: 'Internal courses and certifications I have completed at Elkjøp, spanning compliance, sales, services, and systems.',
+        intro: 'Internal courses and certifications I have completed, spanning compliance, sales, services, and systems.',
+        switcherLabel: 'Course provider',
         totalLabel: '{{count}} completed courses',
         categories: {
             compliance: 'Compliance',
@@ -454,7 +455,8 @@ const no: TranslationSchema = {
     },
     certifications: {
         title: 'Kurs & sertifiseringer',
-        intro: 'Interne kurs og sertifiseringer jeg har fullført hos Elkjøp, innen compliance, salg, tjenester og systemer.',
+        intro: 'Interne kurs og sertifiseringer jeg har fullført, innen compliance, salg, tjenester og systemer.',
+        switcherLabel: 'Kurssted',
         totalLabel: '{{count}} fullførte kurs',
         categories: {
             compliance: 'Compliance',
@@ -689,7 +691,8 @@ const es: TranslationSchema = {
     },
     certifications: {
         title: 'Cursos & certificaciones',
-        intro: 'Cursos y certificaciones internas que he completado en Elkjøp, sobre cumplimiento, ventas, servicios y sistemas.',
+        intro: 'Cursos y certificaciones internas que he completado, sobre cumplimiento, ventas, servicios y sistemas.',
+        switcherLabel: 'Proveedor de cursos',
         totalLabel: '{{count}} cursos completados',
         categories: {
             compliance: 'Cumplimiento',

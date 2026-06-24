@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import {
     FiShield, FiHeart, FiBriefcase, FiTool, FiMonitor,
@@ -17,7 +18,14 @@ type CourseCategory = {
     courses: string[]
 }
 
-const CATEGORIES: CourseCategory[] = [
+type Workplace = {
+    key: string
+    name: string
+    accentColor: string
+    categories: CourseCategory[]
+}
+
+const ELKJOP_CATEGORIES: CourseCategory[] = [
     {
         key: 'compliance',
         icon: FiShield,
@@ -132,45 +140,136 @@ const CATEGORIES: CourseCategory[] = [
     },
 ]
 
-const TOTAL_COURSES = CATEGORIES.reduce((sum, cat) => sum + cat.courses.length, 0)
+const WORKPLACES: Workplace[] = [
+    {
+        key: 'elkjop',
+        name: 'Elkjøp',
+        accentColor: '#E30613',
+        categories: ELKJOP_CATEGORIES,
+    },
+]
 
 const containerVariants = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.06 } },
+    show: { transition: { staggerChildren: 0.05 } },
 }
 
 const cardVariants = {
-    hidden: { opacity: 0, y: 18, scale: 0.97 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.32, ease: 'easeOut' } },
+    hidden: { opacity: 0, y: 14, scale: 0.97 },
+    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.28, ease: 'easeOut' } },
+}
+
+const gridVariants = {
+    enter: { opacity: 0, y: 10 },
+    center: { opacity: 1, y: 0, transition: { duration: 0.22, ease: 'easeOut' } },
+    exit: { opacity: 0, y: -6, transition: { duration: 0.15, ease: 'easeIn' } },
 }
 
 export default function Certifications() {
     const { t } = useTranslation()
+    const [activeKey, setActiveKey] = useState(WORKPLACES[0].key)
+
+    const workplace = WORKPLACES.find((w) => w.key === activeKey)!
+    const totalCourses = workplace.categories.reduce((sum, cat) => sum + cat.courses.length, 0)
 
     return (
         <IndexLayout id={INDEX_PATHS.CERTIFICATIONS} className="flex-col">
-            <header className="mb-12 w-full text-center">
+            <header className="mb-10 w-full text-center">
                 <h2 className="text-3xl font-semibold sm:text-4xl">{t('certifications.title')}</h2>
                 <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
                     {t('certifications.intro')}
                 </p>
-                <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-card)] px-4 py-1.5 text-xs font-semibold tracking-wide text-[var(--text-subtle)]">
-                    <span className="font-bold text-[var(--accent)]">Elkjøp</span>
-                    {t('certifications.totalLabel', { count: TOTAL_COURSES })}
+
+                <div
+                    role="tablist"
+                    aria-label={t('certifications.switcherLabel')}
+                    className="mt-6 inline-flex flex-wrap justify-center gap-2"
+                >
+                    {WORKPLACES.map((w) => {
+                        const count = w.categories.reduce((s, c) => s + c.courses.length, 0)
+                        const isActive = w.key === activeKey
+                        return (
+                            <button
+                                key={w.key}
+                                role="tab"
+                                aria-selected={isActive}
+                                onClick={() => setActiveKey(w.key)}
+                                className="relative flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                                style={
+                                    isActive
+                                        ? {
+                                              borderColor: `color-mix(in srgb, ${w.accentColor} 50%, transparent)`,
+                                              background: `color-mix(in srgb, ${w.accentColor} 12%, var(--surface-card))`,
+                                              color: w.accentColor,
+                                              boxShadow: `0 0 0 1px color-mix(in srgb, ${w.accentColor} 20%, transparent)`,
+                                          }
+                                        : {
+                                              borderColor: 'var(--border)',
+                                              background: 'var(--surface-card)',
+                                              color: 'var(--text-subtle)',
+                                          }
+                                }
+                            >
+                                <span>{w.name}</span>
+                                <span
+                                    className="rounded-full px-1.5 py-0.5 text-[10px] font-bold tracking-wide"
+                                    style={
+                                        isActive
+                                            ? {
+                                                  background: `color-mix(in srgb, ${w.accentColor} 20%, transparent)`,
+                                                  color: w.accentColor,
+                                              }
+                                            : {
+                                                  background: 'color-mix(in srgb, var(--text-subtle) 12%, transparent)',
+                                                  color: 'var(--text-subtle)',
+                                              }
+                                    }
+                                >
+                                    {count}
+                                </span>
+                                {isActive && (
+                                    <motion.span
+                                        layoutId="workplace-tab-indicator"
+                                        className="absolute inset-0 rounded-full"
+                                        style={{ boxShadow: `inset 0 0 0 1.5px color-mix(in srgb, ${w.accentColor} 40%, transparent)` }}
+                                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                                    />
+                                )}
+                            </button>
+                        )
+                    })}
+                </div>
+
+                <p className="mt-3 text-xs text-[var(--text-subtle)]">
+                    {t('certifications.totalLabel', { count: totalCourses })}
                 </p>
             </header>
 
-            <motion.div
-                className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: '-60px' }}
-            >
-                {CATEGORIES.map((cat) => (
-                    <CategoryCard key={cat.key} category={cat} label={t(`certifications.categories.${cat.key}`)} />
-                ))}
-            </motion.div>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeKey}
+                    variants={gridVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    className="w-full"
+                >
+                    <motion.div
+                        className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                    >
+                        {workplace.categories.map((cat) => (
+                            <CategoryCard
+                                key={cat.key}
+                                category={cat}
+                                label={t(`certifications.categories.${cat.key}`)}
+                            />
+                        ))}
+                    </motion.div>
+                </motion.div>
+            </AnimatePresence>
         </IndexLayout>
     )
 }
@@ -196,7 +295,9 @@ function CategoryCard({ category, label }: { category: CourseCategory; label: st
                 </div>
                 <div className="min-w-0">
                     <p className="truncate text-xs font-bold uppercase tracking-[0.10em] text-[var(--text)]">{label}</p>
-                    <p className="text-xs text-[var(--text-subtle)]">{category.courses.length} {category.courses.length === 1 ? 'course' : 'courses'}</p>
+                    <p className="text-xs text-[var(--text-subtle)]">
+                        {category.courses.length} {category.courses.length === 1 ? 'course' : 'courses'}
+                    </p>
                 </div>
             </div>
 
