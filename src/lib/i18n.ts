@@ -59,6 +59,8 @@ const en = {
         welcome: 'Hi! I\'m Emil\'s AI assistant. Ask me about his projects, skills, or background — or anything else!',
         thinking: 'Thinking…',
         error: 'Something went wrong. Try again.',
+        newChat: 'New chat',
+        disclaimer: 'Responses may contain errors or hallucinations.',
     },
     toTop: {
         aria: 'Back to top',
@@ -297,6 +299,8 @@ const no: TranslationSchema = {
         welcome: 'Hei! Jeg er Emils AI-assistent. Spør meg om prosjektene, ferdighetene eller bakgrunnen hans — eller hva som helst annet!',
         thinking: 'Tenker…',
         error: 'Noe gikk galt. Prøv igjen.',
+        newChat: 'Ny chat',
+        disclaimer: 'Svar kan inneholde feil eller hallusinasjoner.',
     },
     toTop: {
         aria: 'Tilbake til toppen',
@@ -533,6 +537,8 @@ const es: TranslationSchema = {
         welcome: '¡Hola! Soy el asistente de IA de Emil. ¡Pregúntame sobre sus proyectos, habilidades o su trayectoria — o cualquier otra cosa!',
         thinking: 'Pensando…',
         error: 'Algo salió mal. Inténtalo de nuevo.',
+        newChat: 'Nueva conversación',
+        disclaimer: 'Las respuestas pueden contener errores o alucinaciones.',
     },
     toTop: {
         aria: 'Volver arriba',
