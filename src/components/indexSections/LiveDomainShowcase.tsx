@@ -176,7 +176,7 @@ export default function LiveDomainShowcase() {
 
                 {/* Content — fades + slides on transition */}
                 <div
-                    className="relative z-3 w-full h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16"
+                    className="relative z-3 w-full h-full max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16"
                     style={{
                         opacity: contentVisible ? 1 : 0,
                         transform: contentVisible ? 'translateX(0px)' : `translateX(${slideDir * -28}px)`,

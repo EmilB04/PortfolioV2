@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../header/BackButton'
 import LanguageSwitcher from '../header/LanguageSwitcher'
-import ThemeSwitcher from '../header/ThemeSwitcher'
+import { ThemeSwitcher } from '../header/ThemeSwitcher'
 import { INDEX_NAV_ITEMS } from '../../routes/indexPaths'
 
 type LinkItem = {

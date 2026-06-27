@@ -9,7 +9,7 @@ export default function Contact() {
     return (
         <IndexLayout id="contact">
             <section className="py-16">
-                <div className="max-w-4xl mx-auto px-4">
+                <div className="max-w-screen-xl mx-auto px-4">
                     <h1
                         className="text-4xl md:text-5xl font-extrabold text-center mb-4 text-[var(--text)]"
                         style={{

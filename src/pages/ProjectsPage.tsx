@@ -9,7 +9,7 @@ export default function Projects() {
 
     return (
         <main className="min-h-screen px-4 py-12" style={{ color: 'var(--text)' }}>
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-screen-xl">
                 <header className="mb-12 text-center">
                     <h1
                         className="text-3xl font-semibold sm:text-4xl"

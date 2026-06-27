@@ -148,7 +148,7 @@ export default function Timeline() {
                 ))}
             </div>
 
-            <section aria-label="Tidslinje over studieemner" className="relative w-full max-w-6xl">
+            <section aria-label="Tidslinje over studieemner" className="relative w-full max-w-screen-xl">
                 <div aria-hidden="true" className="absolute left-4 top-0 bottom-0 w-px -translate-x-1/2 bg-[var(--accent)] md:left-1/2" />
 
                 {loading ? (
