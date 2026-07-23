@@ -30,8 +30,14 @@ const en = {
         choose: 'Choose language',
     },
     themeSwitcher: {
-        light: 'Switch to light mode',
-        dark: 'Switch to dark mode',
+        light: 'Light',
+        dark: 'Dark',
+        system: 'System',
+    },
+    settingsMenu: {
+        appearance: 'Appearance',
+        accentColor: 'Accent color',
+        chooseAccent: 'Choose accent color',
     },
     contactButton: {
         label: 'Contact me',
@@ -270,8 +276,14 @@ const no: TranslationSchema = {
         choose: 'Velg språk',
     },
     themeSwitcher: {
-        light: 'Bytt til lys modus',
-        dark: 'Bytt til mørk modus',
+        light: 'Lys',
+        dark: 'Mørk',
+        system: 'System',
+    },
+    settingsMenu: {
+        appearance: 'Utseende',
+        accentColor: 'Aksentfarge',
+        chooseAccent: 'Velg aksentfarge',
     },
     contactButton: {
         label: 'Kontakt meg',
@@ -508,8 +520,14 @@ const es: TranslationSchema = {
         choose: 'Elegir idioma',
     },
     themeSwitcher: {
-        light: 'Cambiar a modo claro',
-        dark: 'Cambiar a modo oscuro',
+        light: 'Claro',
+        dark: 'Oscuro',
+        system: 'Sistema',
+    },
+    settingsMenu: {
+        appearance: 'Apariencia',
+        accentColor: 'Color de acento',
+        chooseAccent: 'Elegir color de acento',
     },
     contactButton: {
         label: 'Contáctame',

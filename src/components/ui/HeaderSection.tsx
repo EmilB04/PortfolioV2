@@ -1,6 +1,5 @@
 import ContactButton from '../header/ContactButton'
-import LanguageSwitcher from '../header/LanguageSwitcher'
-import { ThemeSwitcher } from '../header/ThemeSwitcher'
+import SettingsMenu from '../header/SettingsMenu'
 import NavSection from './NavSection.tsx'
 
 export default function HeaderSection() {
@@ -16,8 +15,7 @@ export default function HeaderSection() {
                 <NavSection />
 
                 <div className="hidden items-center gap-2 sm:gap-3 md:flex">
-                    <LanguageSwitcher />
-                    <ThemeSwitcher />
+                    <SettingsMenu />
                     <ContactButton />
                 </div>
             </div>
