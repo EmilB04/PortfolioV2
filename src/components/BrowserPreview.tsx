@@ -6,12 +6,36 @@ type Props = {
     imageUrl?: string
 }
 
+const MAX_RETRIES = 3
+const RETRY_DELAY_MS = 1500
+
 export default function BrowserPreview({ url, imageUrl }: Props) {
+    const [attempt, setAttempt] = useState(0)
     const [screenshotFailed, setScreenshotFailed] = useState(false)
+    const [prevUrl, setPrevUrl] = useState(url)
+
+    // Reset retry state whenever the target url changes (e.g. switching active project).
+    // Adjusting state during render instead of an effect avoids an extra commit.
+    if (url !== prevUrl) {
+        setPrevUrl(url)
+        setAttempt(0)
+        setScreenshotFailed(false)
+    }
 
     const hostname = (() => {
         try { return new URL(url).hostname } catch { return url }
     })()
+
+    // Microlink renders the target page on first request — a cold screenshot can 4xx/5xx
+    // before it's ready, even though the same request would succeed moments later once
+    // microlink's own cache is warm. Retry with backoff instead of giving up immediately.
+    function handleError() {
+        if (attempt < MAX_RETRIES) {
+            setTimeout(() => setAttempt((a) => a + 1), RETRY_DELAY_MS * (attempt + 1))
+        } else {
+            setScreenshotFailed(true)
+        }
+    }
 
     const microlinkSrc = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`
     const src = imageUrl ?? (screenshotFailed ? null : microlinkSrc)
@@ -47,11 +71,12 @@ export default function BrowserPreview({ url, imageUrl }: Props) {
             <div className="aspect-video w-full overflow-hidden bg-[var(--surface)]">
                 {src ? (
                     <img
+                        key={attempt}
                         src={src}
                         alt={`${hostname} preview`}
-                        onError={() => setScreenshotFailed(true)}
+                        onError={handleError}
                         className="block h-full w-full object-cover object-top"
-                        loading="lazy"
+                        loading="eager"
                     />
                 ) : (
                     <div
