@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Github } from '../../lib/icons'
 // Starter på 0
-const LAST_UPDATED_MONTH_INDEX = 5
+const LAST_UPDATED_MONTH_INDEX = 6
 const LAST_UPDATED_YEAR = 2026
 
 export default function FooterSection() {
@@ -12,7 +12,7 @@ export default function FooterSection() {
     return (
         <footer aria-label="Site footer" className="w-full px-4 pb-4 pt-12 sm:px-6">
             <div
-                className="mx-auto w-full max-w-6xl rounded-3xl border px-5 py-5 text-center sm:px-6 sm:py-6"
+                className="mx-auto w-full max-w-screen-xl rounded-3xl border px-5 py-5 text-center sm:px-6 sm:py-6"
                 style={{
                     background: 'var(--surface)',
                     borderColor: 'var(--border)',

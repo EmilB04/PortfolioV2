@@ -1,31 +1,47 @@
-// ThemeProvider.tsx
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { THEME_STORAGE_KEY, ThemeContext } from './themeContext'
 import type { Theme } from './themeContext'
 
-function getInitialTheme(): Theme {
+function getSystemPreference(): 'dark' | 'light' {
     if (typeof window === 'undefined') return 'dark'
-    const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
-    if (stored === 'dark' || stored === 'light') return stored
-    return 'dark'
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
-function applyTheme(theme: Theme) {
+function getInitialTheme(): Theme {
+    if (typeof window === 'undefined') return 'system'
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
+    if (stored === 'dark' || stored === 'light' || stored === 'system') return stored
+    return 'system'
+}
+
+function applyTheme(resolved: 'dark' | 'light') {
     const root = document.documentElement
-    root.classList.toggle('dark', theme === 'dark')
-    root.classList.toggle('light', theme === 'light')
-    root.style.colorScheme = theme
+    root.classList.toggle('dark', resolved === 'dark')
+    root.classList.toggle('light', resolved === 'light')
+    root.style.colorScheme = resolved
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
     const [theme, setThemeState] = useState<Theme>(getInitialTheme)
+    const [systemPref, setSystemPref] = useState<'dark' | 'light'>(getSystemPreference)
     const [flashKey, setFlashKey] = useState(0)
     const isFirstRender = useRef(true)
 
+    const resolved = theme === 'system' ? systemPref : theme
+
     useEffect(() => {
-        applyTheme(theme)
+        const mq = window.matchMedia('(prefers-color-scheme: dark)')
+        const handler = (e: MediaQueryListEvent) => {
+            setSystemPref(e.matches ? 'dark' : 'light')
+        }
+        mq.addEventListener('change', handler)
+        return () => mq.removeEventListener('change', handler)
+    }, [])
+
+    useEffect(() => {
+        applyTheme(resolved)
         window.localStorage.setItem(THEME_STORAGE_KEY, theme)
 
         if (isFirstRender.current) {
@@ -34,20 +50,23 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         }
 
         setFlashKey((k) => k + 1)
-    }, [theme])
+    }, [resolved, theme])
 
     const value = useMemo(
         () => ({
             theme,
-            isDark: theme === 'dark',
+            isDark: resolved === 'dark',
             toggleTheme: () =>
-                setThemeState((curr) => (curr === 'dark' ? 'light' : 'dark')),
+                setThemeState((curr) => {
+                    const effective = curr === 'system' ? systemPref : curr
+                    return effective === 'dark' ? 'light' : 'dark'
+                }),
             setTheme: (next: Theme) => setThemeState(next),
         }),
-        [theme]
+        [theme, resolved, systemPref]
     )
 
-    const flashColor = theme === 'dark' ? '#0a0a0a' : '#ffffff'
+    const flashColor = resolved === 'dark' ? '#0a0a0a' : '#ffffff'
 
     return (
         <ThemeContext.Provider value={value}>

@@ -151,7 +151,7 @@ export default function SpesificProjectPage() {
 
     return (
         <main className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
-            <div className="mx-auto max-w-5xl backdrop-blur-xl">
+            <div className="mx-auto max-w-screen-xl backdrop-blur-xl">
                 {/* Title + live badge — centered, large */}
                 <div className="mb-4 flex flex-wrap items-center justify-center gap-3 text-center">
                     <h2 className="w-full text-5xl font-bold text-[var(--accent)] sm:text-6xl">{project.title}</h2>

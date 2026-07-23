@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../header/BackButton'
-import LanguageSwitcher from '../header/LanguageSwitcher'
-import ThemeSwitcher from '../header/ThemeSwitcher'
+import SettingsMenu from '../header/SettingsMenu'
 import { INDEX_NAV_ITEMS } from '../../routes/indexPaths'
 
 type LinkItem = {
@@ -151,8 +150,7 @@ function MobileDrawer({
                 </p>
 
                 <div className="flex items-center gap-3">
-                    <LanguageSwitcher />
-                    <ThemeSwitcher />
+                    <SettingsMenu />
                 </div>
             </div>
 

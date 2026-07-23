@@ -1,15 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BotMessageSquare, Send, X } from 'lucide-react'
+import { BotMessageSquare, RotateCcw, Send, X } from 'lucide-react'
 
 type Message = { role: 'user' | 'assistant'; content: string }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`
+const STORAGE_KEY = 'ai_chat_messages'
 
 export default function AIStarterWidget() {
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
-    const [messages, setMessages] = useState<Message[]>([])
+    const [messages, setMessages] = useState<Message[]>(() => {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY)
+            return saved ? (JSON.parse(saved) as Message[]) : []
+        } catch {
+            return []
+        }
+    })
     const [input, setInput] = useState('')
     const [loading, setLoading] = useState(false)
     const bottomRef = useRef<HTMLDivElement>(null)
@@ -22,6 +30,19 @@ export default function AIStarterWidget() {
     useEffect(() => {
         if (isOpen) inputRef.current?.focus()
     }, [isOpen])
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+        } catch {
+            // ignore storage errors
+        }
+    }, [messages])
+
+    function newChat() {
+        setMessages([])
+        localStorage.removeItem(STORAGE_KEY)
+    }
 
     async function send() {
         const text = input.trim()
@@ -80,14 +101,26 @@ export default function AIStarterWidget() {
                                 {t('aiWidget.assistant')}
                             </span>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => setIsOpen(false)}
-                            aria-label={t('aiWidget.close')}
-                            className="rounded-full p-1.5 transition-colors hover:bg-[var(--surface-card)]"
-                        >
-                            <X size={16} style={{ color: 'var(--text-muted)' }} />
-                        </button>
+                        <div className="flex items-center gap-1">
+                            <button
+                                type="button"
+                                onClick={newChat}
+                                aria-label={t('aiWidget.newChat')}
+                                title={t('aiWidget.newChat')}
+                                className="rounded-full p-1.5 transition-colors hover:bg-[var(--surface-card)]"
+                            >
+                                <RotateCcw size={14} style={{ color: 'var(--text-muted)' }} />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setIsOpen(false)}
+                                aria-label={t('aiWidget.close')}
+                                title={t('aiWidget.close')}
+                                className="rounded-full p-1.5 transition-colors hover:bg-[var(--surface-card)]"
+                            >
+                                <X size={16} style={{ color: 'var(--text-muted)' }} />
+                            </button>
+                        </div>
                     </div>
 
                     {/* messages */}
@@ -120,6 +153,11 @@ export default function AIStarterWidget() {
                             </div>
                         )}
                         <div ref={bottomRef} />
+                    </div>
+
+                    {/* disclaimer */}
+                    <div className="shrink-0 px-4 py-1 text-center text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                        {t('aiWidget.disclaimer')}
                     </div>
 
                     {/* input */}

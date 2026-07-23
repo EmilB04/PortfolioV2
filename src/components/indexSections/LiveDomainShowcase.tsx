@@ -39,7 +39,9 @@ const DOMAINS: DomainConfig[] = [
     },
 ]
 
-const FADE_MS = 280
+const SLIDE_MS = 380
+const SLIDE_DISTANCE = 56
+const SLIDE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
 // Live page screenshot via microlink — probes the actual page instead of a static image.
 function screenshotSrc(href: string) {
@@ -50,7 +52,7 @@ export default function LiveDomainShowcase() {
     const { t } = useTranslation()
     const [active, setActive] = useState(0)
     const [paused, setPaused] = useState(false)
-    const [contentVisible, setContentVisible] = useState(true)
+    const [phase, setPhase] = useState<'idle' | 'exiting' | 'entering'>('idle')
     const [slideDir, setSlideDir] = useState(1)
     const [failed, setFailed] = useState<Record<number, boolean>>({})
     const navigatingRef = useRef(false)
@@ -82,12 +84,17 @@ export default function LiveDomainShowcase() {
         if (newIndex === active) return
         navigatingRef.current = true
         setSlideDir(rawIndex >= active ? 1 : -1)
-        setContentVisible(false)
+        setPhase('exiting')
         setTimeout(() => {
             setActive(newIndex)
-            setContentVisible(true)
-            navigatingRef.current = false
-        }, FADE_MS)
+            setPhase('entering')
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setPhase('idle')
+                    navigatingRef.current = false
+                })
+            })
+        }, SLIDE_MS)
     }
 
     return (
@@ -176,11 +183,17 @@ export default function LiveDomainShowcase() {
 
                 {/* Content — fades + slides on transition */}
                 <div
-                    className="relative z-3 w-full h-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16"
+                    className="relative z-3 w-full h-full max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16 px-8 py-16"
                     style={{
-                        opacity: contentVisible ? 1 : 0,
-                        transform: contentVisible ? 'translateX(0px)' : `translateX(${slideDir * -28}px)`,
-                        transition: `opacity ${FADE_MS}ms ease, transform ${FADE_MS}ms ease`,
+                        opacity: phase === 'idle' ? 1 : 0,
+                        transform: phase === 'exiting'
+                            ? `translateX(${slideDir * -SLIDE_DISTANCE}px)`
+                            : phase === 'entering'
+                                ? `translateX(${slideDir * SLIDE_DISTANCE}px)`
+                                : 'translateX(0px)',
+                        transition: phase === 'entering'
+                            ? 'none'
+                            : `opacity ${SLIDE_MS}ms ${SLIDE_EASE}, transform ${SLIDE_MS}ms ${SLIDE_EASE}`,
                     }}
                 >
                     {/* Left */}
@@ -235,11 +248,11 @@ export default function LiveDomainShowcase() {
                             href={domain.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-3 mt-4 px-7 py-3 rounded-full font-bold text-white transition-all duration-200 hover:-translate-y-1 w-fit"
+                            className="group inline-flex items-center gap-2.5 mt-4 px-7 py-3 rounded-full font-bold text-white transition-[gap,transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:gap-4 w-fit"
                             style={{ background: `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})`, boxShadow: `0 4px 20px ${domain.accentFrom}73` }}
                         >
                             {t('showcase.visit')}
-                            <ArrowRight size={18} />
+                            <ArrowRight size={18} className="transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
                         </a>
                     </div>
 

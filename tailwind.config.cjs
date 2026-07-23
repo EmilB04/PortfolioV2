@@ -8,7 +8,11 @@ module.exports = {
         screens: {
             md: '1024px'
         },
-        extend: {}
+        extend: {
+            maxWidth: {
+                'screen-xl': '1280px',
+            }
+        }
     },
     plugins: [
         require('@tailwindcss/typography')

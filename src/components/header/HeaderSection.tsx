@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Code, Menu, MoonStar, SunMedium, X } from 'lucide-react'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme } from '../../hooks/useTheme'
 
 export default function HeaderSection() {
     const { t, i18n } = useTranslation()

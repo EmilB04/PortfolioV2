@@ -1,6 +1,5 @@
 import ContactButton from '../header/ContactButton'
-import LanguageSwitcher from '../header/LanguageSwitcher'
-import ThemeSwitcher from '../header/ThemeSwitcher'
+import SettingsMenu from '../header/SettingsMenu'
 import NavSection from './NavSection.tsx'
 
 export default function HeaderSection() {
@@ -12,12 +11,11 @@ export default function HeaderSection() {
                 color: 'var(--text)',
             }}
         >
-            <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:h-18 sm:px-6 lg:px-8">
+            <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-3 px-4 sm:h-18 sm:px-6 lg:px-8">
                 <NavSection />
 
                 <div className="hidden items-center gap-2 sm:gap-3 md:flex">
-                    <LanguageSwitcher />
-                    <ThemeSwitcher />
+                    <SettingsMenu />
                     <ContactButton />
                 </div>
             </div>

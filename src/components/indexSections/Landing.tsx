@@ -76,7 +76,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
 
     return (
         <IndexLayout id="landing" className={"text-left"}>
-            <section className="about-me w-full max-w-4xl">
+            <section className="about-me w-full max-w-screen-xl">
                 <h1 className="mb-8 text-4xl font-semibold leading-tight text-[var(--text-h)] sm:text-5xl lg:text-6xl">
                     {t('home.title')} <br />
                     <Typewriter key={i18n.language} lines={typewriterLines} />

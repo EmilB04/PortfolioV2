@@ -8,13 +8,16 @@ import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
 import App from './App.tsx'
 import { ThemeProvider } from './context/ThemeProvider'
+import { AccentProvider } from './context/AccentProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <App />
-      </BrowserRouter>
+      <AccentProvider>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <App />
+        </BrowserRouter>
+      </AccentProvider>
     </ThemeProvider>
   </StrictMode>,
 )

@@ -30,8 +30,14 @@ const en = {
         choose: 'Choose language',
     },
     themeSwitcher: {
-        light: 'Switch to light mode',
-        dark: 'Switch to dark mode',
+        light: 'Light',
+        dark: 'Dark',
+        system: 'System',
+    },
+    settingsMenu: {
+        appearance: 'Appearance',
+        accentColor: 'Accent color',
+        chooseAccent: 'Choose accent color',
     },
     contactButton: {
         label: 'Contact me',
@@ -59,6 +65,8 @@ const en = {
         welcome: 'Hi! I\'m Emil\'s AI assistant. Ask me about his projects, skills, or background — or anything else!',
         thinking: 'Thinking…',
         error: 'Something went wrong. Try again.',
+        newChat: 'New chat',
+        disclaimer: 'Responses may contain errors or hallucinations.',
     },
     toTop: {
         aria: 'Back to top',
@@ -217,7 +225,8 @@ const en = {
     },
     certifications: {
         title: 'Courses & Certifications',
-        intro: 'Internal courses and certifications I have completed at Elkjøp, spanning compliance, sales, services, and systems.',
+        intro: 'Internal courses and certifications I have completed, spanning compliance, sales, services, and systems.',
+        switcherLabel: 'Course provider',
         totalLabel: '{{count}} completed courses',
         categories: {
             compliance: 'Compliance',
@@ -267,8 +276,14 @@ const no: TranslationSchema = {
         choose: 'Velg språk',
     },
     themeSwitcher: {
-        light: 'Bytt til lys modus',
-        dark: 'Bytt til mørk modus',
+        light: 'Lys',
+        dark: 'Mørk',
+        system: 'System',
+    },
+    settingsMenu: {
+        appearance: 'Utseende',
+        accentColor: 'Aksentfarge',
+        chooseAccent: 'Velg aksentfarge',
     },
     contactButton: {
         label: 'Kontakt meg',
@@ -296,6 +311,8 @@ const no: TranslationSchema = {
         welcome: 'Hei! Jeg er Emils AI-assistent. Spør meg om prosjektene, ferdighetene eller bakgrunnen hans — eller hva som helst annet!',
         thinking: 'Tenker…',
         error: 'Noe gikk galt. Prøv igjen.',
+        newChat: 'Ny chat',
+        disclaimer: 'Svar kan inneholde feil eller hallusinasjoner.',
     },
     toTop: {
         aria: 'Tilbake til toppen',
@@ -454,7 +471,8 @@ const no: TranslationSchema = {
     },
     certifications: {
         title: 'Kurs & sertifiseringer',
-        intro: 'Interne kurs og sertifiseringer jeg har fullført hos Elkjøp, innen compliance, salg, tjenester og systemer.',
+        intro: 'Interne kurs og sertifiseringer jeg har fullført, innen compliance, salg, tjenester og systemer.',
+        switcherLabel: 'Kurssted',
         totalLabel: '{{count}} fullførte kurs',
         categories: {
             compliance: 'Compliance',
@@ -502,8 +520,14 @@ const es: TranslationSchema = {
         choose: 'Elegir idioma',
     },
     themeSwitcher: {
-        light: 'Cambiar a modo claro',
-        dark: 'Cambiar a modo oscuro',
+        light: 'Claro',
+        dark: 'Oscuro',
+        system: 'Sistema',
+    },
+    settingsMenu: {
+        appearance: 'Apariencia',
+        accentColor: 'Color de acento',
+        chooseAccent: 'Elegir color de acento',
     },
     contactButton: {
         label: 'Contáctame',
@@ -531,6 +555,8 @@ const es: TranslationSchema = {
         welcome: '¡Hola! Soy el asistente de IA de Emil. ¡Pregúntame sobre sus proyectos, habilidades o su trayectoria — o cualquier otra cosa!',
         thinking: 'Pensando…',
         error: 'Algo salió mal. Inténtalo de nuevo.',
+        newChat: 'Nueva conversación',
+        disclaimer: 'Las respuestas pueden contener errores o alucinaciones.',
     },
     toTop: {
         aria: 'Volver arriba',
@@ -689,7 +715,8 @@ const es: TranslationSchema = {
     },
     certifications: {
         title: 'Cursos & certificaciones',
-        intro: 'Cursos y certificaciones internas que he completado en Elkjøp, sobre cumplimiento, ventas, servicios y sistemas.',
+        intro: 'Cursos y certificaciones internas que he completado, sobre cumplimiento, ventas, servicios y sistemas.',
+        switcherLabel: 'Proveedor de cursos',
         totalLabel: '{{count}} cursos completados',
         categories: {
             compliance: 'Cumplimiento',
