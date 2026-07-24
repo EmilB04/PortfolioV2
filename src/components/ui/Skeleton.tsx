@@ -41,6 +41,44 @@ export function RepoCardSkeleton() {
     )
 }
 
+export function GitHubProfileSkeleton() {
+    return (
+        <div className="flex w-full flex-col items-center gap-5 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-6 sm:flex-row sm:items-center">
+            <Skeleton className="h-20 w-20 flex-shrink-0 rounded-full sm:h-24 sm:w-24" />
+            <div className="flex w-full flex-1 flex-col items-center gap-2 sm:items-start">
+                <Skeleton className="h-5 w-40" />
+                <Skeleton className="h-3 w-full max-w-sm" />
+                <Skeleton className="h-3 w-2/3 max-w-sm" />
+                <div className="mt-1 flex gap-4">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-20" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export function CommitActivitySkeleton() {
+    return (
+        <div className="flex w-full flex-col gap-3">
+            <Skeleton className="h-3 w-32" />
+            <div className="flex flex-col gap-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-card)] px-4 py-3"
+                    >
+                        <Skeleton className="h-1.5 w-1.5 flex-shrink-0 rounded-full" />
+                        <Skeleton className="h-3 w-20 flex-shrink-0" />
+                        <Skeleton className="h-3 flex-1" />
+                        <Skeleton className="h-3 w-10 flex-shrink-0" />
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+
 export function FeaturedProjectsSkeleton() {
     return (
         <div className="w-full overflow-hidden">

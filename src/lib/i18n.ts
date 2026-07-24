@@ -246,8 +246,14 @@ const en = {
         intro: 'Some of my most active repositories. Visit my profile to see everything.',
         noDescription: 'No description available.',
         loading: 'Loading repositories…',
+        loadError: 'Could not load GitHub data. Try again later.',
+        rateLimited: "GitHub's public API rate limit has been hit for this network — this section will work again once it resets, usually within an hour.",
         viewRepo: 'View repository',
         visitProfile: 'Go to GitHub',
+        followers: 'followers',
+        publicRepos: 'public repos',
+        recentActivity: 'Recent activity',
+        pushedTo: 'Pushed to {{repo}}',
     },
 }
 
@@ -492,8 +498,14 @@ const no: TranslationSchema = {
         intro: 'Noen av mine mest aktive repositories. Besøk profilen min for å se alt.',
         noDescription: 'Ingen beskrivelse tilgjengelig.',
         loading: 'Laster repositories…',
+        loadError: 'Kunne ikke laste GitHub-data. Prøv igjen senere.',
+        rateLimited: 'GitHubs offentlige API-grense er nådd for dette nettverket — denne seksjonen fungerer igjen når grensen tilbakestilles, vanligvis innen en time.',
         viewRepo: 'Se repository',
         visitProfile: 'Gå til GitHub',
+        followers: 'følgere',
+        publicRepos: 'offentlige repos',
+        recentActivity: 'Nylig aktivitet',
+        pushedTo: 'Pushet til {{repo}}',
     },
 }
 
@@ -736,8 +748,14 @@ const es: TranslationSchema = {
         intro: 'Algunos de mis repositorios más activos. Visita mi perfil para verlos todos.',
         noDescription: 'Sin descripción disponible.',
         loading: 'Cargando repositorios…',
+        loadError: 'No se pudieron cargar los datos de GitHub. Inténtalo de nuevo más tarde.',
+        rateLimited: 'Se alcanzó el límite de la API pública de GitHub para esta red — esta sección volverá a funcionar cuando se restablezca, normalmente en menos de una hora.',
         viewRepo: 'Ver repositorio',
         visitProfile: 'Ir a GitHub',
+        followers: 'seguidores',
+        publicRepos: 'repos públicos',
+        recentActivity: 'Actividad reciente',
+        pushedTo: 'Envió cambios a {{repo}}',
     },
 }
 
