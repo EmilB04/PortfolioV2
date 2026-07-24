@@ -106,6 +106,11 @@ const en = {
         leisureTitle: 'In my free time',
         leisure:
             'Besides my studies, I often work at Elkjøp as a sales associate. There I get to use my interest in technology and electronics while staying up to date with new products and trends. In my free time I play games, watch films and series, socialize, and often bring my drone or camera out to capture scenes in the local area.',
+        kicker: {
+            student: 'Education',
+            person: 'Personal',
+            leisure: 'Off The Clock',
+        },
     },
     showcase: {
         status: 'Live',
@@ -211,6 +216,8 @@ const en = {
                 title: 'Email',
                 description: 'Send me a direct message',
                 button: 'SEND EMAIL',
+                compose: 'New message',
+                subject: "Let's build something together",
             },
         },
     },
@@ -246,8 +253,14 @@ const en = {
         intro: 'Some of my most active repositories. Visit my profile to see everything.',
         noDescription: 'No description available.',
         loading: 'Loading repositories…',
+        loadError: 'Could not load GitHub data. Try again later.',
+        rateLimited: "GitHub's public API rate limit has been hit for this network — this section will work again once it resets, usually within an hour.",
         viewRepo: 'View repository',
         visitProfile: 'Go to GitHub',
+        followers: 'followers',
+        publicRepos: 'public repos',
+        recentActivity: 'Recent activity',
+        pushedTo: 'Pushed to {{repo}}',
     },
 }
 
@@ -352,6 +365,11 @@ const no: TranslationSchema = {
         leisureTitle: 'På fritiden',
         leisure:
             'Ved siden av studiene jobber jeg ofte på Elkjøp som selger. Der får jeg brukt interessen min for teknologi og elektronikk, samtidig som jeg holder meg oppdatert på nye produkter og trender. På fritiden spiller jeg, ser på filmer og serier, er sosial og tar gjerne med dronen eller kameraet mitt ut for å fange motiver i lokalområdet.',
+        kicker: {
+            student: 'Utdanning',
+            person: 'Personlig',
+            leisure: 'Fritid',
+        },
     },
     showcase: {
         status: 'Live',
@@ -457,6 +475,8 @@ const no: TranslationSchema = {
                 title: 'E-post',
                 description: 'Send meg en melding direkte',
                 button: 'SEND E-POST',
+                compose: 'Ny melding',
+                subject: 'La oss bygge noe sammen',
             },
         },
     },
@@ -492,8 +512,14 @@ const no: TranslationSchema = {
         intro: 'Noen av mine mest aktive repositories. Besøk profilen min for å se alt.',
         noDescription: 'Ingen beskrivelse tilgjengelig.',
         loading: 'Laster repositories…',
+        loadError: 'Kunne ikke laste GitHub-data. Prøv igjen senere.',
+        rateLimited: 'GitHubs offentlige API-grense er nådd for dette nettverket — denne seksjonen fungerer igjen når grensen tilbakestilles, vanligvis innen en time.',
         viewRepo: 'Se repository',
         visitProfile: 'Gå til GitHub',
+        followers: 'følgere',
+        publicRepos: 'offentlige repos',
+        recentActivity: 'Nylig aktivitet',
+        pushedTo: 'Pushet til {{repo}}',
     },
 }
 
@@ -596,6 +622,11 @@ const es: TranslationSchema = {
         leisureTitle: 'En mi tiempo libre',
         leisure:
             'Además de mis estudios, suelo trabajar en Elkjøp como vendedor. Allí puedo aprovechar mi interés por la tecnología y la electrónica, al mismo tiempo que me mantengo al día con nuevos productos y tendencias. En mi tiempo libre juego, veo películas y series, socializo y suelo sacar mi dron o cámara para capturar escenas de la zona.',
+        kicker: {
+            student: 'Educación',
+            person: 'Personal',
+            leisure: 'Tiempo libre',
+        },
     },
     showcase: {
         status: 'En vivo',
@@ -701,6 +732,8 @@ const es: TranslationSchema = {
                 title: 'Correo',
                 description: 'Envíame un mensaje directo',
                 button: 'ENVIAR CORREO',
+                compose: 'Nuevo mensaje',
+                subject: 'Construyamos algo juntos',
             },
         },
     },
@@ -736,8 +769,14 @@ const es: TranslationSchema = {
         intro: 'Algunos de mis repositorios más activos. Visita mi perfil para verlos todos.',
         noDescription: 'Sin descripción disponible.',
         loading: 'Cargando repositorios…',
+        loadError: 'No se pudieron cargar los datos de GitHub. Inténtalo de nuevo más tarde.',
+        rateLimited: 'Se alcanzó el límite de la API pública de GitHub para esta red — esta sección volverá a funcionar cuando se restablezca, normalmente en menos de una hora.',
         viewRepo: 'Ver repositorio',
         visitProfile: 'Ir a GitHub',
+        followers: 'seguidores',
+        publicRepos: 'repos públicos',
+        recentActivity: 'Actividad reciente',
+        pushedTo: 'Envió cambios a {{repo}}',
     },
 }
 

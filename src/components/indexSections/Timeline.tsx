@@ -1,7 +1,7 @@
 import IndexLayout from './_layout'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 import TimelineCard from './TimelineCard'
-import LoadingSpinner from '../ui/LoadingSpinner'
+import { TimelineSkeleton } from '../ui/Skeleton'
 import { fetchCoursesOnce } from '../../hooks/useCourses'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -152,7 +152,7 @@ export default function Timeline() {
                 <div aria-hidden="true" className="absolute left-4 top-0 bottom-0 w-px -translate-x-1/2 bg-[var(--accent)] md:left-1/2" />
 
                 {loading ? (
-                    <LoadingSpinner />
+                    <TimelineSkeleton />
                 ) : error ? (
                     <p className="text-center text-sm text-red-500">{t('timeline.error', { error })}</p>
                 ) : (

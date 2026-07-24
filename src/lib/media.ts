@@ -16,7 +16,7 @@ type ResolveMediaUrlOptions = {
     transformations?: string[]
 }
 
-const CLOUDINARY_CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME?.trim()
+const CLOUDINARY_CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME?.trim() || 'emilber-portfolio'
 
 function isAbsoluteMediaUrl(value: string) {
     return /^(?:[a-z][a-z\d+.-]*:)?\/\//i.test(value) || value.startsWith('data:') || value.startsWith('blob:')
