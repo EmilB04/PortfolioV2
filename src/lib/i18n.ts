@@ -106,6 +106,11 @@ const en = {
         leisureTitle: 'In my free time',
         leisure:
             'Besides my studies, I often work at Elkjøp as a sales associate. There I get to use my interest in technology and electronics while staying up to date with new products and trends. In my free time I play games, watch films and series, socialize, and often bring my drone or camera out to capture scenes in the local area.',
+        kicker: {
+            student: 'Education',
+            person: 'Personal',
+            leisure: 'Off The Clock',
+        },
     },
     showcase: {
         status: 'Live',
@@ -358,6 +363,11 @@ const no: TranslationSchema = {
         leisureTitle: 'På fritiden',
         leisure:
             'Ved siden av studiene jobber jeg ofte på Elkjøp som selger. Der får jeg brukt interessen min for teknologi og elektronikk, samtidig som jeg holder meg oppdatert på nye produkter og trender. På fritiden spiller jeg, ser på filmer og serier, er sosial og tar gjerne med dronen eller kameraet mitt ut for å fange motiver i lokalområdet.',
+        kicker: {
+            student: 'Utdanning',
+            person: 'Personlig',
+            leisure: 'Fritid',
+        },
     },
     showcase: {
         status: 'Live',
@@ -608,6 +618,11 @@ const es: TranslationSchema = {
         leisureTitle: 'En mi tiempo libre',
         leisure:
             'Además de mis estudios, suelo trabajar en Elkjøp como vendedor. Allí puedo aprovechar mi interés por la tecnología y la electrónica, al mismo tiempo que me mantengo al día con nuevos productos y tendencias. En mi tiempo libre juego, veo películas y series, socializo y suelo sacar mi dron o cámara para capturar escenas de la zona.',
+        kicker: {
+            student: 'Educación',
+            person: 'Personal',
+            leisure: 'Tiempo libre',
+        },
     },
     showcase: {
         status: 'En vivo',
