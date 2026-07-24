@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, ExternalLink, Github } from 'lucide-react'
 import IndexLayout from './_layout'
-import LoadingSpinner from '../ui/LoadingSpinner'
+import { FeaturedProjectsSkeleton } from '../ui/Skeleton'
 import BrowserPreview from '../BrowserPreview'
 import { supabase } from '../../lib/supabase'
 import type { Project } from '../../hooks/useProjects'
@@ -56,7 +56,7 @@ export default function ProjectsSection() {
             </header>
 
             {loading ? (
-                <LoadingSpinner />
+                <FeaturedProjectsSkeleton />
             ) : (
                 <div className="w-full overflow-hidden">
                     {/* Mobile: horizontal pill tabs */}

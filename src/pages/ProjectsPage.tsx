@@ -1,6 +1,6 @@
 import { useProjects } from '../hooks/useProjects'
 import ProjectCard from '../components/ProjectCard'
-import LoadingSpinner from '../components/ui/LoadingSpinner'
+import { ProjectCardSkeleton } from '../components/ui/Skeleton'
 import { useTranslation } from 'react-i18next'
 
 export default function Projects() {
@@ -23,7 +23,11 @@ export default function Projects() {
                 </header>
 
                 {loading ? (
-                    <LoadingSpinner />
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                            <ProjectCardSkeleton key={i} />
+                        ))}
+                    </div>
                 ) : projects.length === 0 ? (
                     <p className="text-center text-sm text-[var(--text-muted)]">{t('projectsPage.empty')}</p>
                 ) : (

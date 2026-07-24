@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { ExternalLink, GitFork, Star } from 'lucide-react'
 import IndexLayout from './_layout'
-import LoadingSpinner from '../ui/LoadingSpinner'
+import { RepoCardSkeleton } from '../ui/Skeleton'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 
 const GITHUB_USER = 'EmilB04'
@@ -71,7 +71,13 @@ export default function GitHub() {
             </header>
 
             {loading ? (
-                <LoadingSpinner />
+                <ul className="grid w-full list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {Array.from({ length: MAX_REPOS }).map((_, i) => (
+                        <li key={i} className="h-full">
+                            <RepoCardSkeleton />
+                        </li>
+                    ))}
+                </ul>
             ) : error ? (
                 <p className="text-sm text-[var(--text-muted)]">{t('github.loading')}</p>
             ) : (

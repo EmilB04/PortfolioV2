@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ExternalLink, Github, Upload, X, Check, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import type { Project } from '../hooks/useProjects'
-import LoadingSpinner from '../components/ui/LoadingSpinner'
+import { ProjectDetailSkeleton } from '../components/ui/Skeleton'
 import ProjectMediaCarousel from '../components/ProjectMediaCarousel'
 
 const CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME ?? 'emilber-portfolio'
@@ -135,8 +135,8 @@ export default function SpesificProjectPage() {
 
     if (loading) {
         return (
-            <main className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 4rem)', marginTop: '4rem' }}>
-                <LoadingSpinner />
+            <main className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
+                <ProjectDetailSkeleton />
             </main>
         )
     }
