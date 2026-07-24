@@ -55,12 +55,10 @@ const INDICATOR_TRANSLATE: Record<Theme, string> = {
     light: 'translateX(calc(200% + 4px))',
 }
 
-export default function SettingsMenu() {
+export function SettingsPanel({ className = '' }: { className?: string }) {
     const { i18n, t } = useTranslation()
     const { theme, isDark, setTheme } = useTheme()
     const { accent, setAccent } = useAccent()
-    const [open, setOpen] = useState(false)
-    const rootRef = useRef<HTMLDivElement | null>(null)
 
     const THEME_OPTIONS: { value: Theme; label: string; Icon: () => React.JSX.Element; activeColor: string }[] = [
         { value: 'dark', label: t('themeSwitcher.dark'), Icon: MoonIcon, activeColor: '#a5b4fc' },
@@ -72,6 +70,123 @@ export default function SettingsMenu() {
         SUPPORTED_LANGUAGES.find((language) => language.code === i18n.language)?.code ??
         i18n.resolvedLanguage ??
         'no'
+
+    async function handleLanguageSelect(code: string) {
+        await i18n.changeLanguage(code)
+        localStorage.setItem('portfolio-lang', code)
+    }
+
+    return (
+        <div className={`flex flex-col gap-4 ${className}`}>
+            <section>
+                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                    {t('languageSwitcher.section')}
+                </h3>
+                <div role="listbox" aria-label={t('languageSwitcher.choose')} className="flex flex-col gap-1">
+                    {SUPPORTED_LANGUAGES.map((language) => {
+                        const selected = language.code === currentLanguage
+                        return (
+                            <button
+                                key={language.code}
+                                type="button"
+                                role="option"
+                                aria-selected={selected}
+                                onClick={() => void handleLanguageSelect(language.code)}
+                                className={`
+                                    flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left
+                                    transition-all duration-200 ease-out motion-reduce:transition-none
+                                    ${selected
+                                        ? 'bg-[color:color-mix(in_srgb,var(--accent)_16%,var(--surface-card))] text-[var(--text)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_30%,transparent)]'
+                                        : 'text-[var(--text-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text)] active:scale-[0.99]'
+                                    }
+                                `}
+                            >
+                                <span className="font-medium">{language.label}</span>
+                                {selected && (
+                                    <span className="h-2 w-2 rounded-full bg-[var(--accent)]" aria-hidden="true" />
+                                )}
+                            </button>
+                        )
+                    })}
+                </div>
+            </section>
+
+            <section className="border-t border-[var(--border)] pt-4">
+                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                    {t('settingsMenu.appearance')}
+                </h3>
+                <div className="relative grid grid-cols-3 gap-1 rounded-xl bg-[var(--surface)] p-1">
+                    <span
+                        className="absolute inset-y-1 rounded-lg transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] pointer-events-none"
+                        style={{
+                            width: 'calc(33.333% - 3px)',
+                            transform: INDICATOR_TRANSLATE[theme],
+                            background: INDICATOR_BG[theme],
+                        }}
+                    />
+                    {THEME_OPTIONS.map(({ value, label, Icon, activeColor }) => {
+                        const selected = theme === value
+                        return (
+                            <button
+                                key={value}
+                                type="button"
+                                aria-label={label}
+                                aria-pressed={selected}
+                                onClick={() => setTheme(value)}
+                                style={{ color: selected ? activeColor : 'var(--text-subtle)' }}
+                                className="relative z-10 flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-colors duration-200 hover:text-[var(--text)]"
+                            >
+                                <Icon />
+                                {label}
+                            </button>
+                        )
+                    })}
+                </div>
+            </section>
+
+            <section className="border-t border-[var(--border)] pt-4">
+                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                    {t('settingsMenu.accentColor')}
+                </h3>
+                <div role="listbox" aria-label={t('settingsMenu.chooseAccent')} className="flex flex-wrap gap-2 px-1">
+                    {(Object.keys(ACCENT_PRESETS) as AccentColor[]).map((color) => {
+                        const preset = ACCENT_PRESETS[color]
+                        const selected = color === accent
+                        return (
+                            <button
+                                key={color}
+                                type="button"
+                                role="option"
+                                aria-selected={selected}
+                                aria-label={preset.label}
+                                onClick={() => setAccent(color)}
+                                className={`
+                                    flex h-9 w-9 items-center justify-center rounded-full border-2 p-0
+                                    transition-all duration-200 ease-out
+                                    ${selected
+                                        ? 'border-[var(--accent)] scale-110'
+                                        : 'border-transparent hover:scale-105'
+                                    }
+                                `}
+                            >
+                                <span
+                                    aria-hidden="true"
+                                    className="h-6 w-6 rounded-full ring-1 ring-black/10"
+                                    style={{ background: isDark ? preset.dark : preset.light }}
+                                />
+                            </button>
+                        )
+                    })}
+                </div>
+            </section>
+        </div>
+    )
+}
+
+export default function SettingsMenu() {
+    const { t } = useTranslation()
+    const [open, setOpen] = useState(false)
+    const rootRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -94,11 +209,6 @@ export default function SettingsMenu() {
             window.removeEventListener('keydown', handleKeyDown)
         }
     }, [])
-
-    async function handleLanguageSelect(code: string) {
-        await i18n.changeLanguage(code)
-        localStorage.setItem('portfolio-lang', code)
-    }
 
     return (
         <div ref={rootRef} className="relative inline-flex">
@@ -141,109 +251,7 @@ export default function SettingsMenu() {
                     }
                 `}
             >
-                <div className="flex flex-col gap-4 p-4">
-                    <section>
-                        <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
-                            {t('languageSwitcher.section')}
-                        </h3>
-                        <div role="listbox" aria-label={t('languageSwitcher.choose')} className="flex flex-col gap-1">
-                            {SUPPORTED_LANGUAGES.map((language) => {
-                                const selected = language.code === currentLanguage
-                                return (
-                                    <button
-                                        key={language.code}
-                                        type="button"
-                                        role="option"
-                                        aria-selected={selected}
-                                        onClick={() => void handleLanguageSelect(language.code)}
-                                        className={`
-                                            flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left
-                                            transition-all duration-200 ease-out motion-reduce:transition-none
-                                            ${selected
-                                                ? 'bg-[color:color-mix(in_srgb,var(--accent)_16%,var(--surface-card))] text-[var(--text)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_30%,transparent)]'
-                                                : 'text-[var(--text-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text)] active:scale-[0.99]'
-                                            }
-                                        `}
-                                    >
-                                        <span className="font-medium">{language.label}</span>
-                                        {selected && (
-                                            <span className="h-2 w-2 rounded-full bg-[var(--accent)]" aria-hidden="true" />
-                                        )}
-                                    </button>
-                                )
-                            })}
-                        </div>
-                    </section>
-
-                    <section className="border-t border-[var(--border)] pt-4">
-                        <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
-                            {t('settingsMenu.appearance')}
-                        </h3>
-                        <div className="relative grid grid-cols-3 gap-1 rounded-xl bg-[var(--surface)] p-1">
-                            <span
-                                className="absolute inset-y-1 rounded-lg transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] pointer-events-none"
-                                style={{
-                                    width: 'calc(33.333% - 3px)',
-                                    transform: INDICATOR_TRANSLATE[theme],
-                                    background: INDICATOR_BG[theme],
-                                }}
-                            />
-                            {THEME_OPTIONS.map(({ value, label, Icon, activeColor }) => {
-                                const selected = theme === value
-                                return (
-                                    <button
-                                        key={value}
-                                        type="button"
-                                        aria-label={label}
-                                        aria-pressed={selected}
-                                        onClick={() => setTheme(value)}
-                                        style={{ color: selected ? activeColor : 'var(--text-subtle)' }}
-                                        className="relative z-10 flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-colors duration-200 hover:text-[var(--text)]"
-                                    >
-                                        <Icon />
-                                        {label}
-                                    </button>
-                                )
-                            })}
-                        </div>
-                    </section>
-
-                    <section className="border-t border-[var(--border)] pt-4">
-                        <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
-                            {t('settingsMenu.accentColor')}
-                        </h3>
-                        <div role="listbox" aria-label={t('settingsMenu.chooseAccent')} className="flex flex-wrap gap-2 px-1">
-                            {(Object.keys(ACCENT_PRESETS) as AccentColor[]).map((color) => {
-                                const preset = ACCENT_PRESETS[color]
-                                const selected = color === accent
-                                return (
-                                    <button
-                                        key={color}
-                                        type="button"
-                                        role="option"
-                                        aria-selected={selected}
-                                        aria-label={preset.label}
-                                        onClick={() => setAccent(color)}
-                                        className={`
-                                            flex h-9 w-9 items-center justify-center rounded-full border-2 p-0
-                                            transition-all duration-200 ease-out
-                                            ${selected
-                                                ? 'border-[var(--accent)] scale-110'
-                                                : 'border-transparent hover:scale-105'
-                                            }
-                                        `}
-                                    >
-                                        <span
-                                            aria-hidden="true"
-                                            className="h-6 w-6 rounded-full ring-1 ring-black/10"
-                                            style={{ background: isDark ? preset.dark : preset.light }}
-                                        />
-                                    </button>
-                                )
-                            })}
-                        </div>
-                    </section>
-                </div>
+                <SettingsPanel className="p-4" />
             </div>
         </div>
     )

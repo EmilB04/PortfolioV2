@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../header/BackButton'
-import SettingsMenu from '../header/SettingsMenu'
+import { SettingsPanel } from '../header/SettingsMenu'
 import { INDEX_NAV_ITEMS } from '../../routes/indexPaths'
 
 type LinkItem = {
@@ -115,53 +115,66 @@ function MobileDrawer({
     }, [isOpen, onClose])
 
     return (
-        <div
-            className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(80%,300px)] flex flex-col overflow-y-auto border-l border-[var(--border)] shadow-[var(--shadow)] pt-3 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
-            style={{ background: 'var(--bg)' }}
-        >
-            <section className="mb-8 flex flex-row items-center justify-between gap-4 px-6">
-                <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
-                    {navigationLabel}
-                </span>
-
-                <button
-                    type="button"
-                    onClick={onClose}
-                    aria-label={closeLabel}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition-all duration-200 hover:scale-[1.05] hover:bg-[var(--surface-card)]"
-                >
-                    <span className="text-lg leading-none">✕</span>
-                </button>
-            </section>
-
-            {showNavLinks && links.map(({ href, label }) => (
-                <button
-                    key={href}
-                    onClick={() => onNavigate(href)}
-                    className="w-full border-b border-[var(--border)] px-6 py-4 text-left text-sm font-medium text-[var(--text-subtle)] transition-all duration-200 hover:bg-[var(--surface-card)] hover:pl-8 hover:text-[var(--text)]"
-                >
-                    {label}
-                </button>
-            ))}
-
-            <div className="mt-6 border-t border-[var(--border)] px-6 pt-5">
-                <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
-                    {settingsLabel}
-                </p>
-
-                <div className="flex items-center gap-3">
-                    <SettingsMenu />
-                </div>
-            </div>
-
-            <a
-                href="/contact"
+        <>
+            <div
+                aria-hidden="true"
                 onClick={onClose}
-                className="mx-6 mt-6 rounded-full bg-[var(--accent)] px-4 py-3 text-center text-xs font-semibold text-black transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] active:translate-y-0 active:scale-[0.99] motion-reduce:transition-none hover:text-white"
+                className={`fixed inset-0 z-[290] bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+            />
+
+            <div
+                role="dialog"
+                aria-modal="true"
+                aria-label={navigationLabel}
+                className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(85%,320px)] flex flex-col overflow-y-auto border-l border-[var(--border)] shadow-[var(--shadow)] pt-3 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                style={{ background: 'var(--bg)' }}
             >
-                {contactLabel}
-            </a>
-        </div>
+                <section className="mb-6 flex flex-row items-center justify-between gap-4 px-6">
+                    <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
+                        {navigationLabel}
+                    </span>
+
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        aria-label={closeLabel}
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition-all duration-200 hover:scale-[1.05] hover:bg-[var(--surface-card)]"
+                    >
+                        <span className="text-lg leading-none">✕</span>
+                    </button>
+                </section>
+
+                {showNavLinks && (
+                    <nav className="mb-2 flex flex-col">
+                        {links.map(({ href, label }) => (
+                            <button
+                                key={href}
+                                onClick={() => onNavigate(href)}
+                                className="w-full border-b border-[var(--border)] px-6 py-4 text-left text-sm font-medium text-[var(--text-subtle)] transition-all duration-200 hover:bg-[var(--surface-card)] hover:pl-8 hover:text-[var(--text)]"
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </nav>
+                )}
+
+                <div className="mt-4 border-t border-[var(--border)] px-6 pt-5">
+                    <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
+                        {settingsLabel}
+                    </p>
+
+                    <SettingsPanel />
+                </div>
+
+                <a
+                    href="/contact"
+                    onClick={onClose}
+                    className="mx-6 mt-6 rounded-full bg-[var(--accent)] px-4 py-3 text-center text-xs font-semibold text-black transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] active:translate-y-0 active:scale-[0.99] motion-reduce:transition-none hover:text-white"
+                >
+                    {contactLabel}
+                </a>
+            </div>
+        </>
     )
 }
 
@@ -222,6 +235,19 @@ export default function NavSection() {
 
         return () => {
             window.clearTimeout(unmountTimeoutId)
+        }
+    }, [menuOpen])
+
+    useEffect(() => {
+        if (!menuOpen) {
+            return
+        }
+
+        const previousOverflow = document.body.style.overflow
+        document.body.style.overflow = 'hidden'
+
+        return () => {
+            document.body.style.overflow = previousOverflow
         }
     }, [menuOpen])
 
