@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiSettings } from 'react-icons/fi'
 import { SUPPORTED_LANGUAGES } from '../../lib/i18n.ts'
+import { writePreference } from '../../lib/cookieConsent'
 import { useTheme } from '../../hooks/useTheme'
 import type { Theme } from '../../context/themeContext'
 import { useAccent } from '../../hooks/useAccent'
 import { ACCENT_PRESETS } from '../../context/accentContext'
 import type { AccentColor } from '../../context/accentContext'
+import { useCookieConsent } from '../../hooks/useCookieConsent'
 
 function MoonIcon() {
     return (
@@ -59,6 +61,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
     const { i18n, t } = useTranslation()
     const { theme, isDark, setTheme } = useTheme()
     const { accent, setAccent } = useAccent()
+    const { consent, accept, decline, showBanner } = useCookieConsent()
 
     const THEME_OPTIONS: { value: Theme; label: string; Icon: () => React.JSX.Element; activeColor: string }[] = [
         { value: 'dark', label: t('themeSwitcher.dark'), Icon: MoonIcon, activeColor: '#a5b4fc' },
@@ -73,7 +76,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
 
     async function handleLanguageSelect(code: string) {
         await i18n.changeLanguage(code)
-        localStorage.setItem('portfolio-lang', code)
+        writePreference('portfolio-lang', code)
     }
 
     return (
@@ -178,6 +181,44 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                         )
                     })}
                 </div>
+            </section>
+
+            <section className="border-t border-[var(--border)] pt-4">
+                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                    {t('cookieConsent.section')}
+                </h3>
+                <p className="mb-2 px-1 text-xs text-[var(--text-subtle)]">
+                    {consent === 'accepted'
+                        ? t('cookieConsent.statusAccepted')
+                        : consent === 'declined'
+                            ? t('cookieConsent.statusDeclined')
+                            : t('cookieConsent.statusUndecided')}
+                </p>
+                <div className="flex gap-2 px-1">
+                    <button
+                        type="button"
+                        onClick={accept}
+                        className="flex-1 rounded-xl bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-black transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                        {t('cookieConsent.accept')}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={decline}
+                        className="flex-1 rounded-xl border border-[var(--border)] px-3 py-2 text-xs font-semibold text-[var(--text-subtle)] transition-colors duration-200 hover:text-[var(--text)]"
+                    >
+                        {t('cookieConsent.decline')}
+                    </button>
+                </div>
+                {consent !== null && (
+                    <button
+                        type="button"
+                        onClick={showBanner}
+                        className="mt-2 w-full px-1 text-left text-xs underline text-[var(--text-subtle)] hover:text-[var(--text)]"
+                    >
+                        {t('cookieConsent.manage')}
+                    </button>
+                )}
             </section>
         </div>
     )

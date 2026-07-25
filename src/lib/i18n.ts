@@ -1,5 +1,6 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
+import { readPreference } from './cookieConsent'
 
 export const SUPPORTED_LANGUAGES = [
     { code: 'no', label: 'Norsk' },
@@ -38,6 +39,16 @@ const en = {
         appearance: 'Appearance',
         accentColor: 'Accent color',
         chooseAccent: 'Choose accent color',
+    },
+    cookieConsent: {
+        section: 'Privacy',
+        message: 'This site uses cookies to remember your theme, accent color and language. Nothing is shared with third parties.',
+        accept: 'Accept',
+        decline: 'Decline',
+        manage: 'Change cookie preferences',
+        statusAccepted: 'Preferences are being saved on this device.',
+        statusDeclined: 'Preferences are not saved. Your choices only apply to this session.',
+        statusUndecided: "You haven't made a choice yet.",
     },
     contactButton: {
         label: 'Contact me',
@@ -298,6 +309,16 @@ const no: TranslationSchema = {
         accentColor: 'Aksentfarge',
         chooseAccent: 'Velg aksentfarge',
     },
+    cookieConsent: {
+        section: 'Personvern',
+        message: 'Dette nettstedet bruker informasjonskapsler for å huske tema, aksentfarge og språk. Ingenting deles med tredjeparter.',
+        accept: 'Godta',
+        decline: 'Avslå',
+        manage: 'Endre cookie-innstillinger',
+        statusAccepted: 'Valgene dine lagres på denne enheten.',
+        statusDeclined: 'Valgene dine lagres ikke. De gjelder kun for denne økten.',
+        statusUndecided: 'Du har ikke tatt et valg ennå.',
+    },
     contactButton: {
         label: 'Kontakt meg',
     },
@@ -555,6 +576,16 @@ const es: TranslationSchema = {
         accentColor: 'Color de acento',
         chooseAccent: 'Elegir color de acento',
     },
+    cookieConsent: {
+        section: 'Privacidad',
+        message: 'Este sitio usa cookies para recordar tu tema, color de acento e idioma. No se comparte nada con terceros.',
+        accept: 'Aceptar',
+        decline: 'Rechazar',
+        manage: 'Cambiar preferencias de cookies',
+        statusAccepted: 'Tus preferencias se están guardando en este dispositivo.',
+        statusDeclined: 'Tus preferencias no se guardan. Solo aplican a esta sesión.',
+        statusUndecided: 'Todavía no has tomado una decisión.',
+    },
     contactButton: {
         label: 'Contáctame',
     },
@@ -788,7 +819,7 @@ i18n.use(initReactI18next).init({
     },
     supportedLngs: SUPPORTED_LANGUAGES.map((language) => language.code),
     load: 'languageOnly',
-    lng: localStorage.getItem('portfolio-lang') ?? 'no',
+    lng: readPreference('portfolio-lang') ?? 'no',
     fallbackLng: 'no',
     interpolation: {
         escapeValue: false,
