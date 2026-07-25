@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { readPreference, writePreference } from '../lib/cookieConsent'
+import { useCookieConsent } from '../hooks/useCookieConsent'
 import { THEME_STORAGE_KEY, ThemeContext } from './themeContext'
 import type { Theme } from './themeContext'
 
@@ -10,8 +12,7 @@ function getSystemPreference(): 'dark' | 'light' {
 }
 
 function getInitialTheme(): Theme {
-    if (typeof window === 'undefined') return 'system'
-    const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
+    const stored = readPreference(THEME_STORAGE_KEY)
     if (stored === 'dark' || stored === 'light' || stored === 'system') return stored
     return 'system'
 }
@@ -24,6 +25,7 @@ function applyTheme(resolved: 'dark' | 'light') {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
+    const { consent } = useCookieConsent()
     const [theme, setThemeState] = useState<Theme>(getInitialTheme)
     const [systemPref, setSystemPref] = useState<'dark' | 'light'>(getSystemPreference)
     const [flashKey, setFlashKey] = useState(0)
@@ -42,7 +44,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         applyTheme(resolved)
-        window.localStorage.setItem(THEME_STORAGE_KEY, theme)
+
+        if (consent === 'accepted') {
+            writePreference(THEME_STORAGE_KEY, theme)
+        }
 
         if (isFirstRender.current) {
             isFirstRender.current = false
@@ -50,7 +55,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         }
 
         setFlashKey((k) => k + 1)
-    }, [resolved, theme])
+    }, [resolved, theme, consent])
 
     const value = useMemo(
         () => ({

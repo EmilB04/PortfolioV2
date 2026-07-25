@@ -9,15 +9,20 @@ import 'primeicons/primeicons.css'
 import App from './App.tsx'
 import { ThemeProvider } from './context/ThemeProvider'
 import { AccentProvider } from './context/AccentProvider'
+import { CookieConsentProvider } from './context/CookieConsentProvider'
+import CookieConsentBanner from './components/CookieConsentBanner'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
-      <AccentProvider>
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <App />
-        </BrowserRouter>
-      </AccentProvider>
-    </ThemeProvider>
+    <CookieConsentProvider>
+      <ThemeProvider>
+        <AccentProvider>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <App />
+          </BrowserRouter>
+          <CookieConsentBanner />
+        </AccentProvider>
+      </ThemeProvider>
+    </CookieConsentProvider>
   </StrictMode>,
 )
