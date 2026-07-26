@@ -16,10 +16,10 @@ export default function CookieConsentBanner() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 24 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="fixed inset-x-0 bottom-0 z-[500] flex justify-center px-4 pb-4 sm:px-6"
+                    className="fixed inset-x-0 bottom-0 z-[500] flex justify-center px-4 pb-4 md:px-6"
                 >
                     <div
-                        className="flex w-full max-w-screen-md flex-col gap-3 rounded-2xl border p-4 shadow-[0_18px_48px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:flex-row sm:items-center sm:justify-between"
+                        className="flex w-full max-w-screen-md flex-col gap-3 rounded-2xl border p-4 shadow-[0_18px_48px_rgba(0,0,0,0.28)] backdrop-blur-2xl md:flex-row md:items-center md:justify-between"
                         style={{
                             background: 'color-mix(in srgb, var(--surface-card) 94%, transparent)',
                             borderColor: 'var(--border)',
@@ -39,7 +39,7 @@ export default function CookieConsentBanner() {
                             <button
                                 type="button"
                                 onClick={accept}
-                                className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-black transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                                className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 {t('cookieConsent.accept')}
                             </button>

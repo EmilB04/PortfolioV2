@@ -17,7 +17,7 @@
   transition: background 0.3s ease;
 }
 
-#root>*:not(.stars-canvas) {
+#root>*:not(.stars-canvas):not(.fixed) {
   position: relative;
   z-index: 1;
 }
@@ -99,7 +99,6 @@ button {
   padding: var(--e-button-padding);
   font-size: var(--e-button-font-size);
   cursor: pointer;
-  border: none;
 }
 
 /* ─── Typography ─────────────────────────────────────────── */

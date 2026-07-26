@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../header/BackButton'
@@ -210,7 +211,7 @@ export default function NavSection() {
 
     useEffect(() => {
         function onResize() {
-            if (window.innerWidth > 710) setMenuOpen(false)
+            if (window.innerWidth >= 1024) setMenuOpen(false)
         }
         window.addEventListener('resize', onResize)
         return () => window.removeEventListener('resize', onResize)
@@ -296,7 +297,7 @@ export default function NavSection() {
                 />
             </div>
 
-            {drawerMounted ? (
+            {drawerMounted ? createPortal(
                 <MobileDrawer
                     isOpen={drawerOpen}
                     onNavigate={navigate}
@@ -307,7 +308,8 @@ export default function NavSection() {
                     settingsLabel={t('header.settings')}
                     contactLabel={t('contactButton.label')}
                     closeLabel={t('header.closeMenu')}
-                />
+                />,
+                document.body,
             ) : null}
         </nav>
     )

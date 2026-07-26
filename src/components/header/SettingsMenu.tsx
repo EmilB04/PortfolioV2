@@ -194,22 +194,24 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                             ? t('cookieConsent.statusDeclined')
                             : t('cookieConsent.statusUndecided')}
                 </p>
-                <div className="flex gap-2 px-1">
-                    <button
-                        type="button"
-                        onClick={accept}
-                        className="flex-1 rounded-xl bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-black transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                        {t('cookieConsent.accept')}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={decline}
-                        className="flex-1 rounded-xl border border-[var(--border)] px-3 py-2 text-xs font-semibold text-[var(--text-subtle)] transition-colors duration-200 hover:text-[var(--text)]"
-                    >
-                        {t('cookieConsent.decline')}
-                    </button>
-                </div>
+                {consent === null && (
+                    <div className="flex gap-2 px-1">
+                        <button
+                            type="button"
+                            onClick={accept}
+                            className="flex-1 rounded-xl bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-white transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                            {t('cookieConsent.accept')}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={decline}
+                            className="flex-1 rounded-xl border border-[var(--border)] px-3 py-2 text-xs font-semibold text-[var(--text-subtle)] transition-colors duration-200 hover:text-[var(--text)]"
+                        >
+                            {t('cookieConsent.decline')}
+                        </button>
+                    </div>
+                )}
                 {consent !== null && (
                     <button
                         type="button"
