@@ -289,8 +289,8 @@ export default function SettingsMenu() {
                 className={`
                     absolute right-0 top-[calc(100%+0.6rem)] z-[400] w-72 max-w-[calc(100vw-2rem)]
                     max-h-[70vh] overflow-y-auto rounded-2xl border border-[var(--border)]
-                    bg-[color:color-mix(in_srgb,var(--surface-card)_92%,transparent)]
-                    shadow-[0_18px_48px_rgba(0,0,0,0.22)] backdrop-blur-2xl
+                    bg-[var(--bg)]
+                    shadow-[0_18px_48px_rgba(0,0,0,0.22)]
                     transition-all duration-200 ease-out origin-top-right motion-reduce:transition-none
                     ${open
                         ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
