@@ -274,6 +274,10 @@ const en = {
         publicRepos: 'public repos',
         recentActivity: 'Recent activity',
         pushedTo: 'Pushed to {{repo}}',
+        prOpened: 'Opened',
+        prMerged: 'Merged',
+        prClosed: 'Closed',
+        prReopened: 'Reopened',
     },
 }
 
@@ -545,6 +549,10 @@ const no: TranslationSchema = {
         publicRepos: 'offentlige repos',
         recentActivity: 'Nylig aktivitet',
         pushedTo: 'Pushet til {{repo}}',
+        prOpened: 'Åpnet',
+        prMerged: 'Slått sammen',
+        prClosed: 'Lukket',
+        prReopened: 'Gjenåpnet',
     },
 }
 
@@ -814,6 +822,10 @@ const es: TranslationSchema = {
         publicRepos: 'repos públicos',
         recentActivity: 'Actividad reciente',
         pushedTo: 'Envió cambios a {{repo}}',
+        prOpened: 'Abrió',
+        prMerged: 'Fusionó',
+        prClosed: 'Cerró',
+        prReopened: 'Reabrió',
     },
 }
 
