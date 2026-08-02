@@ -9,10 +9,11 @@ import { useAccent } from '../../hooks/useAccent'
 import { ACCENT_PRESETS } from '../../context/accentContext'
 import type { AccentColor } from '../../context/accentContext'
 import { useCookieConsent } from '../../hooks/useCookieConsent'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 
 function MoonIcon() {
     return (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
     )
@@ -20,7 +21,7 @@ function MoonIcon() {
 
 function SystemIcon() {
     return (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <rect x="2" y="3" width="20" height="14" rx="2" />
             <line x1="8" y1="21" x2="16" y2="21" />
             <line x1="12" y1="17" x2="12" y2="21" />
@@ -30,7 +31,7 @@ function SystemIcon() {
 
 function SunIcon() {
     return (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
             <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none" />
             {[0, 45, 90, 135, 180, 225, 270, 315].map(a => (
                 <line
@@ -199,7 +200,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                         <button
                             type="button"
                             onClick={accept}
-                            className="flex-1 rounded-xl bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-white transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                            className="flex-1 rounded-xl bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-black transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
                         >
                             {t('cookieConsent.accept')}
                         </button>
@@ -230,6 +231,8 @@ export default function SettingsMenu() {
     const { t } = useTranslation()
     const [open, setOpen] = useState(false)
     const rootRef = useRef<HTMLDivElement | null>(null)
+    const panelRef = useRef<HTMLDivElement | null>(null)
+    useFocusTrap(open, panelRef)
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -274,12 +277,13 @@ export default function SettingsMenu() {
                     aria-hidden="true"
                     className={`
                         h-4.5 w-4.5 shrink-0 transition-transform duration-300 ease-out
-                        ${open ? 'rotate-45 text-[var(--accent)]' : 'text-[var(--text-subtle)] group-hover:text-[var(--text)]'}
+                        ${open ? 'rotate-45 text-[var(--accent-text)]' : 'text-[var(--text-subtle)] group-hover:text-[var(--text)]'}
                     `}
                 />
             </button>
 
             <div
+                ref={panelRef}
                 role="dialog"
                 aria-label={t('header.settings')}
                 className={`

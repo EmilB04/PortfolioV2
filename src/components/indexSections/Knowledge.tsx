@@ -117,6 +117,8 @@ function SkillTile({ skill }: { skill: Skill }) {
                 </div>
 
                 <button
+                    type="button"
+                    aria-label={skill.name}
                     className="flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-200 group-hover:-translate-y-1 group-hover:shadow-lg"
                     style={{
                         background: `color-mix(in srgb, ${skill.color} 16%, var(--surface-card))`,
@@ -124,8 +126,8 @@ function SkillTile({ skill }: { skill: Skill }) {
                     }}
                 >
                     {skill.icon
-                        ? <skill.icon size={26} style={{ color: skill.color }} />
-                        : <span className="text-sm font-bold tracking-tight" style={{ color: skill.color }}>{skill.abbr}</span>
+                        ? <skill.icon size={26} style={{ color: skill.color }} aria-hidden="true" />
+                        : <span aria-hidden="true" className="text-sm font-bold tracking-tight" style={{ color: skill.color }}>{skill.abbr}</span>
                     }
                 </button>
             </div>

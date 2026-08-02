@@ -38,10 +38,10 @@ export default function ProjectCard({ project }: { project: Project }) {
                 className="rounded-xl p-3 transition-transform duration-200 group-hover:scale-110"
                 style={{ background: 'color-mix(in srgb, var(--accent) 15%, transparent)' }}
             >
-                <Icon size={32} style={{ color: 'var(--accent)' }} />
+                <Icon size={32} style={{ color: 'var(--accent)' }} aria-hidden="true" />
             </div>
 
-            <h3 className="text-lg font-bold text-[var(--text)]">{project.title}</h3>
+            <h2 className="text-lg font-bold text-[var(--text)]">{project.title}</h2>
 
             <p className="flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
                 {project.description}
@@ -64,7 +64,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                 style={{ background: 'var(--accent)' }}
             >
                 {t('projectCard.readMore')}
-                <ArrowRight size={14} />
+                <ArrowRight size={14} aria-hidden="true" />
             </span>
         </Link>
     )

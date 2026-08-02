@@ -15,7 +15,7 @@ export default function Home() {
     }
 
     return (
-        <main>
+        <div>
             <Landing onScrollNextSection={handleScrollNextSection} />
             <AboutMe />
             <LiveDomainShowcase />
@@ -24,6 +24,6 @@ export default function Home() {
             <Knowledge />
             <Certifications />
             <GitHub />
-        </main>
+        </div>
     )
 }

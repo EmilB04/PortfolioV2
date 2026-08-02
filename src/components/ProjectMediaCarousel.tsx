@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react'
 import { resolveMediaUrl } from '../lib/media'
 import BrowserPreview from './BrowserPreview'
+import { useFocusTrap } from '../hooks/useFocusTrap'
 
 type MediaItem =
     | { type: 'live'; url: string }
@@ -36,6 +37,9 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
         window.addEventListener('keydown', onKey)
         return () => window.removeEventListener('keydown', onKey)
     }, [lightbox, prev, next])
+
+    const lightboxRef = useRef<HTMLDivElement>(null)
+    useFocusTrap(lightbox, lightboxRef)
 
     if (items.length === 0) return null
 
@@ -72,7 +76,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                         className="absolute right-2 top-2 rounded-full bg-black/60 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
                         aria-label="Fullscreen"
                     >
-                        <Maximize2 size={13} />
+                        <Maximize2 size={13} aria-hidden="true" />
                     </button>
                 )}
 
@@ -81,16 +85,18 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                         <button
                             type="button"
                             onClick={prev}
+                            aria-label="Previous media"
                             className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
                         >
-                            <ChevronLeft size={18} />
+                            <ChevronLeft size={18} aria-hidden="true" />
                         </button>
                         <button
                             type="button"
                             onClick={next}
+                            aria-label="Next media"
                             className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
                         >
-                            <ChevronRight size={18} />
+                            <ChevronRight size={18} aria-hidden="true" />
                         </button>
                     </>
                 )}
@@ -99,18 +105,25 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
             {/* Dots + counter */}
             {items.length > 1 && (
                 <div className="mt-3 flex items-center justify-center gap-3">
-                    <div className="flex gap-1.5">
+                    <div className="flex">
                         {items.map((_, i) => (
                             <button
                                 key={i}
                                 type="button"
                                 onClick={() => setIndex(i)}
-                                className={`h-1.5 rounded-full transition-all duration-200 ${
-                                    i === index
-                                        ? 'w-4 bg-[var(--accent)]'
-                                        : 'w-1.5 bg-[var(--border)] hover:bg-[var(--text-subtle)]'
-                                }`}
-                            />
+                                aria-label={`Go to media ${i + 1}`}
+                                aria-current={i === index}
+                                className="group flex items-center justify-center p-2.5"
+                            >
+                                <span
+                                    aria-hidden="true"
+                                    className={`block h-1.5 rounded-full transition-all duration-200 ${
+                                        i === index
+                                            ? 'w-4 bg-[var(--accent)]'
+                                            : 'w-1.5 bg-[var(--border)] group-hover:bg-[var(--text-subtle)]'
+                                    }`}
+                                />
+                            </button>
                         ))}
                     </div>
                     <span className="text-sm text-[var(--text-subtle)]">
@@ -131,6 +144,8 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                                 key={i}
                                 type="button"
                                 onClick={() => setIndex(i)}
+                                aria-label={`View media ${i + 1}`}
+                                aria-current={i === index}
                                 className={`flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-150 ${
                                     i === index
                                         ? 'border-[var(--accent)]'
@@ -138,7 +153,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                                 }`}
                             >
                                 {item.type === 'live' ? (
-                                    <div className="flex h-[50px] w-[80px] items-center justify-center bg-[var(--surface-card)] text-sm font-medium text-[var(--accent)]">
+                                    <div className="flex h-[50px] w-[80px] items-center justify-center bg-[var(--surface-card)] text-sm font-medium text-[var(--text)]">
                                         Live
                                     </div>
                                 ) : item.type === 'video' ? (
@@ -157,6 +172,10 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
             {/* Lightbox */}
             {lightbox && !isLive && !isVid && (
                 <div
+                    ref={lightboxRef}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={`${title} ${index + 1}`}
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
                     onClick={() => setLightbox(false)}
                 >
@@ -166,23 +185,25 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                         className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
                         aria-label="Close"
                     >
-                        <X size={18} />
+                        <X size={18} aria-hidden="true" />
                     </button>
                     {items.length > 1 && (
                         <>
                             <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); prev() }}
+                                aria-label="Previous media"
                                 className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
                             >
-                                <ChevronLeft size={24} />
+                                <ChevronLeft size={24} aria-hidden="true" />
                             </button>
                             <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); next() }}
+                                aria-label="Next media"
                                 className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
                             >
-                                <ChevronRight size={24} />
+                                <ChevronRight size={24} aria-hidden="true" />
                             </button>
                         </>
                     )}

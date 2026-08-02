@@ -50,7 +50,7 @@ export default function FooterSection() {
                         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
                     }}
                 >
-                    <Github size={18} />
+                    <Github size={18} aria-hidden="true" />
                     <span>{t('footer.github')}</span>
                 </a>
 

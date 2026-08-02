@@ -199,7 +199,7 @@ export default function GitHub() {
     return (
         <IndexLayout id={INDEX_PATHS.GITHUB} className="flex-col">
             <header className="mb-10 w-full text-center">
-                <h2 className="text-3xl font-semibold text-[var(--accent)] sm:text-4xl">{t('github.title')}</h2>
+                <h2 className="text-3xl font-semibold text-[var(--accent-text)] sm:text-4xl">{t('github.title')}</h2>
                 <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
                     {t('github.intro')}
                 </p>
@@ -219,7 +219,7 @@ export default function GitHub() {
                 </div>
             ) : errorReason ? (
                 <div className="flex w-full flex-col items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] px-6 py-10 text-center">
-                    <AlertTriangle size={22} className="text-[var(--accent)]" />
+                    <AlertTriangle size={22} className="text-[var(--accent-text)]" aria-hidden="true" />
                     <p className="text-sm text-[var(--text-muted)]">
                         {errorReason === 'rateLimited' ? t('github.rateLimited') : t('github.loadError')}
                     </p>
@@ -242,7 +242,7 @@ export default function GitHub() {
 
                             <div className="flex flex-1 flex-col items-center gap-2 sm:items-start">
                                 <div className="flex flex-col flex-wrap items-center justify-center sm:justify-start">
-                                    <h3 className="text-xl font-bold text-[var(--text)] transition-colors group-hover:text-[var(--accent)]">
+                                    <h3 className="text-xl font-bold text-[var(--text)] transition-colors group-hover:text-[var(--accent-text)]">
                                         {profile.name ?? profile.login}
                                     </h3>
                                     <span className="text-sm font-medium text-[var(--text-subtle)]">@{profile.login}</span>
@@ -254,16 +254,16 @@ export default function GitHub() {
 
                                 <div className="mt-1 flex flex-wrap items-center justify-center gap-4 text-sm text-[var(--text-subtle)] sm:justify-start">
                                     <span className="flex items-center gap-1.5">
-                                        <Users size={14} className="text-[var(--accent)]" />
+                                        <Users size={14} className="text-[var(--accent-text)]" aria-hidden="true" />
                                         {profile.followers} {t('github.followers')}
                                     </span>
                                     <span className="flex items-center gap-1.5">
-                                        <FolderGit2 size={14} className="text-[var(--accent)]" />
+                                        <FolderGit2 size={14} className="text-[var(--accent-text)]" aria-hidden="true" />
                                         {profile.public_repos} {t('github.publicRepos')}
                                     </span>
                                     {profile.location && (
                                         <span className="flex items-center gap-1.5">
-                                            <MapPin size={14} className="text-[var(--accent)]" />
+                                            <MapPin size={14} className="text-[var(--accent-text)]" aria-hidden="true" />
                                             {profile.location}
                                         </span>
                                     )}
@@ -272,7 +272,8 @@ export default function GitHub() {
 
                             <ExternalLink
                                 size={16}
-                                className="hidden flex-shrink-0 text-[var(--text-subtle)] transition-colors group-hover:text-[var(--accent)] sm:block"
+                                aria-hidden="true"
+                                className="hidden flex-shrink-0 text-[var(--text-subtle)] transition-colors group-hover:text-[var(--accent-text)] sm:block"
                             />
                         </a>
                     )}
@@ -280,7 +281,7 @@ export default function GitHub() {
                     {activity.length > 0 && (
                         <div className="flex w-full flex-col gap-3">
                             <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
-                                <GitCommitHorizontal size={14} className="text-[var(--accent)]" />
+                                <GitCommitHorizontal size={14} className="text-[var(--accent-text)]" aria-hidden="true" />
                                 {t('github.recentActivity')}
                             </h3>
 
@@ -294,7 +295,7 @@ export default function GitHub() {
                                             className="group flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-card)] px-4 py-3 text-sm transition-colors duration-200 hover:border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)]"
                                         >
                                             <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[var(--accent)]" />
-                                            <span className="flex-shrink-0 font-mono text-xs text-[var(--accent)]">
+                                            <span className="flex-shrink-0 font-mono text-xs font-semibold text-[var(--text)]">
                                                 {commit.repo.split('/')[1]}
                                             </span>
                                             <span className="min-w-0 flex-1 truncate text-[var(--text-muted)] transition-colors group-hover:text-[var(--text)]">
@@ -327,19 +328,19 @@ export default function GitHub() {
                                 >
                                     {/* Header: name + stats */}
                                     <div className="flex items-start justify-between gap-4">
-                                        <h3 className="flex-1 break-words text-base font-semibold leading-snug text-[var(--text)] transition-colors group-hover:text-[var(--accent)]">
+                                        <h3 className="flex-1 break-words text-base font-semibold leading-snug text-[var(--text)] transition-colors group-hover:text-[var(--accent-text)]">
                                             {repo.name}
                                         </h3>
                                         <div className="flex shrink-0 items-center gap-3 text-sm text-[var(--text-subtle)]">
                                             {repo.stargazers_count > 0 && (
-                                                <span className="flex items-center gap-1 text-[var(--accent)]">
-                                                    <Star size={13} />
+                                                <span className="flex items-center gap-1 text-[var(--accent-text)]">
+                                                    <Star size={13} aria-hidden="true" />
                                                     {repo.stargazers_count}
                                                 </span>
                                             )}
                                             {repo.forks_count > 0 && (
-                                                <span className="flex items-center gap-1 text-[var(--accent)]">
-                                                    <GitFork size={13} />
+                                                <span className="flex items-center gap-1 text-[var(--accent-text)]">
+                                                    <GitFork size={13} aria-hidden="true" />
                                                     {repo.forks_count}
                                                 </span>
                                             )}
@@ -354,15 +355,15 @@ export default function GitHub() {
                                     {/* Footer: language pill + link */}
                                     <div className="mt-auto flex items-center justify-between gap-2 border-t border-[var(--border)] pt-3">
                                         {repo.language ? (
-                                            <span className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-sm font-medium text-[var(--accent)]">
+                                            <span className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-sm font-medium text-[var(--accent-text)]">
                                                 {repo.language}
                                             </span>
                                         ) : (
                                             <span />
                                         )}
-                                        <span className="flex items-center gap-1 text-sm font-medium text-[var(--accent)] transition-[gap] duration-200 group-hover:gap-2">
+                                        <span className="flex items-center gap-1 text-sm font-medium text-[var(--accent-text)] transition-[gap] duration-200 group-hover:gap-2">
                                             {t('github.viewRepo')}
-                                            <ExternalLink size={11} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                                            <ExternalLink size={11} aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5" />
                                         </span>
                                     </div>
                                 </a>
@@ -380,7 +381,7 @@ export default function GitHub() {
                     className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-6 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
                 >
                     {t('github.visitProfile')}
-                    <ExternalLink size={14} />
+                    <ExternalLink size={14} aria-hidden="true" />
                 </a>
             </div>
         </IndexLayout>

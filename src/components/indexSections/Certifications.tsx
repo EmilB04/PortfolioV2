@@ -291,7 +291,7 @@ function CategoryCard({ category, label }: { category: CourseCategory; label: st
                         boxShadow: `0 0 0 1px color-mix(in srgb, ${category.color} 28%, transparent)`,
                     }}
                 >
-                    <Icon size={16} style={{ color: category.color }} />
+                    <Icon size={16} style={{ color: category.color }} aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                     <p className="truncate text-xs font-bold uppercase tracking-[0.10em] text-[var(--text)]">{label}</p>

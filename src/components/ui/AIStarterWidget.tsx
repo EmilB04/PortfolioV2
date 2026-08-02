@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BotMessageSquare, RotateCcw, Send, X } from 'lucide-react'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 
 type Message = { role: 'user' | 'assistant'; content: string }
 
@@ -22,13 +23,21 @@ export default function AIStarterWidget() {
     const [loading, setLoading] = useState(false)
     const bottomRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
+    const panelRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages, loading])
 
+    useFocusTrap(isOpen, panelRef, { initialFocusRef: inputRef })
+
     useEffect(() => {
-        if (isOpen) inputRef.current?.focus()
+        if (!isOpen) return
+        function onKey(e: KeyboardEvent) {
+            if (e.key === 'Escape') setIsOpen(false)
+        }
+        window.addEventListener('keydown', onKey)
+        return () => window.removeEventListener('keydown', onKey)
     }, [isOpen])
 
     useEffect(() => {
@@ -79,6 +88,10 @@ export default function AIStarterWidget() {
         <div className="fixed bottom-4 left-4 z-40 sm:bottom-6 sm:left-6">
             {isOpen && (
                 <div
+                    ref={panelRef}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={t('aiWidget.assistant')}
                     className="mb-3 flex w-[min(92vw,22rem)] flex-col overflow-hidden rounded-3xl border shadow-2xl"
                     style={{
                         background: 'var(--bg)',
@@ -95,7 +108,7 @@ export default function AIStarterWidget() {
                     >
                         <div className="flex items-center gap-2">
                             <span className="inline-flex h-7 w-7 items-center justify-center rounded-full" style={{ background: 'var(--accent)', color: '#fff' }}>
-                                <BotMessageSquare size={14} />
+                                <BotMessageSquare size={14} aria-hidden="true" />
                             </span>
                             <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
                                 {t('aiWidget.assistant')}
@@ -109,7 +122,7 @@ export default function AIStarterWidget() {
                                 title={t('aiWidget.newChat')}
                                 className="rounded-full p-1.5 transition-colors hover:bg-[var(--surface-card)]"
                             >
-                                <RotateCcw size={14} style={{ color: 'var(--text-muted)' }} />
+                                <RotateCcw size={14} aria-hidden="true" style={{ color: 'var(--text-muted)' }} />
                             </button>
                             <button
                                 type="button"
@@ -118,13 +131,13 @@ export default function AIStarterWidget() {
                                 title={t('aiWidget.close')}
                                 className="rounded-full p-1.5 transition-colors hover:bg-[var(--surface-card)]"
                             >
-                                <X size={16} style={{ color: 'var(--text-muted)' }} />
+                                <X size={16} aria-hidden="true" style={{ color: 'var(--text-muted)' }} />
                             </button>
                         </div>
                     </div>
 
                     {/* messages */}
-                    <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-3">
+                    <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-3" aria-live="polite" aria-atomic="false">
                         {/* welcome — reactive to language changes */}
                         <div className="flex justify-start">
                             <div className="max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed" style={{ background: 'var(--surface-card)', color: 'var(--text)' }}>
@@ -172,6 +185,7 @@ export default function AIStarterWidget() {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKey}
                             placeholder={t('aiWidget.placeholder')}
+                            aria-label={t('aiWidget.inputLabel')}
                             disabled={loading}
                             className="flex-1 rounded-full border px-3 py-2 text-sm outline-none transition-colors focus:border-[var(--accent)] disabled:opacity-50"
                             style={{
@@ -187,7 +201,7 @@ export default function AIStarterWidget() {
                             className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold transition-all hover:scale-105 disabled:opacity-40"
                             style={{ background: 'var(--accent)', color: '#000' }}
                         >
-                            <Send size={14} />
+                            <Send size={14} aria-hidden="true" />
                             {t('aiWidget.send')}
                         </button>
                     </div>
@@ -210,7 +224,7 @@ export default function AIStarterWidget() {
                 }}
             >
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full" style={{ background: 'var(--accent)', color: '#fff' }}>
-                    <BotMessageSquare size={18} />
+                    <BotMessageSquare size={18} aria-hidden="true" />
                 </span>
                 <span className="hidden flex-col sm:flex">
                     <span className="text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--text-muted)' }}>

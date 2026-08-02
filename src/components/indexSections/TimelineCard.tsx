@@ -28,7 +28,7 @@ export default function TimelineCard({ event }: Props) {
                         {course.name}
                     </h4>
                     {course.code ? (
-                        <p className="m-0 text-sm font-semibold text-[var(--accent)] sm:text-[0.9rem]">
+                        <p className="m-0 text-sm font-semibold text-[var(--accent-text)] sm:text-[0.9rem]">
                             {course.code}
                         </p>
                     ) : null}

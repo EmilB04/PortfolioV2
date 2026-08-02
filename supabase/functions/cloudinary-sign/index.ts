@@ -10,6 +10,15 @@ const cors = {
 serve(async (req) => {
     if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
 
+    const json = (data: unknown, status = 200) =>
+        new Response(JSON.stringify(data), { status, headers: { ...cors, 'Content-Type': 'application/json' } })
+
+    const adminSecret = Deno.env.get('ADMIN_UPLOAD_SECRET')
+    const providedKey = req.headers.get('x-admin-key')
+    if (!adminSecret || providedKey !== adminSecret) {
+        return json({ error: 'Unauthorized' }, 401)
+    }
+
     const body = await req.json() as {
         action?: 'sign' | 'save'
         folder?: string
@@ -19,9 +28,6 @@ serve(async (req) => {
         newPublicIds?: string[]
         currentImages?: string[]
     }
-
-    const json = (data: unknown, status = 200) =>
-        new Response(JSON.stringify(data), { status, headers: { ...cors, 'Content-Type': 'application/json' } })
 
     // --- action: save ---
     if (body.action === 'save') {

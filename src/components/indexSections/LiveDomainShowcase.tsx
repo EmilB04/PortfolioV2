@@ -72,6 +72,7 @@ export default function LiveDomainShowcase() {
 
     useEffect(() => {
         if (paused) return
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
         const interval = setInterval(() => {
             navigate((active + 1) % DOMAINS.length)
         }, 6000)
@@ -119,6 +120,9 @@ export default function LiveDomainShowcase() {
                 .float-5 { animation: float 10s ease-in-out infinite alternate; }
                 .float-mockup { animation: float-mockup 6s ease-in-out infinite alternate; }
                 .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+                @media (prefers-reduced-motion: reduce) {
+                    .float-1, .float-2, .float-3, .float-4, .float-5, .float-mockup, .pulse-dot { animation: none; }
+                }
             `}</style>
 
             <div
@@ -252,7 +256,7 @@ export default function LiveDomainShowcase() {
                             style={{ background: `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})`, boxShadow: `0 4px 20px ${domain.accentFrom}73` }}
                         >
                             {t('showcase.visit')}
-                            <ArrowRight size={18} className="transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
+                            <ArrowRight size={18} aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
                         </a>
                     </div>
 
@@ -269,7 +273,7 @@ export default function LiveDomainShowcase() {
                                     <div className="w-3 h-3 rounded-full bg-[#28c840]" />
                                 </div>
                                 <div className="flex-1 flex items-center justify-center gap-2 px-3 py-1 text-xs text-white/45 bg-white/5 rounded-full tracking-wide">
-                                    <Lock size={13} className="opacity-60" />
+                                    <Lock size={13} className="opacity-60" aria-hidden="true" />
                                     {item.url}
                                 </div>
                             </div>
@@ -308,7 +312,7 @@ export default function LiveDomainShowcase() {
                     }}
                     aria-label={t('showcase.prev')}
                 >
-                    <ChevronLeft size={24} />
+                    <ChevronLeft size={24} aria-hidden="true" />
                 </button>
                 <button
                     onClick={() => navigate(active + 1)}
@@ -323,7 +327,7 @@ export default function LiveDomainShowcase() {
                     }}
                     aria-label={t('showcase.next')}
                 >
-                    <ChevronRight size={24} />
+                    <ChevronRight size={24} aria-hidden="true" />
                 </button>
 
                 {/* Dots */}

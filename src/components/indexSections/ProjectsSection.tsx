@@ -98,8 +98,8 @@ export default function ProjectsSection() {
                                         {p.title}
                                     </span>
                                     {p.live_url && (
-                                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 text-sm font-semibold text-green-400">
-                                            <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-sm font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
+                                            <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
                                             {t('projectCard.live')}
                                         </span>
                                     )}
@@ -128,8 +128,8 @@ export default function ProjectsSection() {
                                                 {active.title}
                                             </h3>
                                             {active.live_url && (
-                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/15 px-2.5 py-1 text-sm font-semibold text-green-400">
-                                                    <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-sm font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
+                                                    <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
                                                     {t('projectCard.live')}
                                                 </span>
                                             )}
@@ -171,14 +171,14 @@ export default function ProjectsSection() {
                                                         href={active.url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
                                                     >
                                                         {t('projectCard.sourceCode')}
-                                                        <Github size={14} />
+                                                        <Github size={14} aria-hidden="true" />
                                                     </a>
                                                     <Link
                                                         to={ROUTES.PROJECT_DETAILS.path.replace(':projectId', active.local_path)}
-                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
                                                     >
                                                         {t('projectCard.readMore')}
                                                     </Link>
@@ -190,7 +190,7 @@ export default function ProjectsSection() {
                                                             className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-black transition-opacity hover:opacity-90"
                                                         >
                                                             {t('projectsSection.visitSite')}
-                                                            <ExternalLink size={14} />
+                                                            <ExternalLink size={14} aria-hidden="true" />
                                                         </a>
                                                     )}
                                                 </div>
@@ -205,10 +205,10 @@ export default function ProjectsSection() {
                     <div className="mt-8 flex justify-center">
                         <Link
                             to={ROUTES.PROJECTS.path}
-                            className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)] px-6 py-2.5 text-sm font-medium text-[var(--accent)] transition-colors hover:bg-[var(--accent)] hover:text-black"
+                            className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)] px-6 py-2.5 text-sm font-medium text-[var(--accent-text)] transition-colors hover:bg-[var(--accent)] hover:text-black"
                         >
                             {t('projectsSection.cta')}
-                            <ArrowRight size={15} />
+                            <ArrowRight size={15} aria-hidden="true" />
                         </Link>
                     </div>
                 </div>

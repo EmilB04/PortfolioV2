@@ -20,6 +20,7 @@ export function AccentProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const preset = ACCENT_PRESETS[accent] ?? ACCENT_PRESETS[DEFAULT_ACCENT]
         document.documentElement.style.setProperty('--accent', isDark ? preset.dark : preset.light)
+        document.documentElement.style.setProperty('--accent-text', isDark ? preset.dark : preset.lightText)
 
         if (consent === 'accepted') {
             writePreference(ACCENT_STORAGE_KEY, accent)

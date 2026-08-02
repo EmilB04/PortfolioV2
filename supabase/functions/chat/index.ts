@@ -1,5 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
+const LINKEDIN_URL = 'https://www.linkedin.com/in/emilber/'
+
 function getAge(): number {
   const birth = new Date(2004, 3, 11) // April 11, 2004
   const today = new Date()
@@ -18,7 +20,11 @@ RESPONSE STYLE: Answer only what was asked. No padding, no extra context, no sug
 
 OFF-TOPIC QUESTIONS: For general knowledge questions unrelated to Emil or the portfolio, answer them extremely briefly (often just 1-5 words). Example: "Hvem er statsminister i Norge?" → "Jonas Gahr Støre". Do not redirect or explain — just answer.
 
-KNOWN CURRENT FACTS (use these, do not override with outdated training data):
+WEB SEARCH: You have a web_search tool. Your training data has a cutoff date and goes stale — use web_search for anything where the answer could have changed since then: current office holders, recent results/scores/winners, prices, versions, or any question the user flags as recent or current. Don't search for general timeless knowledge. Search silently — never mention that you searched, just give the short answer.
+
+FACTS ABOUT EMIL: Use the "About Emil" info below as the primary source — it's maintained directly and is accurate. Only fall back to fetching his LinkedIn profile (${LINKEDIN_URL}) with web_fetch for something not covered below. If that fetch fails or hits a login wall, say you don't have that information rather than guessing.
+
+KNOWN CURRENT FACTS (prefer these over training data; if a question isn't covered here and might be time-sensitive, use web_search instead of guessing):
 ${factsBlock}
 
 LANGUAGE: Always respond in the same language the user writes in.
@@ -64,7 +70,7 @@ Structured, reliable, takes ownership of deliverables. Thrives in environments w
 
 ## Contact
 - GitHub: github.com/EmilB04
-- LinkedIn: linkedin.com/in/emilber
+- LinkedIn: ${LINKEDIN_URL}
 - Email: emil.berglund+portfolio@live.no
 - Phone: +47 981 89 601`
 }
@@ -162,6 +168,15 @@ Deno.serve(async (req: Request) => {
       max_tokens: 300,
       system: buildSystemPrompt(facts),
       messages,
+      tools: [
+        { type: 'web_search_20250305', name: 'web_search', max_uses: 3 },
+        {
+          type: 'web_fetch_20250910',
+          name: 'web_fetch',
+          max_uses: 2,
+          allowed_domains: ['linkedin.com', 'www.linkedin.com'],
+        },
+      ],
     }),
   })
 
@@ -174,7 +189,13 @@ Deno.serve(async (req: Request) => {
   }
 
   const data = await response.json()
-  const text = data.content?.[0]?.text ?? ''
+  // With web_search enabled, content can include server_tool_use / web_search_tool_result
+  // blocks alongside text — concatenate only the text blocks for the final answer.
+  const text = (data.content ?? [])
+    .filter((block: { type: string }) => block.type === 'text')
+    .map((block: { text: string }) => block.text)
+    .join('\n\n')
+    .trim()
 
   void logChat(lastUserMessage, text)
 

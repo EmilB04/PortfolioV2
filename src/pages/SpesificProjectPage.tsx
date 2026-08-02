@@ -12,13 +12,14 @@ const API_KEY = import.meta.env.CLOUDINARY_API_KEY ?? ''
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? ''
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
 
-async function getSignature(folder: string, publicId: string, timestamp: number) {
+async function getSignature(folder: string, publicId: string, timestamp: number, adminKey: string) {
     const res = await fetch(`${SUPABASE_URL}/functions/v1/cloudinary-sign`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             apikey: SUPABASE_ANON_KEY,
             Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            'x-admin-key': adminKey,
         },
         body: JSON.stringify({ folder, publicId, timestamp }),
     })
@@ -27,9 +28,9 @@ async function getSignature(folder: string, publicId: string, timestamp: number)
     return signature
 }
 
-async function uploadToCloudinary(file: File, folder: string, publicId: string): Promise<string> {
+async function uploadToCloudinary(file: File, folder: string, publicId: string, adminKey: string): Promise<string> {
     const timestamp = Math.floor(Date.now() / 1000)
-    const signature = await getSignature(folder, publicId, timestamp)
+    const signature = await getSignature(folder, publicId, timestamp, adminKey)
 
     const form = new FormData()
     form.append('file', file)
@@ -54,6 +55,7 @@ export default function SpesificProjectPage() {
     const [loading, setLoading] = useState(true)
     const [notFound, setNotFound] = useState(false)
     const [devMode, setDevMode] = useState(false)
+    const [adminKey, setAdminKey] = useState<string | null>(null)
     const [uploading, setUploading] = useState(false)
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -83,16 +85,23 @@ export default function SpesificProjectPage() {
         function onKey(e: KeyboardEvent) {
             if (e.ctrlKey && e.shiftKey && e.key === 'D') {
                 e.preventDefault()
-                setDevMode((v) => !v)
+                setDevMode((v) => {
+                    const next = !v
+                    if (next && !adminKey) {
+                        const entered = window.prompt('Admin upload secret:')
+                        if (entered) setAdminKey(entered)
+                    }
+                    return next
+                })
                 setUploadStatus('idle')
             }
         }
         window.addEventListener('keydown', onKey)
         return () => window.removeEventListener('keydown', onKey)
-    }, [])
+    }, [adminKey])
 
     async function handleUpload(files: FileList | null) {
-        if (!files || !project) return
+        if (!files || !project || !adminKey) return
         setUploading(true)
         setUploadStatus('idle')
 
@@ -102,7 +111,7 @@ export default function SpesificProjectPage() {
         try {
             for (const file of Array.from(files)) {
                 const publicId = `${project.local_path}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
-                const publicIdFull = await uploadToCloudinary(file, folder, publicId)
+                const publicIdFull = await uploadToCloudinary(file, folder, publicId, adminKey)
                 newPublicIds.push(publicIdFull)
             }
 
@@ -112,6 +121,7 @@ export default function SpesificProjectPage() {
                     'Content-Type': 'application/json',
                     apikey: SUPABASE_ANON_KEY,
                     Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    'x-admin-key': adminKey,
                 },
                 body: JSON.stringify({
                     action: 'save',
@@ -135,29 +145,29 @@ export default function SpesificProjectPage() {
 
     if (loading) {
         return (
-            <main className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
+            <div className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
                 <ProjectDetailSkeleton />
-            </main>
+            </div>
         )
     }
 
     if (notFound || !project) {
         return (
-            <main className="flex flex-col items-center justify-center gap-4" style={{ minHeight: 'calc(100vh - 4rem)', marginTop: '4rem', color: 'var(--text)' }}>
+            <div className="flex flex-col items-center justify-center gap-4" style={{ minHeight: 'calc(100vh - 4rem)', marginTop: '4rem', color: 'var(--text)' }}>
                 <p className="text-[var(--text-muted)]">{t('projectDetails.notFound')}</p>
-            </main>
+            </div>
         )
     }
 
     return (
-        <main className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
+        <div className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
             <div className="mx-auto max-w-screen-xl backdrop-blur-xl">
                 {/* Title + live badge — centered, large */}
                 <div className="mb-4 flex flex-wrap items-center justify-center gap-3 text-center">
-                    <h2 className="w-full text-5xl font-bold text-[var(--accent)] sm:text-6xl">{project.title}</h2>
+                    <h2 className="w-full text-5xl font-bold text-[var(--accent-text)] sm:text-6xl">{project.title}</h2>
                     {project.live_url && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/15 px-2.5 py-1 text-xs font-semibold text-green-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
                             {t('projectCard.live')}
                         </span>
                     )}
@@ -173,7 +183,7 @@ export default function SpesificProjectPage() {
                             {project.languages.map((lang) => (
                                 <span
                                     key={lang}
-                                    className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-xs font-medium text-[var(--accent)]"
+                                    className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-xs font-medium text-[var(--accent-text)]"
                                 >
                                     {lang}
                                 </span>
@@ -231,9 +241,9 @@ export default function SpesificProjectPage() {
                                     href={project.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
                                 >
-                                    <Github size={15} />
+                                    <Github size={15} aria-hidden="true" />
                                     {t('projectCard.sourceCode')}
                                 </a>
                             )}
@@ -244,7 +254,7 @@ export default function SpesificProjectPage() {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
                                 >
-                                    <ExternalLink size={15} />
+                                    <ExternalLink size={15} aria-hidden="true" />
                                     {t('projectsSection.visitSite')}
                                 </a>
                             )}
@@ -271,9 +281,10 @@ export default function SpesificProjectPage() {
                         <button
                             type="button"
                             onClick={() => setDevMode(false)}
+                            aria-label="Close dev panel"
                             className="rounded p-0.5 text-[var(--text-subtle)] hover:text-[var(--text)]"
                         >
-                            <X size={14} />
+                            <X size={14} aria-hidden="true" />
                         </button>
                     </div>
 
@@ -289,8 +300,8 @@ export default function SpesificProjectPage() {
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        disabled={uploading}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[var(--border)] px-4 py-5 text-sm text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:pointer-events-none disabled:opacity-50"
+                        disabled={uploading || !adminKey}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[var(--border)] px-4 py-5 text-sm text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)] disabled:pointer-events-none disabled:opacity-50"
                     >
                         {uploading ? (
                             <><Loader2 size={16} className="animate-spin" /> Uploading…</>
@@ -309,10 +320,10 @@ export default function SpesificProjectPage() {
                     )}
 
                     <p className="mt-3 text-sm text-[var(--text-subtle)]">
-                        Uploads to <code className="text-[var(--accent)]">portfolio/projects/{project.local_path}/</code>
+                        Uploads to <code className="text-[var(--accent-text)]">portfolio/projects/{project.local_path}/</code>
                     </p>
                 </div>
             )}
-        </main>
+        </div>
     )
 }
