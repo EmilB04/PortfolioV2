@@ -11,6 +11,23 @@ const CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME ?? 'emilber-portfolio'
 const API_KEY = import.meta.env.CLOUDINARY_API_KEY ?? ''
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? ''
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
+const ADMIN_KEY_SESSION_STORAGE_KEY = 'portfolio_admin_upload_key'
+
+function readStoredAdminKey(): string | null {
+    try {
+        return sessionStorage.getItem(ADMIN_KEY_SESSION_STORAGE_KEY)
+    } catch {
+        return null
+    }
+}
+
+function storeAdminKey(key: string) {
+    try {
+        sessionStorage.setItem(ADMIN_KEY_SESSION_STORAGE_KEY, key)
+    } catch {
+        // sessionStorage unavailable (private browsing, quota) — key just won't persist across reloads
+    }
+}
 
 async function getSignature(folder: string, publicId: string, timestamp: number, adminKey: string) {
     const res = await fetch(`${SUPABASE_URL}/functions/v1/cloudinary-sign`, {
@@ -55,7 +72,7 @@ export default function SpesificProjectPage() {
     const [loading, setLoading] = useState(true)
     const [notFound, setNotFound] = useState(false)
     const [devMode, setDevMode] = useState(false)
-    const [adminKey, setAdminKey] = useState<string | null>(null)
+    const [adminKey, setAdminKey] = useState<string | null>(readStoredAdminKey)
     const [uploading, setUploading] = useState(false)
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -88,8 +105,13 @@ export default function SpesificProjectPage() {
                 setDevMode((v) => {
                     const next = !v
                     if (next && !adminKey) {
-                        const entered = window.prompt('Admin upload secret:')
-                        if (entered) setAdminKey(entered)
+                        // Dev-only convenience — never present in a `vite build` bundle, see .env.example
+                        const devSecret = import.meta.env.DEV ? import.meta.env.VITE_DEV_ADMIN_UPLOAD_SECRET : undefined
+                        const entered = devSecret || window.prompt('Admin upload secret:')
+                        if (entered) {
+                            setAdminKey(entered)
+                            storeAdminKey(entered)
+                        }
                     }
                     return next
                 })

@@ -9,6 +9,7 @@ import {
     Layout,
     Gamepad2,
     Anchor,
+    BatteryFull,
     FolderOpen,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -23,6 +24,7 @@ const PROJECT_ICONS: Record<string, LucideIcon> = {
     'portfolio-website': Layout,
     hangbot: Gamepad2,
     fleetbot: Anchor,
+    'streamdeck-battery-monitor': BatteryFull,
 }
 
 export default function ProjectCard({ project }: { project: Project }) {

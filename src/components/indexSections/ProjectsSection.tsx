@@ -6,13 +6,14 @@ import { ArrowRight, ExternalLink, Github } from 'lucide-react'
 import IndexLayout from './_layout'
 import { FeaturedProjectsSkeleton } from '../ui/Skeleton'
 import BrowserPreview from '../BrowserPreview'
+import { resolveMediaUrl } from '../../lib/media'
 import { supabase } from '../../lib/supabase'
 import type { Project } from '../../hooks/useProjects'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 import { ROUTES } from '../../routes/routes'
 
-// Change these 4 slugs to control which projects are featured here
-const FEATURED_SLUGS = ['varsel', 'hangbot', 'fleetbot', 'pageprobe'] as const
+// Change these slugs to control which projects are featured here
+const FEATURED_SLUGS = ['streamdeck-battery-monitor', 'varsel', 'hangbot', 'fleetbot', 'pageprobe'] as const
 
 export default function ProjectsSection() {
     const { t } = useTranslation()
@@ -45,6 +46,8 @@ export default function ProjectsSection() {
     }, [])
 
     const active = projects[activeIndex]
+    const previewImage = !active?.live_url ? resolveMediaUrl(active?.images?.[0]) : ''
+    const hasPreview = Boolean(active?.live_url) || Boolean(previewImage)
 
     return (
         <IndexLayout id={INDEX_PATHS.PROJECTS} className="flex-col px-4 md:px-8 lg:px-12 xl:px-16 2xl:px-24">
@@ -150,18 +153,27 @@ export default function ProjectsSection() {
                                         )}
 
                                         {/* Body — preview left, description + buttons right on large screens */}
-                                        <div className={`flex flex-col gap-5 ${active.live_url ? 'lg:flex-row lg:items-start lg:gap-6' : ''}`}>
-                                            {/* Preview — only when live_url exists */}
-                                            {active.live_url && (
+                                        <div className={`flex flex-col gap-5 ${hasPreview ? 'lg:flex-row lg:items-start lg:gap-6' : ''}`}>
+                                            {/* Preview — live site if available, else the project's first photo */}
+                                            {active.live_url ? (
                                                 <div className="min-w-0 lg:flex-1">
                                                     <BrowserPreview
                                                         url={active.live_url}
                                                     />
                                                 </div>
-                                            )}
+                                            ) : previewImage ? (
+                                                <div className="min-w-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] lg:flex-1">
+                                                    <img
+                                                        src={previewImage}
+                                                        alt={active.title}
+                                                        className="aspect-video w-full object-cover"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                            ) : null}
 
                                             {/* Description + buttons */}
-                                            <div className={`flex flex-col gap-4 ${active.live_url ? 'lg:w-52 lg:flex-shrink-0' : ''}`}>
+                                            <div className={`flex flex-col gap-4 ${hasPreview ? 'lg:w-52 lg:flex-shrink-0' : ''}`}>
                                                 <p className="text-sm leading-relaxed text-[var(--text-muted)]">
                                                     {active.description}
                                                 </p>
