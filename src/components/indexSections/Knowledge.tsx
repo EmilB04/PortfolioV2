@@ -4,6 +4,7 @@ import {
     SiVuedotjs, SiReact, SiExpo, SiQuasar, SiHtml5, SiCss,
     SiJavascript, SiTypescript, SiSass, SiNodedotjs, SiDotnet,
     SiPython, SiMysql, SiGit, SiGithub, SiFigma, SiTrello, SiGnubash,
+    SiSupabase, SiAuth0, SiCloudflare, SiRender, SiCloudinary,
 } from 'react-icons/si'
 import { BiLogoJava } from 'react-icons/bi'
 import { VscAzure } from 'react-icons/vsc'
@@ -37,6 +38,8 @@ const CATEGORIES: { key: 'frontend' | 'backend' | 'tools'; skills: Skill[] }[] =
             { name: 'Java', icon: BiLogoJava, color: '#5382A1', tooltip: 'Object-oriented language for enterprise applications' },
             { name: 'C#', abbr: 'C#', color: '#68217A', tooltip: 'Microsoft language for .NET applications' },
             { name: 'MySQL', icon: SiMysql, color: '#4479A1', tooltip: 'Open-source relational database system' },
+            { name: 'Supabase', icon: SiSupabase, color: '#3FCF8E', tooltip: 'Postgres backend with auth, storage and edge functions' },
+            { name: 'Auth0', icon: SiAuth0, color: '#EB5424', tooltip: 'Managed authentication and authorization platform' },
             { name: 'C/Shell', icon: SiGnubash, color: '#A8B9CC', tooltip: 'Systems programming and Unix shell scripting' },
         ],
     },
@@ -47,6 +50,9 @@ const CATEGORIES: { key: 'frontend' | 'backend' | 'tools'; skills: Skill[] }[] =
             { name: 'Git', icon: SiGit, color: '#F05032', tooltip: 'Distributed version control system' },
             { name: 'GitHub', icon: SiGithub, color: '#6E5494', tooltip: 'Code hosting and collaboration platform' },
             { name: 'Azure', icon: VscAzure, color: '#0078D4', tooltip: 'Microsoft cloud computing platform' },
+            { name: 'Cloudflare', icon: SiCloudflare, color: '#F38020', tooltip: 'CDN, DNS and edge compute platform' },
+            { name: 'Render', icon: SiRender, color: '#46E3B7', tooltip: 'Cloud hosting for web services and databases' },
+            { name: 'Cloudinary', icon: SiCloudinary, color: '#3448C5', tooltip: 'Media storage with on-the-fly image optimization' },
             { name: 'Figma', icon: SiFigma, color: '#F24E1E', tooltip: 'Collaborative UI/UX design tool' },
             { name: 'Trello', icon: SiTrello, color: '#0052CC', tooltip: 'Visual project management with boards' },
         ],
