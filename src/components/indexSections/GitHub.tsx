@@ -113,7 +113,11 @@ type RawActivity =
 function extractRawActivity(events: GitHubEvent[]): RawActivity[] {
     const items: RawActivity[] = []
 
-    for (const event of events) {
+    // The feed is ordered by event id, not created_at — events seconds apart come back
+    // out of order, so sort before slicing to MAX_ACTIVITY.
+    const sorted = [...events].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+
+    for (const event of sorted) {
         if (items.length >= MAX_ACTIVITY) break
 
         if (event.type === 'PushEvent' && event.payload.head) {

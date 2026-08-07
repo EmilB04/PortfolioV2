@@ -7,6 +7,17 @@ const cors = {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
+// Constant-time compare so the response time can't be used to recover the key byte by byte.
+function secretsMatch(provided: string, expected: string): boolean {
+    const a = new TextEncoder().encode(provided)
+    const b = new TextEncoder().encode(expected)
+    if (a.length !== b.length) return false
+
+    let diff = 0
+    for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i]
+    return diff === 0
+}
+
 serve(async (req) => {
     if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
 
@@ -15,11 +26,11 @@ serve(async (req) => {
 
     const adminSecret = Deno.env.get('ADMIN_UPLOAD_SECRET')
     const providedKey = req.headers.get('x-admin-key')
-    if (!adminSecret || providedKey !== adminSecret) {
+    if (!adminSecret || !providedKey || !secretsMatch(providedKey, adminSecret)) {
         return json({ error: 'Unauthorized' }, 401)
     }
 
-    const body = await req.json() as {
+    let body: {
         action?: 'sign' | 'save'
         folder?: string
         publicId?: string
@@ -27,6 +38,12 @@ serve(async (req) => {
         localPath?: string
         newPublicIds?: string[]
         currentImages?: string[]
+    }
+
+    try {
+        body = await req.json()
+    } catch {
+        return json({ error: 'Invalid JSON' }, 400)
     }
 
     // --- action: save ---

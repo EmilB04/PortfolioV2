@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Lock, ChevronLeft, ChevronRight } from 'lucide-react'
 import IndexLayout from './_layout'
@@ -70,16 +70,8 @@ export default function LiveDomainShowcase() {
         setFailed((prev) => (prev[i] ? prev : { ...prev, [i]: true }))
     }
 
-    useEffect(() => {
-        if (paused) return
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-        const interval = setInterval(() => {
-            navigate((active + 1) % DOMAINS.length)
-        }, 6000)
-        return () => clearInterval(interval)
-    }, [paused, active])
-
-    function navigate(rawIndex: number) {
+    // Declared before the autoplay effect so it can be a dependency without hitting the TDZ.
+    const navigate = useCallback((rawIndex: number) => {
         if (navigatingRef.current) return
         const newIndex = ((rawIndex % DOMAINS.length) + DOMAINS.length) % DOMAINS.length
         if (newIndex === active) return
@@ -96,7 +88,16 @@ export default function LiveDomainShowcase() {
                 })
             })
         }, SLIDE_MS)
-    }
+    }, [active])
+
+    useEffect(() => {
+        if (paused) return
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+        const interval = setInterval(() => {
+            navigate(active + 1)
+        }, 6000)
+        return () => clearInterval(interval)
+    }, [paused, active, navigate])
 
     return (
         <IndexLayout id={INDEX_PATHS.DOMAIN} fullscreen>

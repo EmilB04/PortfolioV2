@@ -6,7 +6,11 @@ import { useFocusTrap } from '../../hooks/useFocusTrap'
 type Message = { role: 'user' | 'assistant'; content: string }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`
+// Read straight from env rather than importing lib/supabase — that import would pull
+// the whole supabase-js chunk into the main bundle instead of its own lazy chunk.
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
 const STORAGE_KEY = 'ai_chat_messages'
+const MAX_INPUT_CHARS = 2000
 
 export default function AIStarterWidget() {
     const { t } = useTranslation()
@@ -65,11 +69,20 @@ export default function AIStarterWidget() {
         try {
             const res = await fetch(CHAT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: next }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Lets the function run with JWT verification enabled instead of --no-verify-jwt.
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'apikey': SUPABASE_ANON_KEY,
+                },
+                // The function caps history too — trimming here keeps the request under its limit.
+                body: JSON.stringify({ messages: next.slice(-20) }),
             })
             const data = await res.json()
-            setMessages([...next, { role: 'assistant', content: data.message ?? t('aiWidget.error') }])
+            const reply = res.ok && typeof data?.message === 'string' && data.message
+                ? data.message
+                : t('aiWidget.error')
+            setMessages([...next, { role: 'assistant', content: reply }])
         } catch {
             setMessages([...next, { role: 'assistant', content: t('aiWidget.error') }])
         } finally {
@@ -184,6 +197,7 @@ export default function AIStarterWidget() {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKey}
+                            maxLength={MAX_INPUT_CHARS}
                             placeholder={t('aiWidget.placeholder')}
                             aria-label={t('aiWidget.inputLabel')}
                             disabled={loading}
