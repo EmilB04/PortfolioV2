@@ -91,6 +91,11 @@ export default function Sections() {
         }
 
         handleResize()
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return
+        }
+
         animate()
         window.addEventListener('resize', handleResize)
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 export type CourseTypes = {
     semester: string
@@ -114,7 +114,12 @@ export default function useCourses(semesterId?: number): UseCoursesResult {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const fetchData = async () => {
+    // Every request claims an id; only the newest one may write state, so a slow
+    // response for a previous semesterId can't overwrite a newer one.
+    const requestId = useRef(0)
+
+    const fetchData = useCallback(async () => {
+        const id = ++requestId.current
         setLoading(true)
         setError(null)
 
@@ -129,6 +134,8 @@ export default function useCourses(semesterId?: number): UseCoursesResult {
 
         const { data, error } = await query
 
+        if (id !== requestId.current) return
+
         if (error) {
             setError(error.message)
             setData([])
@@ -138,13 +145,15 @@ export default function useCourses(semesterId?: number): UseCoursesResult {
 
         setData(((data ?? []) as SupabaseCourseRow[]).map(mapCourse))
         setLoading(false)
-    }
+    }, [semesterId])
 
     useEffect(() => {
+        // Deferred so the setState calls inside fetchData don't run in the effect body
+        // (react-hooks/set-state-in-effect).
         queueMicrotask(() => {
             void fetchData()
         })
-    }, [semesterId])
+    }, [fetchData])
 
     return { data, loading, error, refetch: fetchData }
 }

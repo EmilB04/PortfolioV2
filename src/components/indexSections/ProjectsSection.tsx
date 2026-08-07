@@ -6,13 +6,14 @@ import { ArrowRight, ExternalLink, Github } from 'lucide-react'
 import IndexLayout from './_layout'
 import { FeaturedProjectsSkeleton } from '../ui/Skeleton'
 import BrowserPreview from '../BrowserPreview'
+import { resolveMediaUrl } from '../../lib/media'
 import { supabase } from '../../lib/supabase'
 import type { Project } from '../../hooks/useProjects'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 import { ROUTES } from '../../routes/routes'
 
-// Change these 4 slugs to control which projects are featured here
-const FEATURED_SLUGS = ['varsel', 'hangbot', 'fleetbot', 'pageprobe'] as const
+// Change these slugs to control which projects are featured here
+const FEATURED_SLUGS = ['streamdeck-battery-monitor', 'varsel', 'hangbot', 'fleetbot', 'pageprobe'] as const
 
 export default function ProjectsSection() {
     const { t } = useTranslation()
@@ -45,6 +46,8 @@ export default function ProjectsSection() {
     }, [])
 
     const active = projects[activeIndex]
+    const previewImage = !active?.live_url ? resolveMediaUrl(active?.images?.[0]) : ''
+    const hasPreview = Boolean(active?.live_url) || Boolean(previewImage)
 
     return (
         <IndexLayout id={INDEX_PATHS.PROJECTS} className="flex-col px-4 md:px-8 lg:px-12 xl:px-16 2xl:px-24">
@@ -98,8 +101,8 @@ export default function ProjectsSection() {
                                         {p.title}
                                     </span>
                                     {p.live_url && (
-                                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 text-sm font-semibold text-green-400">
-                                            <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-sm font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
+                                            <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
                                             {t('projectCard.live')}
                                         </span>
                                     )}
@@ -128,8 +131,8 @@ export default function ProjectsSection() {
                                                 {active.title}
                                             </h3>
                                             {active.live_url && (
-                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/15 px-2.5 py-1 text-sm font-semibold text-green-400">
-                                                    <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-sm font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
+                                                    <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
                                                     {t('projectCard.live')}
                                                 </span>
                                             )}
@@ -150,18 +153,27 @@ export default function ProjectsSection() {
                                         )}
 
                                         {/* Body — preview left, description + buttons right on large screens */}
-                                        <div className={`flex flex-col gap-5 ${active.live_url ? 'lg:flex-row lg:items-start lg:gap-6' : ''}`}>
-                                            {/* Preview — only when live_url exists */}
-                                            {active.live_url && (
+                                        <div className={`flex flex-col gap-5 ${hasPreview ? 'lg:flex-row lg:items-start lg:gap-6' : ''}`}>
+                                            {/* Preview — live site if available, else the project's first photo */}
+                                            {active.live_url ? (
                                                 <div className="min-w-0 lg:flex-1">
                                                     <BrowserPreview
                                                         url={active.live_url}
                                                     />
                                                 </div>
-                                            )}
+                                            ) : previewImage ? (
+                                                <div className="min-w-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] lg:flex-1">
+                                                    <img
+                                                        src={previewImage}
+                                                        alt={active.title}
+                                                        className="aspect-video w-full object-cover"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                            ) : null}
 
                                             {/* Description + buttons */}
-                                            <div className={`flex flex-col gap-4 ${active.live_url ? 'lg:w-52 lg:flex-shrink-0' : ''}`}>
+                                            <div className={`flex flex-col gap-4 ${hasPreview ? 'lg:w-52 lg:flex-shrink-0' : ''}`}>
                                                 <p className="text-sm leading-relaxed text-[var(--text-muted)]">
                                                     {active.description}
                                                 </p>
@@ -171,14 +183,14 @@ export default function ProjectsSection() {
                                                         href={active.url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
                                                     >
                                                         {t('projectCard.sourceCode')}
-                                                        <Github size={14} />
+                                                        <Github size={14} aria-hidden="true" />
                                                     </a>
                                                     <Link
                                                         to={ROUTES.PROJECT_DETAILS.path.replace(':projectId', active.local_path)}
-                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
                                                     >
                                                         {t('projectCard.readMore')}
                                                     </Link>
@@ -190,7 +202,7 @@ export default function ProjectsSection() {
                                                             className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-black transition-opacity hover:opacity-90"
                                                         >
                                                             {t('projectsSection.visitSite')}
-                                                            <ExternalLink size={14} />
+                                                            <ExternalLink size={14} aria-hidden="true" />
                                                         </a>
                                                     )}
                                                 </div>
@@ -205,10 +217,10 @@ export default function ProjectsSection() {
                     <div className="mt-8 flex justify-center">
                         <Link
                             to={ROUTES.PROJECTS.path}
-                            className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)] px-6 py-2.5 text-sm font-medium text-[var(--accent)] transition-colors hover:bg-[var(--accent)] hover:text-black"
+                            className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)] px-6 py-2.5 text-sm font-medium text-[var(--accent-text)] transition-colors hover:bg-[var(--accent)] hover:text-black"
                         >
                             {t('projectsSection.cta')}
-                            <ArrowRight size={15} />
+                            <ArrowRight size={15} aria-hidden="true" />
                         </Link>
                     </div>
                 </div>

@@ -28,7 +28,7 @@ export default function BackButton({ fallback = '/', className = '' }: BackButto
                 `inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-xs font-medium text-[var(--text)] transition-all duration-200 hover:bg-[var(--surface-card)] hover:-translate-x-0.5 ${className}`
             }
         >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} aria-hidden="true" />
             {t('backButton.label')}
         </button>
     )

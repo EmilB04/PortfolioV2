@@ -1,0 +1,11 @@
+project_id = "uuhlmaduircmrzkdltff"
+
+# Both functions require a valid project JWT (the public anon key satisfies this).
+# It is not the real access control — it only stops trivially anonymous calls.
+# `chat` is bounded by the per-IP limiter in check_chat_rate_limit(); `cloudinary-sign`
+# by its own x-admin-key header. Deploying without this file left chat at verify_jwt=false.
+[functions.chat]
+verify_jwt = true
+
+[functions.cloudinary-sign]
+verify_jwt = true

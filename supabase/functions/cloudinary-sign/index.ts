@@ -3,14 +3,34 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const cors = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-admin-key',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+// Constant-time compare so the response time can't be used to recover the key byte by byte.
+function secretsMatch(provided: string, expected: string): boolean {
+    const a = new TextEncoder().encode(provided)
+    const b = new TextEncoder().encode(expected)
+    if (a.length !== b.length) return false
+
+    let diff = 0
+    for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i]
+    return diff === 0
 }
 
 serve(async (req) => {
     if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
 
-    const body = await req.json() as {
+    const json = (data: unknown, status = 200) =>
+        new Response(JSON.stringify(data), { status, headers: { ...cors, 'Content-Type': 'application/json' } })
+
+    const adminSecret = Deno.env.get('ADMIN_UPLOAD_SECRET')
+    const providedKey = req.headers.get('x-admin-key')
+    if (!adminSecret || !providedKey || !secretsMatch(providedKey, adminSecret)) {
+        return json({ error: 'Unauthorized' }, 401)
+    }
+
+    let body: {
         action?: 'sign' | 'save'
         folder?: string
         publicId?: string
@@ -20,8 +40,11 @@ serve(async (req) => {
         currentImages?: string[]
     }
 
-    const json = (data: unknown, status = 200) =>
-        new Response(JSON.stringify(data), { status, headers: { ...cors, 'Content-Type': 'application/json' } })
+    try {
+        body = await req.json()
+    } catch {
+        return json({ error: 'Invalid JSON' }, 400)
+    }
 
     // --- action: save ---
     if (body.action === 'save') {

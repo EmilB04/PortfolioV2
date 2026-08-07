@@ -129,7 +129,7 @@ function EmailPreview({ composeLabel, subject }: { composeLabel: string; subject
                     style={{ background: 'var(--accent)' }}
                 >
                     Send
-                    <Send size={11} />
+                    <Send size={11} aria-hidden="true" />
                 </span>
             </div>
         </div>
@@ -160,11 +160,11 @@ function PlatformCard({ href, label, dark, preview, title, description, buttonLa
             </WindowChrome>
 
             <div className="flex flex-1 flex-col p-6 text-center">
-                <h3 className="mb-1 text-lg font-semibold text-[var(--text)]">{title}</h3>
+                <h2 className="mb-1 text-lg font-semibold text-[var(--text)]">{title}</h2>
                 <p className="mb-5 flex-1 text-sm text-[var(--text-subtle)]">{description}</p>
                 <span className="mx-auto inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-6 py-2.5 text-sm font-semibold text-black shadow-md transition-[gap] duration-200 group-hover:gap-3">
                     {buttonLabel}
-                    <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                    <ArrowRight size={14} aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5" />
                 </span>
             </div>
         </motion.a>

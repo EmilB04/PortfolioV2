@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { readPreference, writePreference } from '../lib/cookieConsent'
 import { useCookieConsent } from '../hooks/useCookieConsent'
 import { THEME_STORAGE_KEY, ThemeContext } from './themeContext'

@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BotMessageSquare, RotateCcw, Send, X } from 'lucide-react'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 
 type Message = { role: 'user' | 'assistant'; content: string }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`
+// Read straight from env rather than importing lib/supabase — that import would pull
+// the whole supabase-js chunk into the main bundle instead of its own lazy chunk.
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
 const STORAGE_KEY = 'ai_chat_messages'
+const MAX_INPUT_CHARS = 2000
 
 export default function AIStarterWidget() {
     const { t } = useTranslation()
@@ -22,13 +27,21 @@ export default function AIStarterWidget() {
     const [loading, setLoading] = useState(false)
     const bottomRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
+    const panelRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages, loading])
 
+    useFocusTrap(isOpen, panelRef, { initialFocusRef: inputRef })
+
     useEffect(() => {
-        if (isOpen) inputRef.current?.focus()
+        if (!isOpen) return
+        function onKey(e: KeyboardEvent) {
+            if (e.key === 'Escape') setIsOpen(false)
+        }
+        window.addEventListener('keydown', onKey)
+        return () => window.removeEventListener('keydown', onKey)
     }, [isOpen])
 
     useEffect(() => {
@@ -56,11 +69,20 @@ export default function AIStarterWidget() {
         try {
             const res = await fetch(CHAT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: next }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Lets the function run with JWT verification enabled instead of --no-verify-jwt.
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'apikey': SUPABASE_ANON_KEY,
+                },
+                // The function caps history too — trimming here keeps the request under its limit.
+                body: JSON.stringify({ messages: next.slice(-20) }),
             })
             const data = await res.json()
-            setMessages([...next, { role: 'assistant', content: data.message ?? t('aiWidget.error') }])
+            const reply = res.ok && typeof data?.message === 'string' && data.message
+                ? data.message
+                : t('aiWidget.error')
+            setMessages([...next, { role: 'assistant', content: reply }])
         } catch {
             setMessages([...next, { role: 'assistant', content: t('aiWidget.error') }])
         } finally {
@@ -79,6 +101,10 @@ export default function AIStarterWidget() {
         <div className="fixed bottom-4 left-4 z-40 sm:bottom-6 sm:left-6">
             {isOpen && (
                 <div
+                    ref={panelRef}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={t('aiWidget.assistant')}
                     className="mb-3 flex w-[min(92vw,22rem)] flex-col overflow-hidden rounded-3xl border shadow-2xl"
                     style={{
                         background: 'var(--bg)',
@@ -95,7 +121,7 @@ export default function AIStarterWidget() {
                     >
                         <div className="flex items-center gap-2">
                             <span className="inline-flex h-7 w-7 items-center justify-center rounded-full" style={{ background: 'var(--accent)', color: '#fff' }}>
-                                <BotMessageSquare size={14} />
+                                <BotMessageSquare size={14} aria-hidden="true" />
                             </span>
                             <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
                                 {t('aiWidget.assistant')}
@@ -109,7 +135,7 @@ export default function AIStarterWidget() {
                                 title={t('aiWidget.newChat')}
                                 className="rounded-full p-1.5 transition-colors hover:bg-[var(--surface-card)]"
                             >
-                                <RotateCcw size={14} style={{ color: 'var(--text-muted)' }} />
+                                <RotateCcw size={14} aria-hidden="true" style={{ color: 'var(--text-muted)' }} />
                             </button>
                             <button
                                 type="button"
@@ -118,13 +144,13 @@ export default function AIStarterWidget() {
                                 title={t('aiWidget.close')}
                                 className="rounded-full p-1.5 transition-colors hover:bg-[var(--surface-card)]"
                             >
-                                <X size={16} style={{ color: 'var(--text-muted)' }} />
+                                <X size={16} aria-hidden="true" style={{ color: 'var(--text-muted)' }} />
                             </button>
                         </div>
                     </div>
 
                     {/* messages */}
-                    <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-3">
+                    <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-3" aria-live="polite" aria-atomic="false">
                         {/* welcome — reactive to language changes */}
                         <div className="flex justify-start">
                             <div className="max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed" style={{ background: 'var(--surface-card)', color: 'var(--text)' }}>
@@ -171,7 +197,9 @@ export default function AIStarterWidget() {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKey}
+                            maxLength={MAX_INPUT_CHARS}
                             placeholder={t('aiWidget.placeholder')}
+                            aria-label={t('aiWidget.inputLabel')}
                             disabled={loading}
                             className="flex-1 rounded-full border px-3 py-2 text-sm outline-none transition-colors focus:border-[var(--accent)] disabled:opacity-50"
                             style={{
@@ -187,7 +215,7 @@ export default function AIStarterWidget() {
                             className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold transition-all hover:scale-105 disabled:opacity-40"
                             style={{ background: 'var(--accent)', color: '#000' }}
                         >
-                            <Send size={14} />
+                            <Send size={14} aria-hidden="true" />
                             {t('aiWidget.send')}
                         </button>
                     </div>
@@ -210,7 +238,7 @@ export default function AIStarterWidget() {
                 }}
             >
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full" style={{ background: 'var(--accent)', color: '#fff' }}>
-                    <BotMessageSquare size={18} />
+                    <BotMessageSquare size={18} aria-hidden="true" />
                 </span>
                 <span className="hidden flex-col sm:flex">
                     <span className="text-xs font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--text-muted)' }}>

@@ -101,7 +101,7 @@ export default function Timeline() {
                     <header
                         className={['mb-4 flex flex-col gap-1', isLeft ? 'items-end' : 'items-start'].join(' ')}
                     >
-                        <h3 className="text-2xl font-semibold text-[var(--accent)] sm:text-3xl">
+                        <h3 className="text-2xl font-semibold text-[var(--accent-text)] sm:text-3xl">
                             {entry.semester}
                         </h3>
                         <p className="text-sm font-medium text-[var(--text-subtle)]">
@@ -116,7 +116,7 @@ export default function Timeline() {
 
         return (
             <div className="rounded-[1.75rem] border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[0_12px_30px_rgba(0,0,0,0.12)] sm:p-6">
-                <h3 className="m-0 text-2xl font-semibold text-[var(--accent)] sm:text-3xl">
+                <h3 className="m-0 text-2xl font-semibold text-[var(--accent-text)] sm:text-3xl">
                     {entry.title}
                 </h3>
                 <p className="mt-2 text-sm font-medium text-[var(--text-subtle)] sm:text-base">
@@ -138,7 +138,7 @@ export default function Timeline() {
             <div className="mb-12 grid w-full max-w-3xl grid-cols-3 divide-x divide-[var(--border)] rounded-[1.75rem] border border-[var(--border)] bg-[var(--surface-card)] px-2 py-6 sm:px-4 sm:py-8">
                 {stats.map((stat) => (
                     <div key={stat.label} className="flex flex-col items-center px-2 text-center sm:px-4">
-                        <span className="text-3xl font-extrabold leading-none text-[var(--accent)] sm:text-4xl">
+                        <span className="text-3xl font-extrabold leading-none text-[var(--accent-text)] sm:text-4xl">
                             {stat.value}
                         </span>
                         <span className="mt-2 text-xs font-medium text-[var(--text-subtle)] sm:text-sm">

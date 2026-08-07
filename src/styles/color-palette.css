@@ -17,6 +17,7 @@
     --border: rgba(255, 255, 255, 0.1);
     --border-hover: color-mix(in srgb, var(--accent) 40%, transparent);
     --accent: var(--accent-base);
+    --accent-text: var(--accent-base);
     --nav-bg: rgba(1, 6, 38, 0.75);
     --nav-bg-transparent: rgba(1, 6, 38, 0.3);
     --mobile-menu-bg: rgba(1, 6, 38, 0.98);
@@ -63,10 +64,11 @@ html.light-mode {
     --surface-card: rgba(255, 252, 248, 0.96);
     --text: #1c1025;
     --text-muted: rgba(28, 16, 37, 0.68);
-    --text-subtle: rgba(28, 16, 37, 0.44);
+    --text-subtle: rgba(28, 16, 37, 0.62);
     --border: rgba(28, 16, 37, 0.09);
     --border-hover: color-mix(in srgb, var(--accent) 45%, transparent);
     --accent: var(--accent-base);
+    --accent-text: #d11b43;
     --nav-bg: rgba(247, 244, 241, 0.88);
     --nav-bg-transparent: rgba(247, 244, 241, 0.5);
     --mobile-menu-bg: rgba(247, 244, 241, 0.99);

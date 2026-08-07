@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../header/BackButton'
 import { SettingsPanel } from '../header/SettingsMenu'
 import { INDEX_NAV_ITEMS } from '../../routes/indexPaths'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 
 type LinkItem = {
     href: string
@@ -115,6 +116,9 @@ function MobileDrawer({
         return () => window.removeEventListener('keydown', onKeyDown)
     }, [isOpen, onClose])
 
+    const drawerRef = useRef<HTMLDivElement>(null)
+    useFocusTrap(isOpen, drawerRef)
+
     return (
         <>
             <div
@@ -124,6 +128,7 @@ function MobileDrawer({
             />
 
             <div
+                ref={drawerRef}
                 role="dialog"
                 aria-modal="true"
                 aria-label={navigationLabel}

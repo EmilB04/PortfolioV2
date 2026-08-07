@@ -1,5 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
+declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void } | undefined
+
+const LINKEDIN_URL = 'https://www.linkedin.com/in/emilber/'
+
 function getAge(): number {
   const birth = new Date(2004, 3, 11) // April 11, 2004
   const today = new Date()
@@ -18,7 +22,11 @@ RESPONSE STYLE: Answer only what was asked. No padding, no extra context, no sug
 
 OFF-TOPIC QUESTIONS: For general knowledge questions unrelated to Emil or the portfolio, answer them extremely briefly (often just 1-5 words). Example: "Hvem er statsminister i Norge?" → "Jonas Gahr Støre". Do not redirect or explain — just answer.
 
-KNOWN CURRENT FACTS (use these, do not override with outdated training data):
+WEB SEARCH: You have a web_search tool. Your training data has a cutoff date and goes stale — use web_search for anything where the answer could have changed since then: current office holders, recent results/scores/winners, prices, versions, or any question the user flags as recent or current. Don't search for general timeless knowledge. Search silently — never mention that you searched, just give the short answer.
+
+FACTS ABOUT EMIL: Use the "About Emil" info below as the primary source — it's maintained directly and is accurate. Only fall back to fetching his LinkedIn profile (${LINKEDIN_URL}) with web_fetch for something not covered below. If that fetch fails or hits a login wall, say you don't have that information rather than guessing.
+
+KNOWN CURRENT FACTS (prefer these over training data; if a question isn't covered here and might be time-sensitive, use web_search instead of guessing):
 ${factsBlock}
 
 LANGUAGE: Always respond in the same language the user writes in.
@@ -64,17 +72,100 @@ Structured, reliable, takes ownership of deliverables. Thrives in environments w
 
 ## Contact
 - GitHub: github.com/EmilB04
-- LinkedIn: linkedin.com/in/emilber
+- LinkedIn: ${LINKEDIN_URL}
 - Email: emil.berglund+portfolio@live.no
 - Phone: +47 981 89 601`
 }
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages'
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+const ALLOWED_ORIGINS = new Set([
+  'https://emilb.no',
+  'https://www.emilb.no',
+  'http://localhost:5173',
+  'http://localhost:4173',
+])
+
+// Browsers only enforce CORS, so this stops other sites embedding the widget —
+// it does not stop curl. The rate limit and input caps below are what bound abuse.
+function buildCors(req: Request) {
+  const origin = req.headers.get('Origin')
+  return {
+    'Access-Control-Allow-Origin': origin && ALLOWED_ORIGINS.has(origin) ? origin : 'null',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Vary': 'Origin',
+  }
+}
+
+const MAX_MESSAGES = 20
+const MAX_MESSAGE_CHARS = 2_000
+const MAX_TOTAL_CHARS = 12_000
+
+type ChatMessage = { role: 'user' | 'assistant'; content: string }
+
+function validateMessages(input: unknown): { messages: ChatMessage[] } | { error: string } {
+  if (!Array.isArray(input) || input.length === 0) return { error: 'No messages provided' }
+  if (input.length > MAX_MESSAGES) return { error: 'Too many messages' }
+
+  const messages: ChatMessage[] = []
+  let totalChars = 0
+
+  for (const raw of input) {
+    if (typeof raw !== 'object' || raw === null) return { error: 'Malformed message' }
+    const { role, content } = raw as Record<string, unknown>
+    if (role !== 'user' && role !== 'assistant') return { error: 'Malformed message' }
+    if (typeof content !== 'string' || !content.trim()) return { error: 'Malformed message' }
+    if (content.length > MAX_MESSAGE_CHARS) return { error: 'Message too long' }
+
+    totalChars += content.length
+    if (totalChars > MAX_TOTAL_CHARS) return { error: 'Conversation too long' }
+
+    messages.push({ role, content })
+  }
+
+  if (messages[messages.length - 1].role !== 'user') return { error: 'Last message must be from the user' }
+  return { messages }
+}
+
+const RATE_LIMIT_MAX = 8
+const RATE_LIMIT_WINDOW = '1 minute'
+
+function clientIp(req: Request): string {
+  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+}
+
+// Counter lives in Postgres (public.check_chat_rate_limit) rather than in the isolate:
+// isolates are recycled and run in parallel, so an in-memory Map lets a distributed
+// caller exceed the cap. The RPC decides and increments in a single atomic upsert.
+async function isRateLimited(ip: string): Promise<boolean> {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+  if (!supabaseUrl || !serviceKey) return false
+
+  try {
+    const res = await fetch(`${supabaseUrl}/rest/v1/rpc/check_chat_rate_limit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${serviceKey}`,
+        'apikey': serviceKey,
+      },
+      body: JSON.stringify({ p_ip: ip, p_max: RATE_LIMIT_MAX, p_window: RATE_LIMIT_WINDOW }),
+    })
+
+    if (!res.ok) {
+      console.error('rate limit check failed', res.status, await res.text())
+      return false
+    }
+
+    // The function returns true when the request is within the cap.
+    return (await res.json()) === false
+  } catch (err) {
+    // Fail open: a limiter outage should not take the assistant down.
+    console.error('rate limit check errored', err)
+    return false
+  }
 }
 
 async function logChat(userMessage: string, assistantResponse: string) {
@@ -82,15 +173,20 @@ async function logChat(userMessage: string, assistantResponse: string) {
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
   if (!supabaseUrl || !serviceKey) return
 
-  await fetch(`${supabaseUrl}/rest/v1/chat_logs`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${serviceKey}`,
-      'apikey': serviceKey,
-    },
-    body: JSON.stringify({ user_message: userMessage, assistant_response: assistantResponse }),
-  })
+  try {
+    await fetch(`${supabaseUrl}/rest/v1/chat_logs`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${serviceKey}`,
+        'apikey': serviceKey,
+      },
+      body: JSON.stringify({ user_message: userMessage, assistant_response: assistantResponse }),
+    })
+  } catch (err) {
+    // Logging is best-effort — never fail the response because the insert failed.
+    console.error('chat_logs insert failed', err)
+  }
 }
 
 async function fetchFacts(): Promise<Record<string, string>> {
@@ -113,6 +209,13 @@ async function fetchFacts(): Promise<Record<string, string>> {
 }
 
 Deno.serve(async (req: Request) => {
+  const corsHeaders = buildCors(req)
+  const json = (data: unknown, status = 200) =>
+    new Response(JSON.stringify(data), {
+      status,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -121,33 +224,29 @@ Deno.serve(async (req: Request) => {
     return new Response('Method not allowed', { status: 405, headers: corsHeaders })
   }
 
-  const apiKey = Deno.env.get('ANTHROPIC_API_KEY')
-  if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'AI not configured' }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+  if (await isRateLimited(clientIp(req))) {
+    return json({ error: 'Too many requests' }, 429)
   }
 
-  let body: { messages?: { role: string; content: string }[] }
+  const apiKey = Deno.env.get('ANTHROPIC_API_KEY')
+  if (!apiKey) {
+    return json({ error: 'AI not configured' }, 500)
+  }
+
+  let body: { messages?: unknown }
   try {
     body = await req.json()
   } catch {
-    return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-      status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return json({ error: 'Invalid JSON' }, 400)
   }
 
-  const messages = body.messages ?? []
-  if (!messages.length) {
-    return new Response(JSON.stringify({ error: 'No messages provided' }), {
-      status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+  const validated = validateMessages(body.messages)
+  if ('error' in validated) {
+    return json({ error: validated.error }, 400)
   }
+  const { messages } = validated
 
-  const lastUserMessage = [...messages].reverse().find(m => m.role === 'user')?.content ?? ''
+  const lastUserMessage = messages[messages.length - 1].content
   const facts = await fetchFacts()
 
   const response = await fetch(ANTHROPIC_API_URL, {
@@ -162,23 +261,38 @@ Deno.serve(async (req: Request) => {
       max_tokens: 300,
       system: buildSystemPrompt(facts),
       messages,
+      tools: [
+        { type: 'web_search_20250305', name: 'web_search', max_uses: 3 },
+        {
+          type: 'web_fetch_20250910',
+          name: 'web_fetch',
+          max_uses: 2,
+          allowed_domains: ['linkedin.com', 'www.linkedin.com'],
+        },
+      ],
     }),
   })
 
   if (!response.ok) {
-    const err = await response.text()
-    return new Response(JSON.stringify({ error: err }), {
-      status: response.status,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    // Upstream error bodies can carry request/account details — log them, don't return them.
+    console.error('Anthropic API error', response.status, await response.text())
+    return json({ error: 'Upstream error' }, 502)
   }
 
   const data = await response.json()
-  const text = data.content?.[0]?.text ?? ''
+  // With web_search enabled, content can include server_tool_use / web_search_tool_result
+  // blocks alongside text — concatenate only the text blocks for the final answer.
+  const text = (data.content ?? [])
+    .filter((block: { type: string }) => block.type === 'text')
+    .map((block: { text: string }) => block.text)
+    .join('\n\n')
+    .trim()
 
-  void logChat(lastUserMessage, text)
+  // waitUntil keeps the isolate alive for the insert; a bare floating promise
+  // can be torn down with the response and silently drop the log.
+  const logging = logChat(lastUserMessage, text)
+  if (typeof EdgeRuntime !== 'undefined') EdgeRuntime.waitUntil(logging)
+  else void logging
 
-  return new Response(JSON.stringify({ message: text }), {
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-  })
+  return json({ message: text })
 })

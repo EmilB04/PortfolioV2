@@ -8,12 +8,12 @@ export default function Projects() {
     const { projects, loading } = useProjects()
 
     return (
-        <main className="min-h-screen px-4 py-12" style={{ color: 'var(--text)' }}>
+        <div className="min-h-screen px-4 py-12" style={{ color: 'var(--text)' }}>
             <div className="mx-auto max-w-screen-xl">
                 <header className="mb-12 text-center">
                     <h1
                         className="text-3xl font-semibold sm:text-4xl"
-                        style={{ background: 'transparent', color: 'var(--accent)' }}
+                        style={{ background: 'transparent', color: 'var(--accent-text)' }}
                     >
                         {t('projectsPage.title')}
                     </h1>
@@ -40,7 +40,7 @@ export default function Projects() {
                     </div>
                 )}
             </div>
-        </main >
+        </div>
     )
 }
 

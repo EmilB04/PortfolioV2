@@ -45,8 +45,8 @@ function Article({ icon: Icon, kicker, title, body }: ArticleProps) {
     return (
         <div className="flex h-full flex-col" style={{ fontFamily: SERIF }}>
             <div className="mb-3 flex items-center gap-2">
-                <Icon size={15} className="text-[var(--accent)]" />
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                <Icon size={15} className="text-[var(--accent-text)]" aria-hidden="true" />
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-text)]">
                     {kicker}
                 </span>
             </div>
@@ -56,7 +56,7 @@ function Article({ icon: Icon, kicker, title, body }: ArticleProps) {
             <div className="mb-4 border-t-4 border-double border-[var(--border)]" />
 
             <p className="flex-1 text-[15px] leading-7 text-[var(--text-muted)]">
-                <span className="float-left mr-2 mt-1 text-5xl font-bold leading-[0.75] text-[var(--accent)]">
+                <span className="float-left mr-2 mt-1 text-5xl font-bold leading-[0.75] text-[var(--accent-text)]">
                     {dropCap}
                 </span>
                 {rest}

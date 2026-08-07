@@ -110,6 +110,18 @@ values
     array [] :: text [],
     array [] :: text [],
     array ['React', 'Cloudflare Pages', 'Pages Functions', 'D1', 'Battleship', 'AI opponent', 'leaderboard', 'game', 'localStorage']
+  ),
+  (
+    7,
+    'Stream Deck Battery Monitor',
+    array ['TypeScript', 'Node.js', 'Windows'],
+    'A Stream Deck plugin that shows the battery level of auto-detected wireless peripherals — headsets, mice, keyboards, controllers and paired Bluetooth devices — right on a key.',
+    'Stream Deck Battery Monitor is a Windows plugin for Elgato Stream Deck that scans the machine for wireless peripherals and shows live battery levels on a key. No device models are hard-coded — a set of providers each enumerate what they can see (HeadsetControl for ~100 headset models, Logitech HID++ 2.0, Asus ROG''s reverse-engineered receiver protocol, PlayStation DualSense/DualShock over USB and Bluetooth, Xbox controllers over Bluetooth, and the Windows Bluetooth PnP battery property), and the results are merged, deduplicated and cached. Polling adapts to what the battery is doing (faster while charging or low, slower on a steady reading) instead of hammering the hardware on a fixed interval. Beyond the core Device Battery action, it includes a Lowest Battery action that surfaces whichever device is closest to dying, and a Device Renaming action for fixing devices with unhelpful reported names. The key face is fully customizable — battery bar, ring or percentage-only styles, configurable colours and thresholds, offline/last-known-level handling, and an estimated time-remaining readout — all rendered as SVG. Built with TypeScript and the official @elgato/streamdeck SDK, tested with node:test, and structured so a new device family only needs one new provider file.',
+    'streamdeck-battery-monitor',
+    'https://github.com/EmilB04/StreamDeck',
+    array [] :: text [],
+    array [] :: text [],
+    array ['stream-deck', 'elgato', 'plugin', 'battery-monitor', 'typescript', 'node-hid', 'hid', 'bluetooth', 'logitech', 'razer', 'asus-rog', 'dualsense', 'xbox-controller', 'headsetcontrol', 'windows', 'peripherals', 'wireless-devices', 'svg-rendering', 'adaptive-polling', 'open-source']
   ) on conflict (id) do
 update
 set

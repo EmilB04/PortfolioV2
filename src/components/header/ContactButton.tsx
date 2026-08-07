@@ -9,7 +9,7 @@ export default function ContactButton() {
             className="hidden md:inline-flex items-center justify-center"
             style={{
                 background: 'var(--accent)',
-                color: '#fff',
+                color: '#000',
                 border: '1px solid var(--border)',
                 borderRadius: '999px',
                 height: '2.5rem',

@@ -25,6 +25,7 @@ const en = {
         settings: 'Settings',
         openMenu: 'Open menu',
         closeMenu: 'Close menu',
+        skipToContent: 'Skip to content',
     },
     languageSwitcher: {
         section: 'Language',
@@ -72,6 +73,7 @@ const en = {
         closed: 'Close AI assistant',
         teaser: 'Ask me anything',
         placeholder: 'Ask me something…',
+        inputLabel: 'Message input',
         send: 'Send',
         welcome: 'Hi! I\'m Emil\'s AI assistant. Ask me about his projects, skills, or background — or anything else!',
         thinking: 'Thinking…',
@@ -272,6 +274,10 @@ const en = {
         publicRepos: 'public repos',
         recentActivity: 'Recent activity',
         pushedTo: 'Pushed to {{repo}}',
+        prOpened: 'Opened',
+        prMerged: 'Merged',
+        prClosed: 'Closed',
+        prReopened: 'Reopened',
     },
 }
 
@@ -294,6 +300,7 @@ const no: TranslationSchema = {
         settings: 'Innstillinger',
         openMenu: 'Åpne meny',
         closeMenu: 'Lukk meny',
+        skipToContent: 'Hopp til innhold',
     },
     languageSwitcher: {
         section: 'Språk',
@@ -341,6 +348,7 @@ const no: TranslationSchema = {
         closed: 'Lukk AI-assistent',
         teaser: 'Spør meg om hva som helst',
         placeholder: 'Spør meg noe…',
+        inputLabel: 'Meldingsfelt',
         send: 'Send',
         welcome: 'Hei! Jeg er Emils AI-assistent. Spør meg om prosjektene, ferdighetene eller bakgrunnen hans — eller hva som helst annet!',
         thinking: 'Tenker…',
@@ -541,6 +549,10 @@ const no: TranslationSchema = {
         publicRepos: 'offentlige repos',
         recentActivity: 'Nylig aktivitet',
         pushedTo: 'Pushet til {{repo}}',
+        prOpened: 'Åpnet',
+        prMerged: 'Slått sammen',
+        prClosed: 'Lukket',
+        prReopened: 'Gjenåpnet',
     },
 }
 
@@ -561,6 +573,7 @@ const es: TranslationSchema = {
         settings: 'Ajustes',
         openMenu: 'Abrir menú',
         closeMenu: 'Cerrar menú',
+        skipToContent: 'Saltar al contenido',
     },
     languageSwitcher: {
         section: 'Idioma',
@@ -608,6 +621,7 @@ const es: TranslationSchema = {
         closed: 'Cerrar asistente de IA',
         teaser: 'Pregúntame lo que quieras',
         placeholder: 'Pregúntame algo…',
+        inputLabel: 'Campo de mensaje',
         send: 'Enviar',
         welcome: '¡Hola! Soy el asistente de IA de Emil. ¡Pregúntame sobre sus proyectos, habilidades o su trayectoria — o cualquier otra cosa!',
         thinking: 'Pensando…',
@@ -808,6 +822,10 @@ const es: TranslationSchema = {
         publicRepos: 'repos públicos',
         recentActivity: 'Actividad reciente',
         pushedTo: 'Envió cambios a {{repo}}',
+        prOpened: 'Abrió',
+        prMerged: 'Fusionó',
+        prClosed: 'Cerró',
+        prReopened: 'Reabrió',
     },
 }
 
@@ -825,5 +843,13 @@ i18n.use(initReactI18next).init({
         escapeValue: false,
     },
 })
+
+function applyHtmlLang(lng: string) {
+    if (typeof document !== 'undefined') {
+        document.documentElement.lang = lng
+    }
+}
+applyHtmlLang(i18n.resolvedLanguage ?? i18n.language)
+i18n.on('languageChanged', applyHtmlLang)
 
 export default i18n

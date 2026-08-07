@@ -39,7 +39,7 @@ export default function ToTopButton() {
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full"
                 style={{ background: "var(--accent)", color: "#fff" }}
             >
-                <ArrowUp size={18} />
+                <ArrowUp size={18} aria-hidden="true" />
             </span>
 
             <span className="hidden flex-col sm:flex">

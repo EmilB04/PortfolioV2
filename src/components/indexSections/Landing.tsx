@@ -57,9 +57,9 @@ function Typewriter({ lines }: TypewriterProps) {
     }, [isDeleting, lineIndex, lines, typewriterText])
 
     return (
-        <span className="inline-block px-0 py-2 text-[var(--accent)]" style={{ minWidth: '18ch' }}>
+        <span className="inline-block px-0 py-2 text-[var(--accent-text)]" style={{ minWidth: '18ch' }}>
             {typewriterText}
-            <span className="ml-1 inline-block animate-[blink_0.7s_step-end_infinite] text-[var(--accent)]">|</span>
+            <span className="ml-1 inline-block animate-[blink_0.7s_step-end_infinite] text-[var(--accent-text)]">|</span>
         </span>
     )
 }
@@ -112,7 +112,7 @@ function AvatarPortrait() {
                 style={{ background: 'var(--surface-card)', backdropFilter: 'blur(8px)' }}
                 aria-hidden="true"
             >
-                <Code2 size={20} className="text-[var(--accent)]" />
+                <Code2 size={20} className="text-[var(--accent-text)]" />
             </motion.div>
         </div>
     )
@@ -206,7 +206,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                                 aria-label={t('home.githubAria')}
                                 className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent)] hover:text-white"
                             >
-                                <Github size={28} />
+                                <Github size={28} aria-hidden="true" />
                             </a>
 
                             <a
@@ -216,7 +216,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                                 aria-label={t('home.linkedinAria')}
                                 className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent)] hover:text-white"
                             >
-                                <Linkedin size={28} />
+                                <Linkedin size={28} aria-hidden="true" />
                             </a>
                         </motion.div>
 
@@ -230,7 +230,7 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                             data-aos-duration={shouldUseAos ? '1500' : undefined}
                             className="inline-flex items-center gap-4 rounded-3xl bg-[var(--accent)] px-10 py-5 text-xl font-semibold text-black transition-opacity duration-200 hover:opacity-90"
                         >
-                            <ArrowDown className="h-7 w-7 animate-bounce" />
+                            <ArrowDown className="h-7 w-7 animate-bounce" aria-hidden="true" />
                             {t('home.cta')}
                         </motion.button>
                     </motion.div>
