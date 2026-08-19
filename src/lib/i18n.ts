@@ -91,18 +91,14 @@ const en = {
         title: 'Hi! I am Emil Berglund',
         roles: [
             'Master student in AI',
-            'Computer science graduate',
+            'Computer science student',
             'Full-stack developer',
-            'Interested in full-stack',
             'Frontend developer',
-            'Interested in frontend',
             'Backend developer',
-            'Interested in backend',
-            'Interested in AI',
-            'AI user',
+            'AI interested',
         ],
         intro:
-            'I am a person with a passion for technology and a desire to learn and grow. I believe there are multiple ways to reach a goal or find a solution, and I enjoy exploring innovative approaches to tackle challenges.',
+            'I am a person with an interest in technology and a goal of learning and developing myself. I believe there are multiple ways to reach a goal or find a solution. ',
         githubAria: 'GitHub profile',
         linkedinAria: 'LinkedIn profile',
         cta: 'Take a look',
@@ -112,13 +108,13 @@ const en = {
         intro: 'A short version of who I am, what I study, and what I like to spend my time on.',
         studentTitle: 'As a student',
         student:
-            'I completed a bachelor in informatics — design and development of IT systems, with a specialization in programming — at Østfold University of Applied Sciences in Halden (2023–2026). From autumn 2026 I am taking a master in applied computer science at the same place, specializing in artificial intelligence. I like diving into programming and spend my free time exploring AI, Vue, Quasar, and other technologies.',
+            'I completed a bachelor in informatics — design and development of IT systems, with a specialization in programming — at Østfold University of Applied Sciences in Halden (2023–2026). From autumn 2026 I am taking a master in applied computer science at the same place, specializing in artificial intelligence.',
         personTitle: 'As a person',
         person:
-            'I am {{age}} years old and live in Halden. Technology has always fascinated me, and I enjoy the process of learning, improving, and finding solutions that work in practice. I thrive best when I can combine creativity with structure.',
+            'I am {{age}} years old and live in Halden. Technology has always fascinated me, and I enjoy the process of learning, improving, and finding solutions that work in practice.',
         leisureTitle: 'In my free time',
         leisure:
-            'Besides my studies, I work at Elkjøp as a service advisor. There I get to use my interest in technology and electronics while staying up to date with new products and trends. In my free time I play games, watch films and series, socialize, and often bring my drone or camera out to capture scenes in the local area.',
+            'Besides my studies, I work at Elkjøp as a service advisor. There I get to use my interest in technology and electronics while staying up to date with new products and trends. In my free time I like to play games, watch films and series, or bring my drone or camera out to capture scenes in the local area.',
         kicker: {
             student: 'Education',
             person: 'Personal',
@@ -156,6 +152,7 @@ const en = {
         loading: 'Loading timeline…',
         error: 'Could not load timeline: {{error}}',
         semesterLabel: 'Semester {{number}}',
+        semesterLabelMaster: 'Semester {{number}} (master)',
         stats: {
             years: 'Years of IT education',
             courses: 'Courses completed',
@@ -164,6 +161,20 @@ const en = {
         seasons: {
             spring: 'Spring',
             autumn: 'Autumn',
+        },
+        degrees: {
+            bachelor: {
+                kicker: 'Start of studies',
+                title: 'Bachelor in informatics',
+                description:
+                    'Design and development of IT systems, specializing in programming. Østfold University of Applied Sciences, 2023-2026.',
+            },
+            master: {
+                kicker: 'New chapter',
+                title: 'Master in applied computer science',
+                description:
+                    'Specializing in artificial intelligence. Østfold University of Applied Sciences, 2026-2028.',
+            },
         },
         items: [
             {
@@ -366,18 +377,15 @@ const no: TranslationSchema = {
         title: 'Hei! Jeg er Emil Berglund',
         roles: [
             'Masterstudent i KI',
-            'Informatikkandidat',
+            'Informatikkstudent',
             'Fullstackutvikler',
-            'Interessert i fullstack',
             'Frontendutvikler',
-            'Interessert i frontend',
             'Backendutvikler',
-            'Interessert i backend',
-            'Interessert i AI',
-            'AI-bruker',
+            'KI interessert',
         ],
         intro:
-            'Jeg er en person med lidenskap for teknologi og et ønske om å lære og vokse. Jeg tror det finnes flere måter å nå et mål eller finne en løsning på, og jeg liker å utforske innovative tilnærminger for å takle utfordringer.',
+
+            'Jeg er en person med interesse for teknologi og har et mål om å lære og utvikle meg. Jeg mener det finnes flere måter å nå et mål eller finne en løsning på. ',
         githubAria: 'GitHub-profil',
         linkedinAria: 'LinkedIn-profil',
         cta: 'Ta en titt',
@@ -387,13 +395,13 @@ const no: TranslationSchema = {
         intro: 'En kort versjon av hvem jeg er, hva jeg studerer og hva jeg liker å bruke tiden min på.',
         studentTitle: 'Som student',
         student:
-            'Jeg fullførte bachelor i informatikk – design og utvikling av IT-systemer, med fordypning i programmering, ved Høgskolen i Østfold i Halden (2023–2026). Fra høsten 2026 tar jeg master i anvendt informatikk samme sted, med fordypning i kunstig intelligens (KI). Jeg liker å fordype meg i programmering og bruker fritiden på å utforske KI, Vue, Quasar og andre teknologier.',
+            'Jeg fullførte bachelor i informatikk - design og utvikling av IT-systemer, med fordypning i programmering, ved Høgskolen i Østfold i Halden (2023-2026). Fra høsten 2026 tar jeg master i anvendt informatikk samme sted, med fordypning i kunstig intelligens (KI).',
         personTitle: 'Som person',
         person:
-            'Jeg er {{age}} år gammel og bor i Halden. Teknologi har alltid fascinert meg, og jeg liker prosessen med å lære, forbedre meg og finne løsninger som fungerer i praksis. Jeg trives best når jeg kan kombinere kreativitet med struktur.',
+            'Jeg er {{age}} år gammel og bor i Halden. Teknologi har alltid fascinert meg, og jeg liker prosessen med å lære, forbedre meg og finne løsninger som fungerer i praksis.',
         leisureTitle: 'På fritiden',
         leisure:
-            'Ved siden av studiene jobber jeg på Elkjøp som servicerådgiver. Der får jeg brukt interessen min for teknologi og elektronikk, samtidig som jeg holder meg oppdatert på nye produkter og trender. På fritiden spiller jeg, ser på filmer og serier, er sosial og tar gjerne med dronen eller kameraet mitt ut for å fange motiver i lokalområdet.',
+            'Ved siden av studiene jobber jeg på Elkjøp som servicerådgiver. Der får jeg brukt interessen min for teknologi og elektronikk, samtidig som jeg holder meg oppdatert på nye produkter og trender. På fritiden liker jeg å spille, se på filmer og serier, eller ta med dronen eller kameraet ut for å fange motiver i nærområdet.',
         kicker: {
             student: 'Utdanning',
             person: 'Personlig',
@@ -431,6 +439,7 @@ const no: TranslationSchema = {
         loading: 'Laster tidslinje…',
         error: 'Kunne ikke laste tidslinje: {{error}}',
         semesterLabel: '{{number}}. semester',
+        semesterLabelMaster: '{{number}}. semester (master)',
         stats: {
             years: 'År med IT-utdanning',
             courses: 'Emner fullført',
@@ -439,6 +448,20 @@ const no: TranslationSchema = {
         seasons: {
             spring: 'Vår',
             autumn: 'Høst',
+        },
+        degrees: {
+            bachelor: {
+                kicker: 'Studiestart',
+                title: 'Bachelor i informatikk',
+                description:
+                    'Design og utvikling av IT-systemer, med fordypning i programmering. Høgskolen i Østfold, 2023-2026.',
+            },
+            master: {
+                kicker: 'Nytt kapittel',
+                title: 'Master i anvendt informatikk',
+                description:
+                    'Med fordypning i kunstig intelligens. Høgskolen i Østfold, 2026-2028.',
+            },
         },
         items: [
             {
@@ -639,18 +662,14 @@ const es: TranslationSchema = {
         title: 'Hola. Soy Emil Berglund',
         roles: [
             'Estudiante de máster en IA',
-            'Graduado en informática',
+            'Estudiante de informática',
             'Desarrollador full-stack',
-            'Interesado en full-stack',
             'Desarrollador frontend',
-            'Interesado en frontend',
             'Desarrollador backend',
-            'Interesado en backend',
             'Interesado en IA',
-            'Usuario de IA',
         ],
         intro:
-            'Soy una persona apasionada por la tecnología y con ganas de aprender y crecer. Creo que hay varias maneras de alcanzar un objetivo o encontrar una solución, y me gusta explorar enfoques innovadores para afrontar los retos.',
+            'Soy una persona con interés por la tecnología y con el objetivo de aprender y desarrollarme. Creo que hay varias maneras de alcanzar un objetivo o encontrar una solución. ',
         githubAria: 'Perfil de GitHub',
         linkedinAria: 'Perfil de LinkedIn',
         cta: 'Echa un vistazo',
@@ -660,13 +679,13 @@ const es: TranslationSchema = {
         intro: 'Una versión breve de quién soy, qué estudio y en qué me gusta emplear mi tiempo.',
         studentTitle: 'Como estudiante',
         student:
-            'Terminé el grado en informática — diseño y desarrollo de sistemas informáticos, con especialización en programación — en Østfold University of Applied Sciences, en Halden (2023–2026). Desde otoño de 2026 curso un máster en informática aplicada en el mismo centro, con especialización en inteligencia artificial. Me gusta profundizar en programación y uso mi tiempo libre para explorar IA, Vue, Quasar y otras tecnologías.',
+            'Terminé el grado en informática — diseño y desarrollo de sistemas informáticos, con especialización en programación — en Østfold University of Applied Sciences, en Halden (2023–2026). Desde otoño de 2026 curso un máster en informática aplicada en el mismo centro, con especialización en inteligencia artificial.',
         personTitle: 'Como persona',
         person:
-            'Tengo {{age}} años y vivo en Halden. La tecnología siempre me ha fascinado, y disfruto del proceso de aprender, mejorar y encontrar soluciones que funcionen en la práctica. Me siento mejor cuando puedo combinar creatividad con estructura.',
+            'Tengo {{age}} años y vivo en Halden. La tecnología siempre me ha fascinado, y disfruto del proceso de aprender, mejorar y encontrar soluciones que funcionen en la práctica.',
         leisureTitle: 'En mi tiempo libre',
         leisure:
-            'Además de mis estudios, trabajo en Elkjøp como asesor de servicio. Allí puedo aprovechar mi interés por la tecnología y la electrónica, al mismo tiempo que me mantengo al día con nuevos productos y tendencias. En mi tiempo libre juego, veo películas y series, socializo y suelo sacar mi dron o cámara para capturar escenas de la zona.',
+            'Además de mis estudios, trabajo en Elkjøp como asesor de servicio. Allí puedo aprovechar mi interés por la tecnología y la electrónica, al mismo tiempo que me mantengo al día con nuevos productos y tendencias. En mi tiempo libre me gusta jugar, ver películas y series, o sacar el dron o la cámara para capturar escenas de la zona.',
         kicker: {
             student: 'Educación',
             person: 'Personal',
@@ -704,6 +723,7 @@ const es: TranslationSchema = {
         loading: 'Cargando cronología…',
         error: 'No se pudo cargar la cronología: {{error}}',
         semesterLabel: 'Semestre {{number}}',
+        semesterLabelMaster: 'Semestre {{number}} (máster)',
         stats: {
             years: 'Años de formación en TI',
             courses: 'Asignaturas completadas',
@@ -712,6 +732,20 @@ const es: TranslationSchema = {
         seasons: {
             spring: 'Primavera',
             autumn: 'Otoño',
+        },
+        degrees: {
+            bachelor: {
+                kicker: 'Inicio de los estudios',
+                title: 'Grado en informática',
+                description:
+                    'Diseño y desarrollo de sistemas informáticos, con especialización en programación. Østfold University of Applied Sciences, 2023-2026.',
+            },
+            master: {
+                kicker: 'Nuevo capítulo',
+                title: 'Máster en informática aplicada',
+                description:
+                    'Con especialización en inteligencia artificial. Østfold University of Applied Sciences, 2026-2028.',
+            },
         },
         items: [
             {
