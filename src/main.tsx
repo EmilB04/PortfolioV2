@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
     <CookieConsentProvider>
       <ThemeProvider>
         <AccentProvider>
-          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <BrowserRouter>
             <ErrorBoundary>
               <App />
             </ErrorBoundary>
