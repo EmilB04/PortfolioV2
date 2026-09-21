@@ -62,7 +62,6 @@ const en = {
         tagline: 'Available for collaboration and new projects',
         github: 'See source code on GitHub',
         madeBy: 'Made with ❤️ by',
-        updated: 'Last updated: {{month}} {{year}}',
     },
     aiWidget: {
         assistant: 'AI assistant',
@@ -363,7 +362,6 @@ const no: TranslationSchema = {
         tagline: 'Tilgjengelig for samarbeid og nye prosjekter',
         github: 'Se kildekode på GitHub',
         madeBy: 'Laget med ❤️ av',
-        updated: 'Sist oppdatert: {{month}} {{year}}',
     },
     aiWidget: {
         assistant: 'AI-assistent',
@@ -663,7 +661,6 @@ const es: TranslationSchema = {
         tagline: 'Disponible para colaborar y nuevos proyectos',
         github: 'Ver el código fuente en GitHub',
         madeBy: 'Hecho con ❤️ por',
-        updated: 'Última actualización: {{month}} de {{year}}',
     },
     aiWidget: {
         assistant: 'Asistente de IA',

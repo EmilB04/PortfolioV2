@@ -4,14 +4,16 @@ import { ExternalLink, Lock } from 'lucide-react'
 type Props = {
     url: string
     imageUrl?: string
+    placeholderUrl?: string
 }
 
 const MAX_RETRIES = 3
 const RETRY_DELAY_MS = 1500
 
-export default function BrowserPreview({ url, imageUrl }: Props) {
+export default function BrowserPreview({ url, imageUrl, placeholderUrl }: Props) {
     const [attempt, setAttempt] = useState(0)
     const [screenshotFailed, setScreenshotFailed] = useState(false)
+    const [screenshotLoaded, setScreenshotLoaded] = useState(false)
     const [prevUrl, setPrevUrl] = useState(url)
 
     // Reset retry state whenever the target url changes (e.g. switching active project).
@@ -20,6 +22,7 @@ export default function BrowserPreview({ url, imageUrl }: Props) {
         setPrevUrl(url)
         setAttempt(0)
         setScreenshotFailed(false)
+        setScreenshotLoaded(false)
     }
 
     const hostname = (() => {
@@ -68,24 +71,35 @@ export default function BrowserPreview({ url, imageUrl }: Props) {
             </div>
 
             {/* Preview */}
-            <div className="aspect-video w-full overflow-hidden bg-[var(--surface)]">
+            <div className="relative aspect-video w-full overflow-hidden bg-[var(--surface)]">
+                {/* Stored screenshot shown instantly while the live one renders — Microlink's
+                    cold capture can take several seconds, so this avoids a blank wait. */}
+                {placeholderUrl && (
+                    <img
+                        src={placeholderUrl}
+                        alt=""
+                        aria-hidden="true"
+                        className={`absolute inset-0 block h-full w-full object-cover object-top transition-opacity duration-300 ${imageUrl || screenshotLoaded ? 'opacity-0' : 'opacity-100'}`}
+                    />
+                )}
                 {src ? (
                     <img
                         key={attempt}
                         src={src}
                         alt={`${hostname} preview`}
+                        onLoad={() => setScreenshotLoaded(true)}
                         onError={handleError}
-                        className="block h-full w-full object-cover object-top"
+                        className={`relative block h-full w-full object-cover object-top ${placeholderUrl && !imageUrl ? `transition-opacity duration-300 ${screenshotLoaded ? 'opacity-100' : 'opacity-0'}` : ''}`}
                         loading="eager"
                     />
-                ) : (
+                ) : !placeholderUrl ? (
                     <div
                         className="flex h-full w-full items-center justify-center"
                         style={{ background: 'color-mix(in srgb, var(--accent) 6%, var(--surface))' }}
                     >
                         <span className="text-xs text-[var(--text-subtle)]">{hostname}</span>
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     )

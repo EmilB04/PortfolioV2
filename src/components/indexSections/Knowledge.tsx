@@ -67,7 +67,7 @@ const containerVariants = {
 const tileVariants = {
     hidden: { opacity: 0, y: 18, scale: 0.92 },
     show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.32, ease: 'easeOut' } },
-}
+} as const
 
 export default function Knowledge() {
     const { t } = useTranslation()

@@ -7,10 +7,10 @@ import {
     Smartphone,
     Users,
     Layout,
-    Gamepad2,
-    Anchor,
     BatteryFull,
     FolderOpen,
+    Eye,
+    FileText,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { Project } from '../hooks/useProjects'
@@ -22,8 +22,8 @@ const PROJECT_ICONS: Record<string, LucideIcon> = {
     chorechamp: Smartphone,
     skillswap: Users,
     'portfolio-website': Layout,
-    hangbot: Gamepad2,
-    fleetbot: Anchor,
+    perceivo: Eye,
+    'readme-generator': FileText,
     'streamdeck-battery-monitor': BatteryFull,
 }
 

@@ -53,7 +53,10 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
             {/* Main frame */}
             <div className="group relative overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)]">
                 {isLive ? (
-                    <BrowserPreview url={(current as { type: 'live'; url: string }).url} />
+                    <BrowserPreview
+                        url={(current as { type: 'live'; url: string }).url}
+                        placeholderUrl={images?.[0] ? resolveMediaUrl(images[0]) : undefined}
+                    />
                 ) : (
                     <div className="aspect-video w-full">
                         {isVid ? (
