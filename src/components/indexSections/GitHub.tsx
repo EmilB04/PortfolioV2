@@ -88,7 +88,7 @@ const containerVariants = {
 const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
-}
+} as const
 
 function formatRelativeTime(dateStr: string, locale: string) {
     const rtf = new Intl.RelativeTimeFormat(RELATIVE_TIME_LOCALES[locale] ?? locale, { numeric: 'auto' })
