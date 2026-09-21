@@ -8,16 +8,11 @@ export default function Projects() {
     const { projects, loading } = useProjects()
 
     return (
-        <div className="min-h-screen px-4 py-12" style={{ color: 'var(--text)' }}>
+        <div className="min-h-screen px-5 pb-16 pt-28 md:px-10" style={{ color: 'var(--text)' }}>
             <div className="mx-auto max-w-screen-xl">
-                <header className="mb-12 text-center">
-                    <h1
-                        className="text-3xl font-semibold sm:text-4xl"
-                        style={{ background: 'transparent', color: 'var(--accent-text)' }}
-                    >
-                        {t('projectsPage.title')}
-                    </h1>
-                    <p className="mt-3 text-sm text-[var(--text-muted)] sm:text-base">
+                <header className="mb-14 flex flex-col gap-4">
+                    <h1 className="m-0 max-w-[18ch]">{t('projectsPage.title')}</h1>
+                    <p className="prose-organic max-w-[54ch] text-[var(--text-muted)]">
                         {t('projectsPage.subtitle')}
                     </p>
                 </header>
@@ -29,13 +24,11 @@ export default function Projects() {
                         ))}
                     </div>
                 ) : projects.length === 0 ? (
-                    <p className="text-center text-sm text-[var(--text-muted)]">{t('projectsPage.empty')}</p>
+                    <p className="text-[15px] text-[var(--text-muted)]">{t('projectsPage.empty')}</p>
                 ) : (
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="pebble-set grid grid-cols-1 gap-6 md:grid-cols-2 min-[1280px]:grid-cols-3">
                         {projects.map((p) => (
-                            <div key={p.id} className="w-full">
-                                <ProjectCard project={p} />
-                            </div>
+                            <ProjectCard key={p.id} project={p} />
                         ))}
                     </div>
                 )}

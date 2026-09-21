@@ -7,6 +7,7 @@ import {
 } from 'react-icons/fi'
 import type { IconType } from 'react-icons'
 import IndexLayout from './_layout'
+import SectionHeading from '../ui/SectionHeading'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 
 type CourseCategory = {
@@ -149,22 +150,6 @@ const WORKPLACES: Workplace[] = [
     },
 ]
 
-const containerVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.05 } },
-}
-
-const cardVariants = {
-    hidden: { opacity: 0, y: 14, scale: 0.97 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.28, ease: 'easeOut' } },
-} as const
-
-const gridVariants = {
-    enter: { opacity: 0, y: 10 },
-    center: { opacity: 1, y: 0, transition: { duration: 0.22, ease: 'easeOut' } },
-    exit: { opacity: 0, y: -6, transition: { duration: 0.15, ease: 'easeIn' } },
-} as const
-
 export default function Certifications() {
     const { t } = useTranslation()
     const [activeKey, setActiveKey] = useState(WORKPLACES[0].key)
@@ -173,146 +158,127 @@ export default function Certifications() {
     const totalCourses = workplace.categories.reduce((sum, cat) => sum + cat.courses.length, 0)
 
     return (
-        <IndexLayout id={INDEX_PATHS.CERTIFICATIONS} className="flex-col">
-            <header className="mb-10 w-full text-center">
-                <h2 className="text-3xl font-semibold sm:text-4xl">{t('certifications.title')}</h2>
-                <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
-                    {t('certifications.intro')}
-                </p>
+        <IndexLayout id={INDEX_PATHS.CERTIFICATIONS}>
+            <SectionHeading
+                title={t('certifications.title')}
+                lead={t('certifications.intro')}
+                aside={
+                    <div className="flex flex-col items-start gap-3 md:items-end">
+                        <div
+                            role="tablist"
+                            aria-label={t('certifications.switcherLabel')}
+                            className="flex flex-wrap gap-2 md:justify-end"
+                        >
+                            {WORKPLACES.map((w) => {
+                                const count = w.categories.reduce((s, c) => s + c.courses.length, 0)
+                                const isActive = w.key === activeKey
+                                return (
+                                    <button
+                                        key={w.key}
+                                        role="tab"
+                                        aria-selected={isActive}
+                                        onClick={() => setActiveKey(w.key)}
+                                        className="pebble-sm flex items-center gap-2 border px-3.5 py-2 text-sm font-medium transition-colors duration-200"
+                                        style={
+                                            isActive
+                                                ? {
+                                                      borderColor: `color-mix(in srgb, ${w.accentColor} 55%, transparent)`,
+                                                      background: `color-mix(in srgb, ${w.accentColor} 12%, var(--surface-card))`,
+                                                      color: 'var(--text)',
+                                                  }
+                                                : {
+                                                      borderColor: 'var(--border)',
+                                                      background: 'transparent',
+                                                      color: 'var(--text-subtle)',
+                                                  }
+                                        }
+                                    >
+                                        <span
+                                            className="h-2 w-2 rounded-full"
+                                            style={{ background: isActive ? w.accentColor : 'var(--border-strong)' }}
+                                            aria-hidden="true"
+                                        />
+                                        {w.name}
+                                        <span className="text-xs text-[var(--text-subtle)]">{count}</span>
+                                    </button>
+                                )
+                            })}
+                        </div>
 
-                <div
-                    role="tablist"
-                    aria-label={t('certifications.switcherLabel')}
-                    className="mt-6 inline-flex flex-wrap justify-center gap-2"
-                >
-                    {WORKPLACES.map((w) => {
-                        const count = w.categories.reduce((s, c) => s + c.courses.length, 0)
-                        const isActive = w.key === activeKey
-                        return (
-                            <button
-                                key={w.key}
-                                role="tab"
-                                aria-selected={isActive}
-                                onClick={() => setActiveKey(w.key)}
-                                className="relative flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-                                style={
-                                    isActive
-                                        ? {
-                                              borderColor: `color-mix(in srgb, ${w.accentColor} 50%, transparent)`,
-                                              background: `color-mix(in srgb, ${w.accentColor} 12%, var(--surface-card))`,
-                                              color: w.accentColor,
-                                              boxShadow: `0 0 0 1px color-mix(in srgb, ${w.accentColor} 20%, transparent)`,
-                                          }
-                                        : {
-                                              borderColor: 'var(--border)',
-                                              background: 'var(--surface-card)',
-                                              color: 'var(--text-subtle)',
-                                          }
-                                }
-                            >
-                                <span>{w.name}</span>
-                                <span
-                                    className="rounded-full px-1.5 py-0.5 text-[10px] font-bold tracking-wide"
-                                    style={
-                                        isActive
-                                            ? {
-                                                  background: `color-mix(in srgb, ${w.accentColor} 20%, transparent)`,
-                                                  color: w.accentColor,
-                                              }
-                                            : {
-                                                  background: 'color-mix(in srgb, var(--text-subtle) 12%, transparent)',
-                                                  color: 'var(--text-subtle)',
-                                              }
-                                    }
-                                >
-                                    {count}
-                                </span>
-                                {isActive && (
-                                    <motion.span
-                                        layoutId="workplace-tab-indicator"
-                                        className="absolute inset-0 rounded-full"
-                                        style={{ boxShadow: `inset 0 0 0 1.5px color-mix(in srgb, ${w.accentColor} 40%, transparent)` }}
-                                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                    />
-                                )}
-                            </button>
-                        )
-                    })}
-                </div>
-
-                <p className="mt-3 text-xs text-[var(--text-subtle)]">
-                    {t('certifications.totalLabel', { count: totalCourses })}
-                </p>
-            </header>
+                        <p className="text-sm text-[var(--text-subtle)]">
+                            {t('certifications.totalLabel', { count: totalCourses })}
+                        </p>
+                    </div>
+                }
+            />
 
             <AnimatePresence mode="wait">
                 <motion.div
                     key={activeKey}
-                    variants={gridVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    className="w-full"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.18, ease: 'easeOut' }}
+                    className="pebble-set grid w-full grid-cols-1 items-start gap-5 md:grid-cols-3 min-[1280px]:grid-cols-4"
                 >
-                    <motion.div
-                        className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="show"
-                    >
-                        {workplace.categories.map((cat) => (
-                            <CategoryCard
-                                key={cat.key}
-                                category={cat}
-                                label={t(`certifications.categories.${cat.key}`)}
-                            />
-                        ))}
-                    </motion.div>
+                    {workplace.categories.map((cat) => (
+                        <CategoryCard
+                            key={cat.key}
+                            category={cat}
+                            label={t(`certifications.categories.${cat.key}`)}
+                            courseWord={t('certifications.courseCount', { count: cat.courses.length })}
+                        />
+                    ))}
                 </motion.div>
             </AnimatePresence>
         </IndexLayout>
     )
 }
 
-function CategoryCard({ category, label }: { category: CourseCategory; label: string }) {
+function CategoryCard({
+    category,
+    label,
+    courseWord,
+}: {
+    category: CourseCategory
+    label: string
+    courseWord: string
+}) {
     const Icon = category.icon
 
     return (
-        <motion.div
-            variants={cardVariants}
-            className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-            style={{ boxShadow: `0 0 0 1px color-mix(in srgb, ${category.color} 14%, transparent)` }}
-        >
-            <div className="mb-3 flex items-center gap-2">
+        <div className="card-organic flex flex-col p-5">
+            <div className="mb-4 flex items-center gap-2.5">
                 <div
-                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg"
+                    className="pebble-sm flex h-9 w-9 flex-shrink-0 items-center justify-center"
                     style={{
-                        background: `color-mix(in srgb, ${category.color} 16%, var(--surface-card))`,
-                        boxShadow: `0 0 0 1px color-mix(in srgb, ${category.color} 28%, transparent)`,
+                        background: `color-mix(in srgb, ${category.color} 15%, var(--surface-card))`,
+                        boxShadow: `0 0 0 1px color-mix(in srgb, ${category.color} 26%, transparent)`,
                     }}
                 >
                     <Icon size={16} style={{ color: category.color }} aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
-                    <p className="truncate text-xs font-bold uppercase tracking-[0.10em] text-[var(--text)]">{label}</p>
-                    <p className="text-xs text-[var(--text-subtle)]">
-                        {category.courses.length} {category.courses.length === 1 ? 'course' : 'courses'}
-                    </p>
+                    <p className="truncate text-[15px] font-semibold text-[var(--text)]">{label}</p>
+                    <p className="text-xs text-[var(--text-subtle)]">{courseWord}</p>
                 </div>
             </div>
 
-            <ul className="flex flex-col gap-1">
+            <ul className="flex flex-col gap-1.5">
                 {category.courses.map((course) => (
-                    <li key={course} className="flex items-start gap-1.5 text-xs leading-snug text-[var(--text-muted)]">
+                    <li
+                        key={course}
+                        className="prose-organic flex items-start gap-2 text-[13.5px] leading-snug text-[var(--text-muted)]"
+                    >
                         <span
                             aria-hidden="true"
-                            className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full"
+                            className="mt-[0.45rem] h-1 w-1 flex-shrink-0 rounded-full"
                             style={{ background: category.color }}
                         />
                         {course}
                     </li>
                 ))}
             </ul>
-        </motion.div>
+        </div>
     )
 }

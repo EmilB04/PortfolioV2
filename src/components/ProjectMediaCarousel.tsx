@@ -51,7 +51,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
     return (
         <div>
             {/* Main frame */}
-            <div className="group relative overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+            <div className="pebble group relative overflow-hidden border border-[var(--border)] bg-[var(--surface)]">
                 {isLive ? (
                     <BrowserPreview
                         url={(current as { type: 'live'; url: string }).url}
@@ -149,7 +149,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                                 onClick={() => setIndex(i)}
                                 aria-label={`View media ${i + 1}`}
                                 aria-current={i === index}
-                                className={`flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-150 ${
+                                className={`pebble-sm flex-shrink-0 overflow-hidden border-2 transition-all duration-150 ${
                                     i === index
                                         ? 'border-[var(--accent)]'
                                         : 'border-transparent opacity-50 hover:opacity-80'
@@ -214,7 +214,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                         <img
                             src={resolved}
                             alt={`${title} ${index + 1}`}
-                            className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
+                            className="pebble max-h-[90vh] max-w-[90vw] object-contain shadow-[var(--shadow-lifted)]"
                             onClick={(e) => e.stopPropagation()}
                         />
                     )}

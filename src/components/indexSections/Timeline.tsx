@@ -1,4 +1,5 @@
 import IndexLayout from './_layout'
+import SectionHeading from '../ui/SectionHeading'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 import TimelineCard from './TimelineCard'
 import { TimelineSkeleton } from '../ui/Skeleton'
@@ -131,98 +132,67 @@ export default function Timeline() {
     ]
 
     return (
-        <IndexLayout id={INDEX_PATHS.TIMELINE} className="flex-col items-center">
-            <header className="mb-10 w-full text-center">
-                <h2 className="text-3xl font-semibold sm:text-4xl">{t('timeline.title')}</h2>
-                <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
-                    {t('timeline.intro')}
-                </p>
-            </header>
+        <IndexLayout id={INDEX_PATHS.TIMELINE}>
+            <SectionHeading title={t('timeline.title')} lead={t('timeline.intro')} />
 
-            <div className="mb-12 grid w-full max-w-3xl grid-cols-3 divide-x divide-[var(--border)] rounded-[1.75rem] border border-[var(--border)] bg-[var(--surface-card)] px-2 py-6 sm:px-4 sm:py-8">
+            {/* Three facts, set as measurements rather than boxed KPI tiles. */}
+            <dl className="mb-16 flex flex-wrap items-baseline gap-x-12 gap-y-6 border-y border-[var(--border)] py-7">
                 {stats.map((stat) => (
-                    <div key={stat.label} className="flex flex-col items-center px-2 text-center sm:px-4">
-                        <span className="text-3xl font-extrabold leading-none text-[var(--accent-text)] sm:text-4xl">
+                    <div key={stat.label} className="flex items-baseline gap-3">
+                        <dd className="m-0 text-4xl font-semibold leading-none text-[var(--accent-text)]">
                             {stat.value}
-                        </span>
-                        <span className="mt-2 text-xs font-medium text-[var(--text-subtle)] sm:text-sm">
-                            {stat.label}
-                        </span>
+                        </dd>
+                        <dt className="text-[15px] text-[var(--text-muted)]">{stat.label}</dt>
                     </div>
                 ))}
-            </div>
+            </dl>
 
             {loading ? (
                 <TimelineSkeleton />
             ) : error ? (
-                <p className="text-center text-sm text-red-500">{t('timeline.error', { error })}</p>
+                <p className="text-sm text-red-500">{t('timeline.error', { error })}</p>
             ) : (
-                <div className="flex w-full max-w-screen-xl flex-col gap-16">
+                <div className="flex w-full flex-col gap-20">
                     {chapters.map((chapter) => (
-                        <div key={chapter.level} className="flex flex-col items-center">
-                            <div className="w-full max-w-2xl rounded-[1.75rem] border border-[var(--accent)] bg-[var(--surface-card)] p-5 text-center shadow-[0_12px_30px_rgba(0,0,0,0.12)] sm:p-6">
-                                <p className="m-0 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--text-subtle)]">
-                                    {chapter.kicker}
-                                </p>
-                                <h3 className="mt-2 text-2xl font-semibold text-[var(--accent-text)] sm:text-3xl">
-                                    {chapter.title}
-                                </h3>
-                                <p className="mt-2 text-sm font-medium text-[var(--text-subtle)] sm:text-base">
-                                    {chapter.description}
-                                </p>
+                        <div key={chapter.level}>
+                            <div className="mb-10 max-w-2xl">
+                                <p className="m-0 mb-2 text-sm text-[var(--text-subtle)]">{chapter.kicker}</p>
+                                <h3 className="mb-2 text-[var(--text)]">{chapter.title}</h3>
+                                <p className="prose-organic text-[var(--text-muted)]">{chapter.description}</p>
                             </div>
 
-                            <section aria-label={chapter.title} className="relative mt-10 w-full">
-                                <div
+                            {/* One rail down the left. Semesters hang off it in the order
+                                they happened; nothing alternates sides, so the courses
+                                stay in a single column of reading. */}
+                            <section aria-label={chapter.title} className="relative pl-7 md:pl-10">
+                                <span
                                     aria-hidden="true"
-                                    className="absolute left-4 top-0 bottom-0 w-px -translate-x-1/2 bg-[var(--accent)] md:left-1/2"
+                                    className="absolute left-[5px] top-2 bottom-2 w-px md:left-[7px]"
+                                    style={{ background: 'var(--border-strong)' }}
                                 />
 
-                                <ol className="flex flex-col gap-10">
-                                    {chapter.semesters.map((semester, index) => {
-                                        const isLeft = index % 2 === 0
+                                <ol className="flex flex-col gap-14">
+                                    {chapter.semesters.map((semester) => (
+                                        <li key={semester.semester} className="relative">
+                                            <span
+                                                aria-hidden="true"
+                                                className="absolute -left-7 top-[0.55rem] h-[11px] w-[11px] md:-left-10"
+                                                style={{
+                                                    background: 'var(--accent)',
+                                                    borderRadius: 'var(--pebble-sm)',
+                                                }}
+                                            />
 
-                                        return (
-                                            <li
-                                                key={semester.semester}
-                                                className="grid grid-cols-[2rem_minmax(0,1fr)] items-start gap-x-4 md:grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)] md:gap-x-0"
-                                            >
-                                                <div className="col-start-1 flex justify-center md:col-start-2 md:self-start">
-                                                    <span
-                                                        aria-hidden="true"
-                                                        className="mt-4 inline-flex h-[0.95rem] w-[0.95rem] flex-shrink-0 rounded-full bg-[var(--accent)] shadow-[0_0_0_6px_color-mix(in_srgb,var(--accent)_18%,transparent)]"
-                                                    />
-                                                </div>
+                                            <header className="mb-5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                                                <h3 className="m-0 text-[var(--text)]">{semester.semester}</h3>
+                                                <p className="text-sm text-[var(--text-subtle)]">
+                                                    <time>{semester.description}</time>
+                                                </p>
+                                            </header>
 
-                                                <div
-                                                    className={[
-                                                        'col-start-2 w-full min-w-0 md:flex md:max-w-xl md:flex-col',
-                                                        isLeft
-                                                            ? 'md:col-start-1 md:justify-self-end md:pr-10 md:text-right'
-                                                            : 'md:col-start-3 md:justify-self-start md:pl-10 md:text-left',
-                                                    ].join(' ')}
-                                                >
-                                                    <div className={['flex flex-col', isLeft ? 'items-end' : 'items-start'].join(' ')}>
-                                                        <header
-                                                            className={[
-                                                                'mb-4 flex flex-col gap-1',
-                                                                isLeft ? 'items-end' : 'items-start',
-                                                            ].join(' ')}
-                                                        >
-                                                            <h3 className="text-2xl font-semibold text-[var(--accent-text)] sm:text-3xl">
-                                                                {semester.semester}
-                                                            </h3>
-                                                            <p className="text-sm font-medium text-[var(--text-subtle)]">
-                                                                <time>{semester.description}</time>
-                                                            </p>
-                                                        </header>
-
-                                                        <TimelineCard event={semester} />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        )
-                                    })}
+                                            <TimelineCard event={semester} />
+                                        </li>
+                                    ))}
                                 </ol>
                             </section>
                         </div>

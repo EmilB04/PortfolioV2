@@ -1,25 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import './fonts.css';
 @import './color-palette.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.stars-canvas {
+/* ─── Backdrop ───────────────────────────────────────────── */
+.terrain-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: var(--stars-bg);
-  transition: background 0.3s ease;
+  background: var(--terrain-bg);
+  transition: background 0.4s var(--ease-organic);
 }
 
-#root>*:not(.stars-canvas):not(.fixed) {
+#root>*:not(.terrain-backdrop):not(.fixed) {
   position: relative;
   z-index: 1;
+}
+
+/* Paper grain. Digital surfaces are too flat to read as natural, so
+   every page carries one shared layer of noise over the whole view. */
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
 }
 
 @keyframes blink {
@@ -98,60 +108,194 @@ button {
   border-radius: var(--e-button-border-radius);
   padding: var(--e-button-padding);
   font-size: var(--e-button-font-size);
+  font-family: inherit;
   cursor: pointer;
 }
 
 /* ─── Typography ─────────────────────────────────────────── */
 h1,
 h2,
-h3 {
+h3,
+h4 {
   font-family: var(--heading);
-  font-weight: 500;
   color: var(--text);
-  line-height: 1.4;
+  font-variation-settings: 'wdth' 96, 'opsz' 48;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 h1 {
-  background: linear-gradient(135deg, var(--heading-gradient-start) 0%, var(--heading-gradient-end) 80%);
-  font-size: 3rem;
-  margin: 32px 0;
-
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+  font-size: clamp(2.6rem, 6.2vw, 4.4rem);
+  font-weight: 600;
+  line-height: 1.03;
+  margin: 0 0 1.5rem;
 }
 
 h2 {
-  font-size: 2.5rem;
-  margin: 0 0 8px;
-  color: var(--accent);
-
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  font-weight: 550;
+  line-height: 1.1;
+  margin: 0 0 0.6rem;
 }
 
 h3 {
-  font-size: 2rem;
-  margin: 0 0 4px;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 550;
+  line-height: 1.2;
+  margin: 0 0 0.35rem;
+}
+
+h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
 }
 
 p {
   color: var(--text);
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.65;
+}
+
+/* Long-form reading text is set in the serif; UI text stays in the
+   grotesque. Opt in with .prose-organic rather than by element, so
+   labels and buttons inside prose blocks are unaffected. */
+.prose-organic {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  line-height: 1.72;
+  font-variation-settings: 'opsz' 20;
+  max-width: 68ch;
+}
+
+.prose-organic em {
+  font-style: italic;
 }
 
 a {
   color: var(--link);
   text-decoration: none;
   transition: color var(--transition);
+}
 
-  &:hover {
-    color: white;
+a:hover {
+  color: var(--accent-text);
+}
+
+/* ─── Navigation islands ─────────────────────────────────
+   The header itself is transparent; what floats over the page is a
+   set of separate islands. They sit light and open over the hero,
+   then settle into a solid, shadowed state once the page scrolls
+   under them. */
+.nav-island {
+  /* No `display` here: the utility classes on each island decide whether it
+     is shown at a given width, and this rule would otherwise outrank them. */
+  align-items: center;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--nav-bg-transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: none;
+  transition:
+    background 0.5s var(--ease-organic),
+    border-color 0.5s var(--ease-organic),
+    box-shadow 0.5s var(--ease-organic);
+}
+
+.nav-island--settled {
+  background: var(--nav-bg);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+  padding: 0 0.9rem;
+  font-size: 0.925rem;
+  font-weight: 500;
+  color: var(--text-subtle);
+  transition:
+    background 0.3s var(--ease-organic),
+    color 0.3s var(--ease-organic);
+}
+
+.nav-link:hover {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+}
+
+.nav-link[aria-current='true'] {
+  background: var(--accent-bg);
+  color: var(--accent-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-island,
+  .nav-link {
+    transition: none;
   }
+}
+
+/* ─── Organic geometry ───────────────────────────────────── */
+.pebble {
+  border-radius: var(--pebble-a);
+}
+
+.pebble-b {
+  border-radius: var(--pebble-b);
+}
+
+.pebble-c {
+  border-radius: var(--pebble-c);
+}
+
+.pebble-sm {
+  border-radius: var(--pebble-sm);
+}
+
+/* Cards in a grid cycle through the three stones. */
+.pebble-set> :nth-child(3n + 2) {
+  border-radius: var(--pebble-b);
+}
+
+.pebble-set> :nth-child(3n + 3) {
+  border-radius: var(--pebble-c);
+}
+
+.pebble-set> :nth-child(3n + 1) {
+  border-radius: var(--pebble-a);
+}
+
+/* Contour lines: the faint topographic hatching used behind
+   headings and inside sunken panels. */
+.contours {
+  background-image: repeating-linear-gradient(115deg,
+      var(--contour-color) 0 1px,
+      transparent 1px 9px);
+}
+
+.card-organic {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.card-organic:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-lifted);
 }
 
 /* ─── Code ───────────────────────────────────────────────── */
@@ -164,16 +308,16 @@ code,
 }
 
 code {
-  font-size: 15px;
+  font-size: 0.875rem;
   line-height: 135%;
-  padding: 4px 8px;
+  padding: 3px 8px;
   background: var(--code-bg);
   border: 1px solid var(--border);
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -181,12 +325,12 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--border-strong);
   border-radius: 99px;
+}
 
-  &:hover {
-    background: var(--accent-border);
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-border);
 }
 
 /* ─── Selection ──────────────────────────────────────────── */
@@ -201,6 +345,7 @@ code {
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
+
 /* ─── AI assistant ───────────────────────────────────────── */
 @keyframes ai-typing {
 
@@ -225,6 +370,42 @@ code {
   .ai-typing-dot {
     animation: none;
     opacity: 0.6;
+  }
+
+  .terrain-backdrop * {
+    animation: none !important;
+  }
+}
+
+/* The launcher stays a single stone until it is wanted: the label only
+   unfolds on hover or keyboard focus, so the widget never sits over the
+   page content at rest. */
+.ai-launcher-label {
+  /* `display` comes from the utility classes (hidden / md:grid) so the label
+     stays absent on narrow screens. */
+  grid-template-columns: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-columns 0.42s var(--ease-organic),
+    opacity 0.3s var(--ease-organic),
+    margin-left 0.42s var(--ease-organic);
+}
+
+.ai-launcher-label > span {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ai-launcher:hover .ai-launcher-label,
+.ai-launcher:focus-visible .ai-launcher-label {
+  grid-template-columns: 1fr;
+  margin-left: 0.75rem;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-launcher-label {
+    transition: none;
   }
 }
 

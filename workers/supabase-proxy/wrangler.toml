@@ -1,0 +1,16 @@
+name = "portfolio-supabase-proxy"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Mounted on the site's own domain so the browser never contacts supabase.co
+# directly — that call is what sets Cloudflare's __cf_bm cookie on the visitor.
+routes = [
+  { pattern = "emilb.no/api/supabase/*", zone_name = "emilb.no" },
+  { pattern = "www.emilb.no/api/supabase/*", zone_name = "emilb.no" },
+]
+
+[vars]
+# Upstream project URL. Not a secret: the anon key still travels in the
+# request headers from the browser, exactly as before.
+SUPABASE_URL = "https://uuhlmaduircmrzkdltff.supabase.co"
+PATH_PREFIX = "/api/supabase"

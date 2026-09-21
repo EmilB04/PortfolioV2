@@ -20,9 +20,9 @@ export default function ToTopButton() {
             aria-label={t('toTop.aria')}
             title={t('toTop.title')}
             className={`
-        fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40
-                inline-flex items-center gap-3 rounded-full border px-3 py-3 sm:px-4
-        shadow-2xl transition-all duration-200
+        pebble-sm fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6
+        inline-flex items-center gap-3 border px-3 py-3 md:px-4
+        transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0.28,1)]
         hover:-translate-y-0.5
         ${visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
       `}
@@ -32,20 +32,20 @@ export default function ToTopButton() {
                 color: "var(--text)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
-                boxShadow: "0 18px 50px rgba(0, 0, 0, 0.18)",
+                boxShadow: "var(--shadow-lifted)",
             }}
         >
             <span
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full"
-                style={{ background: "var(--accent)", color: "#fff" }}
+                className="pebble-sm inline-flex h-10 w-10 items-center justify-center"
+                style={{ background: "var(--accent)", color: "var(--on-accent)" }}
             >
                 <ArrowUp size={18} aria-hidden="true" />
             </span>
 
-            <span className="hidden flex-col sm:flex">
+            <span className="hidden flex-col md:flex">
                 <span
-                    className="text-xs font-semibold uppercase tracking-[0.14em]"
-                    style={{ color: "var(--text-muted)" }}
+                    className="text-xs"
+                    style={{ color: "var(--text-subtle)" }}
                 >
                     {t('toTop.prefix')}
                 </span>
