@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, ExternalLink, Github } from 'lucide-react'
 import IndexLayout from './_layout'
+import SectionHeading from '../ui/SectionHeading'
+import { TagList } from '../ui/Tag'
 import { FeaturedProjectsSkeleton } from '../ui/Skeleton'
 import BrowserPreview from '../BrowserPreview'
 import { resolveMediaUrl } from '../../lib/media'
@@ -61,28 +63,35 @@ export default function ProjectsSection() {
     const hasPreview = Boolean(active?.live_url) || Boolean(previewImage)
 
     return (
-        <IndexLayout id={INDEX_PATHS.PROJECTS} className="flex-col px-4 md:px-8 lg:px-12 xl:px-16 2xl:px-24">
-            <header className="mb-10 w-full text-center">
-                <h2 className="text-3xl font-semibold sm:text-4xl">{t('projectsSection.title')}</h2>
-                <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
-                    {t('projectsSection.intro')}
-                </p>
-            </header>
+        <IndexLayout id={INDEX_PATHS.PROJECTS}>
+            <SectionHeading
+                title={t('projectsSection.title')}
+                lead={t('projectsSection.intro')}
+                aside={
+                    <Link
+                        to={ROUTES.PROJECTS.path}
+                        className="inline-flex items-center gap-2 text-[15px] font-medium text-[var(--accent-text)]"
+                    >
+                        {t('projectsSection.cta')}
+                        <ArrowRight size={15} aria-hidden="true" />
+                    </Link>
+                }
+            />
 
             {loading ? (
                 <FeaturedProjectsSkeleton />
             ) : (
-                <div className="w-full overflow-hidden">
-                    {/* Mobile: horizontal pill tabs */}
-                    <div className="mb-5 flex gap-2 overflow-x-auto pb-1 sm:hidden">
+                <div className="w-full">
+                    {/* Narrow screens: the projects run along one scrollable row. */}
+                    <div className="mb-5 flex gap-2 overflow-x-auto pb-1 md:hidden">
                         {projects.map((p, i) => (
                             <button
                                 key={p.id}
                                 type="button"
                                 onClick={() => setActiveIndex(i)}
-                                className={`flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-150 ${i === activeIndex
-                                    ? 'bg-[var(--accent)] text-black'
-                                    : 'border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--text)]'
+                                className={`pebble-sm flex-shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 ${i === activeIndex
+                                    ? 'bg-[var(--accent)] text-[var(--on-accent)]'
+                                    : 'border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-hover)] hover:text-[var(--text)]'
                                     }`}
                             >
                                 {p.title}
@@ -90,30 +99,37 @@ export default function ProjectsSection() {
                         ))}
                     </div>
 
-                    <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-[200px_1fr]">
-                        {/* Desktop: vertical selector list */}
-                        <div className="hidden min-w-0 flex-col gap-2 sm:flex">
+                    <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-[13rem_1fr] md:gap-10">
+                        {/* Wide screens: an index down the left, marked rather than boxed. */}
+                        <div className="hidden min-w-0 flex-col md:flex">
                             {projects.map((p, i) => (
                                 <button
                                     key={p.id}
                                     type="button"
                                     onClick={() => setActiveIndex(i)}
-                                    className={`group flex w-full flex-col items-start rounded-xl border px-4 py-3 text-left transition-all duration-200 ${i === activeIndex
-                                        ? 'border-[var(--accent)] bg-[color:color-mix(in_srgb,var(--accent)_10%,var(--surface-card))]'
-                                        : 'border-[var(--border)] bg-[var(--surface-card)] hover:border-[var(--border-hover)]'
-                                        }`}
+                                    aria-current={i === activeIndex}
+                                    className="group flex w-full flex-col items-start gap-1 border-l px-4 py-3 text-left transition-colors duration-200"
+                                    style={{
+                                        borderRadius: 0,
+                                        borderColor: i === activeIndex ? 'var(--accent)' : 'var(--border)',
+                                        background: 'transparent',
+                                    }}
                                 >
                                     <span
-                                        className={`text-sm font-semibold transition-colors ${i === activeIndex
-                                            ? 'text-[var(--text)]'
-                                            : 'text-[var(--text-muted)] group-hover:text-[var(--text)]'
+                                        className={`text-[15px] transition-colors ${i === activeIndex
+                                            ? 'font-semibold text-[var(--text)]'
+                                            : 'text-[var(--text-subtle)] group-hover:text-[var(--text)]'
                                             }`}
                                     >
                                         {p.title}
                                     </span>
                                     {p.live_url && (
-                                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-sm font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
-                                            <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
+                                        <span className="inline-flex items-center gap-1.5 text-xs text-[var(--text-subtle)]">
+                                            <span
+                                                className="h-1.5 w-1.5 rounded-full"
+                                                style={{ background: '#5c8a55' }}
+                                                aria-hidden="true"
+                                            />
                                             {t('projectCard.live')}
                                         </span>
                                     )}
@@ -122,59 +138,42 @@ export default function ProjectsSection() {
                         </div>
 
                         {/* Detail panel */}
-                        <div
-                            className="min-w-0 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]"
-                            style={{ minHeight: '320px' }}
-                        >
+                        <div className="min-w-0" style={{ minHeight: '320px' }}>
                             <AnimatePresence mode="wait">
                                 {active && (
                                     <motion.div
                                         key={active.id}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.2, ease: 'easeOut' }}
-                                        className="flex flex-col gap-5 p-6"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.18, ease: 'easeOut' }}
+                                        className="flex flex-col gap-5"
                                     >
-                                        {/* Title + live badge */}
-                                        <div className="flex flex-wrap items-center gap-3">
-                                            <h3 className="text-xl font-semibold text-[var(--text)]">
-                                                {active.title}
-                                            </h3>
+                                        <div className="flex flex-wrap items-baseline gap-3">
+                                            <h3 className="m-0 text-[var(--text)]">{active.title}</h3>
                                             {active.live_url && (
-                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-sm font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
-                                                    <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
+                                                <span className="inline-flex items-center gap-1.5 text-sm text-[var(--text-subtle)]">
+                                                    <span
+                                                        className="h-1.5 w-1.5 rounded-full"
+                                                        style={{ background: '#5c8a55' }}
+                                                        aria-hidden="true"
+                                                    />
                                                     {t('projectCard.live')}
                                                 </span>
                                             )}
                                         </div>
 
-                                        {/* Tags — always above the body */}
-                                        {active.tags?.length > 0 && (
-                                            <div className="flex flex-wrap gap-1.5">
-                                                {active.tags.map((tag) => (
-                                                    <span
-                                                        key={tag}
-                                                        className="rounded-full border border-[var(--border)] px-2.5 py-0.5 text-sm font-medium text-[var(--text-muted)]"
-                                                    >
-                                                        {tag}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        )}
-
-                                        {/* Body — preview left, description + buttons right on large screens */}
-                                        <div className={`flex flex-col gap-5 ${hasPreview ? 'lg:flex-row lg:items-start lg:gap-6' : ''}`}>
-                                            {/* Preview — live site if available, else the project's first photo */}
+                                        {/* Body — preview beside the description on wide screens */}
+                                        <div className={`flex flex-col gap-6 ${hasPreview ? 'md:flex-row md:items-start md:gap-8' : ''}`}>
                                             {active.live_url ? (
-                                                <div className="min-w-0 lg:flex-1">
+                                                <div className="min-w-0 md:flex-1">
                                                     <BrowserPreview
                                                         url={active.live_url}
                                                         placeholderUrl={previewImage || undefined}
                                                     />
                                                 </div>
                                             ) : previewImage ? (
-                                                <div className="min-w-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] lg:flex-1">
+                                                <div className="pebble min-w-0 overflow-hidden border border-[var(--border)] bg-[var(--surface)] md:flex-1">
                                                     <img
                                                         src={previewImage}
                                                         alt={active.title}
@@ -184,56 +183,52 @@ export default function ProjectsSection() {
                                                 </div>
                                             ) : null}
 
-                                            {/* Description + buttons */}
-                                            <div className={`flex flex-col gap-4 ${hasPreview ? 'lg:w-52 lg:flex-shrink-0' : ''}`}>
-                                                <p className="text-sm leading-relaxed text-[var(--text-muted)]">
+                                            <div className={`flex flex-col gap-5 ${hasPreview ? 'md:w-64 md:flex-shrink-0' : ''}`}>
+                                                <p className="prose-organic text-[15px] text-[var(--text-muted)]">
                                                     {active.description}
                                                 </p>
 
-                                                <div className="flex flex-wrap gap-3">
-                                                    <a
-                                                        href={active.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
-                                                    >
-                                                        {t('projectCard.sourceCode')}
-                                                        <Github size={14} aria-hidden="true" />
-                                                    </a>
-                                                    <Link
-                                                        to={ROUTES.PROJECT_DETAILS.path.replace(':projectId', active.local_path)}
-                                                        className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
-                                                    >
-                                                        {t('projectCard.readMore')}
-                                                    </Link>
+                                                <div className="flex flex-wrap gap-2.5">
                                                     {active.live_url && (
                                                         <a
                                                             href={active.live_url}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-black transition-opacity hover:opacity-90"
+                                                            className="pebble-sm inline-flex items-center gap-2 bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
                                                         >
                                                             {t('projectsSection.visitSite')}
                                                             <ExternalLink size={14} aria-hidden="true" />
                                                         </a>
                                                     )}
+                                                    <Link
+                                                        to={ROUTES.PROJECT_DETAILS.path.replace(':projectId', active.local_path)}
+                                                        className="pebble-sm inline-flex items-center gap-2 border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--border-hover)] hover:text-[var(--text)]"
+                                                    >
+                                                        {t('projectCard.readMore')}
+                                                    </Link>
+                                                    <a
+                                                        href={active.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="pebble-sm inline-flex items-center gap-2 border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--border-hover)] hover:text-[var(--text)]"
+                                                    >
+                                                        {t('projectCard.sourceCode')}
+                                                        <Github size={14} aria-hidden="true" />
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        {/* Tags run the full width of the panel: in the narrow
+                                            column they stacked into a tall ladder and pushed the
+                                            actions out of view. */}
+                                        {active.tags?.length > 0 && (
+                                            <TagList tags={active.tags} className="pt-1" />
+                                        )}
                                     </motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
-                    </div>
-
-                    <div className="mt-8 flex justify-center">
-                        <Link
-                            to={ROUTES.PROJECTS.path}
-                            className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)] px-6 py-2.5 text-sm font-medium text-[var(--accent-text)] transition-colors hover:bg-[var(--accent)] hover:text-black"
-                        >
-                            {t('projectsSection.cta')}
-                            <ArrowRight size={15} aria-hidden="true" />
-                        </Link>
                     </div>
                 </div>
             )}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { motion } from 'framer-motion'
 import { AlertTriangle, ExternalLink, FolderGit2, GitCommitHorizontal, GitFork, GitPullRequest, MapPin, Star, Users } from 'lucide-react'
 import IndexLayout from './_layout'
+import SectionHeading from '../ui/SectionHeading'
 import { CommitActivitySkeleton, GitHubProfileSkeleton, RepoCardSkeleton } from '../ui/Skeleton'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 
@@ -78,16 +78,6 @@ const PR_ACTION_LABEL_KEYS = {
     merged: 'github.prMerged',
     closed: 'github.prClosed',
     reopened: 'github.prReopened',
-} as const
-
-const containerVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.06 } },
-}
-
-const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
 } as const
 
 function formatRelativeTime(dateStr: string, locale: string) {
@@ -281,19 +271,28 @@ export default function GitHub() {
     }, [cachedData, blockedOnMount])
 
     return (
-        <IndexLayout id={INDEX_PATHS.GITHUB} className="flex-col">
-            <header className="mb-10 w-full text-center">
-                <h2 className="text-3xl font-semibold text-[var(--accent-text)] sm:text-4xl">{t('github.title')}</h2>
-                <p className="mx-auto mt-3 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
-                    {t('github.intro')}
-                </p>
-            </header>
+        <IndexLayout id={INDEX_PATHS.GITHUB}>
+            <SectionHeading
+                title={t('github.title')}
+                lead={t('github.intro')}
+                aside={
+                    <a
+                        href={`https://github.com/${GITHUB_USER}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-[15px] font-medium text-[var(--accent-text)]"
+                    >
+                        {t('github.visitProfile')}
+                        <ExternalLink size={14} aria-hidden="true" />
+                    </a>
+                }
+            />
 
             {loading ? (
-                <div className="flex w-full flex-col gap-8">
+                <div className="flex w-full flex-col gap-10">
                     <GitHubProfileSkeleton />
                     <CommitActivitySkeleton />
-                    <ul className="grid w-full list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <ul className="grid w-full list-none grid-cols-1 gap-6 p-0 md:grid-cols-2 min-[1280px]:grid-cols-3">
                         {Array.from({ length: MAX_REPOS }).map((_, i) => (
                             <li key={i} className="h-full">
                                 <RepoCardSkeleton />
@@ -302,41 +301,42 @@ export default function GitHub() {
                     </ul>
                 </div>
             ) : errorReason ? (
-                <div className="flex w-full flex-col items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] px-6 py-10 text-center">
+                <div className="card-organic pebble flex w-full flex-col items-center gap-2 px-6 py-10 text-center">
                     <AlertTriangle size={22} className="text-[var(--accent-text)]" aria-hidden="true" />
                     <p className="text-sm text-[var(--text-muted)]">
                         {errorReason === 'rateLimited' ? t('github.rateLimited') : t('github.loadError')}
                     </p>
                 </div>
             ) : (
-                <div className="flex w-full flex-col gap-8">
+                <div className="flex w-full flex-col gap-12">
                     {profile && (
                         <a
                             href={profile.html_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group flex w-full flex-col items-center gap-5 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)] hover:[box-shadow:0_8px_24px_color-mix(in_srgb,var(--accent)_15%,transparent)] sm:flex-row sm:items-center sm:text-left"
+                            className="group flex w-full flex-col gap-5 md:flex-row md:items-center md:gap-7"
                         >
                             <img
                                 src={profile.avatar_url}
                                 alt={profile.login}
                                 loading="lazy"
-                                className="h-20 w-20 flex-shrink-0 rounded-full border-2 border-[var(--accent)] object-cover sm:h-24 sm:w-24"
+                                className="h-24 w-24 flex-shrink-0 object-cover"
+                                style={{ borderRadius: 'var(--pebble-b)', boxShadow: 'var(--shadow)' }}
                             />
 
-                            <div className="flex flex-1 flex-col items-center gap-2 sm:items-start">
-                                <div className="flex flex-col flex-wrap items-center justify-center sm:justify-start">
-                                    <h3 className="text-xl font-bold text-[var(--text)] transition-colors group-hover:text-[var(--accent-text)]">
+                            <div className="flex flex-1 flex-col gap-2">
+                                <div className="flex flex-wrap items-baseline gap-x-3">
+                                    <h3 className="m-0 text-[var(--text)] transition-colors group-hover:text-[var(--accent-text)]">
                                         {profile.name ?? profile.login}
                                     </h3>
-                                    <span className="text-sm font-medium text-[var(--text-subtle)]">@{profile.login}</span>
+                                    <span className="font-mono text-sm text-[var(--text-subtle)]">@{profile.login}</span>
                                 </div>
 
                                 {profile.bio && (
-                                    <p className="max-w-xl text-sm leading-relaxed text-[var(--text-muted)]">{profile.bio}</p>
+                                    <p className="prose-organic max-w-xl text-[15px] text-[var(--text-muted)]">{profile.bio}</p>
                                 )}
 
-                                <div className="mt-1 flex flex-wrap items-center justify-center gap-4 text-sm text-[var(--text-subtle)] sm:justify-start">
+                                <div className="mt-1 flex flex-wrap items-center gap-5 text-sm text-[var(--text-subtle)]">
                                     <span className="flex items-center gap-1.5">
                                         <Users size={14} className="text-[var(--accent-text)]" aria-hidden="true" />
                                         {profile.followers} {t('github.followers')}
@@ -353,39 +353,37 @@ export default function GitHub() {
                                     )}
                                 </div>
                             </div>
-
-                            <ExternalLink
-                                size={16}
-                                aria-hidden="true"
-                                className="hidden flex-shrink-0 text-[var(--text-subtle)] transition-colors group-hover:text-[var(--accent-text)] sm:block"
-                            />
                         </a>
                     )}
 
                     {activity.length > 0 && (
-                        <div className="flex w-full flex-col gap-3">
-                            <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
-                                <GitCommitHorizontal size={14} className="text-[var(--accent-text)]" aria-hidden="true" />
-                                {t('github.recentActivity')}
-                            </h3>
+                        <div className="flex w-full flex-col">
+                            {/* A log reads as a log: rows divided by hairlines, newest first. */}
+                            <div className="mb-3 flex items-center gap-4">
+                                <h3 className="m-0 flex shrink-0 items-center gap-2 text-base font-medium text-[var(--text)]">
+                                    <GitCommitHorizontal size={15} className="text-[var(--accent-text)]" aria-hidden="true" />
+                                    {t('github.recentActivity')}
+                                </h3>
+                                <span className="h-px flex-1" style={{ background: 'var(--border)' }} aria-hidden="true" />
+                            </div>
 
-                            <ul className="m-0 flex list-none flex-col gap-2 p-0">
+                            <ul className="m-0 flex list-none flex-col p-0">
                                 {activity.map((item) => (
-                                    <li key={item.id}>
+                                    <li key={item.id} className="border-b border-[var(--border)] last:border-b-0">
                                         <a
                                             href={item.kind === 'push'
                                                 ? `https://github.com/${item.repo}/commit/${item.sha}`
                                                 : item.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="group flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-card)] px-4 py-3 text-sm transition-colors duration-200 hover:border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)]"
+                                            className="group flex items-center gap-3 py-3 text-sm"
                                         >
                                             {item.kind === 'push' ? (
-                                                <GitCommitHorizontal size={14} className="flex-shrink-0 text-[var(--accent-text)]" aria-hidden="true" />
+                                                <GitCommitHorizontal size={14} className="flex-shrink-0 text-[var(--text-subtle)]" aria-hidden="true" />
                                             ) : (
-                                                <GitPullRequest size={14} className="flex-shrink-0 text-[var(--accent-text)]" aria-hidden="true" />
+                                                <GitPullRequest size={14} className="flex-shrink-0 text-[var(--text-subtle)]" aria-hidden="true" />
                                             )}
-                                            <span className="flex-shrink-0 font-mono text-xs font-semibold text-[var(--text)]">
+                                            <span className="flex-shrink-0 font-mono text-xs text-[var(--accent-text)]">
                                                 {item.repo.split('/')[1]}
                                             </span>
                                             <span className="min-w-0 flex-1 truncate text-[var(--text-muted)] transition-colors group-hover:text-[var(--text)]">
@@ -403,35 +401,28 @@ export default function GitHub() {
                         </div>
                     )}
 
-                    <motion.ul
-                        className="grid w-full list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{ once: true, margin: '-60px' }}
-                    >
+                    <ul className="pebble-set grid w-full list-none grid-cols-1 gap-5 p-0 md:grid-cols-2 min-[1280px]:grid-cols-3">
                         {repos.map((repo) => (
-                            <motion.li key={repo.id} variants={cardVariants} className="h-full">
+                            <li key={repo.id} className="card-organic h-full">
                                 <a
                                     href={repo.html_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group flex h-full cursor-pointer flex-col gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-6 text-left transition-all duration-200 hover:-translate-y-1 hover:border-[color:color-mix(in_srgb,var(--accent)_30%,transparent)] hover:[box-shadow:0_8px_24px_color-mix(in_srgb,var(--accent)_15%,transparent)]"
+                                    className="flex h-full cursor-pointer flex-col gap-4 p-6 text-left"
                                 >
-                                    {/* Header: name + stats */}
                                     <div className="flex items-start justify-between gap-4">
-                                        <h3 className="flex-1 break-words text-base font-semibold leading-snug text-[var(--text)] transition-colors group-hover:text-[var(--accent-text)]">
+                                        <h3 className="m-0 flex-1 break-words text-base font-semibold leading-snug text-[var(--text)]">
                                             {repo.name}
                                         </h3>
                                         <div className="flex shrink-0 items-center gap-3 text-sm text-[var(--text-subtle)]">
                                             {repo.stargazers_count > 0 && (
-                                                <span className="flex items-center gap-1 text-[var(--accent-text)]">
+                                                <span className="flex items-center gap-1">
                                                     <Star size={13} aria-hidden="true" />
                                                     {repo.stargazers_count}
                                                 </span>
                                             )}
                                             {repo.forks_count > 0 && (
-                                                <span className="flex items-center gap-1 text-[var(--accent-text)]">
+                                                <span className="flex items-center gap-1">
                                                     <GitFork size={13} aria-hidden="true" />
                                                     {repo.forks_count}
                                                 </span>
@@ -439,43 +430,27 @@ export default function GitHub() {
                                         </div>
                                     </div>
 
-                                    {/* Description */}
-                                    <p className="line-clamp-3 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
+                                    <p className="prose-organic line-clamp-3 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
                                         {repo.description ?? t('github.noDescription')}
                                     </p>
 
-                                    {/* Footer: language pill + link */}
                                     <div className="mt-auto flex items-center justify-between gap-2 border-t border-[var(--border)] pt-3">
                                         {repo.language ? (
-                                            <span className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-sm font-medium text-[var(--accent-text)]">
-                                                {repo.language}
-                                            </span>
+                                            <span className="text-sm text-[var(--text-muted)]">{repo.language}</span>
                                         ) : (
                                             <span />
                                         )}
-                                        <span className="flex items-center gap-1 text-sm font-medium text-[var(--accent-text)] transition-[gap] duration-200 group-hover:gap-2">
+                                        <span className="flex items-center gap-1.5 text-sm font-medium text-[var(--accent-text)]">
                                             {t('github.viewRepo')}
-                                            <ExternalLink size={11} aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                                            <ExternalLink size={11} aria-hidden="true" />
                                         </span>
                                     </div>
                                 </a>
-                            </motion.li>
+                            </li>
                         ))}
-                    </motion.ul>
+                    </ul>
                 </div>
             )}
-
-            <div className="mt-10 flex justify-center">
-                <a
-                    href={`https://github.com/${GITHUB_USER}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-6 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
-                >
-                    {t('github.visitProfile')}
-                    <ExternalLink size={14} aria-hidden="true" />
-                </a>
-            </div>
         </IndexLayout>
     )
 }

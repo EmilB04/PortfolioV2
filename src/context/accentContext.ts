@@ -41,7 +41,7 @@ export const ACCENT_PRESETS: Record<AccentColor, AccentDefinition> = {
     orange: { label: 'Orange', light: '#ea580c', lightText: '#b9460a', dark: '#fb923c' },
 }
 
-export const DEFAULT_ACCENT: AccentColor = 'rose'
+export const DEFAULT_ACCENT: AccentColor = 'orange'
 export const ACCENT_STORAGE_KEY = 'portfolio-accent'
 
 export type AccentContextValue = {

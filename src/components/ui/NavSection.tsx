@@ -16,36 +16,33 @@ function scrollTo(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-function NavLinkList({ activeSection, onNavigate, links }: { activeSection: string; onNavigate: (id: string) => void; links: LinkItem[] }) {
+function NavLinkList({
+    activeSection,
+    onNavigate,
+    links,
+    settled,
+}: {
+    activeSection: string
+    onNavigate: (id: string) => void
+    links: LinkItem[]
+    settled: boolean
+}) {
     return (
-        <ul className="hidden md:flex items-center gap-0.5 flex-1 m-0 p-0 list-none">
+        <ul
+            className={`nav-island m-0 hidden h-11 list-none gap-0.5 px-1.5 md:flex ${settled ? 'nav-island--settled' : ''}`}
+        >
             {links.map(({ href, label }) => (
-                <li key={href}>
+                <li key={href} className="h-full py-1">
                     <a
                         href={`#${href}`}
+                        aria-current={activeSection === href}
                         onClick={(e) => {
                             e.preventDefault()
                             onNavigate(href)
                         }}
-                        style={{ color: 'var(--text)' }}
-                        className={`
-                            relative block px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide
-                            transition-all duration-200 whitespace-nowrap
-                            ${activeSection === href
-                                ? 'text-[var(--text)]'
-                                : 'text-[var(--text-subtle)] hover:text-[var(--text)]'
-                            }
-                        `}
+                        className="nav-link"
                     >
                         {label}
-                        <span
-                            aria-hidden="true"
-                            className={`
-                                pointer-events-none absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full
-                                bg-[var(--accent)] transition-all duration-300 ease-out motion-reduce:transition-none
-                                ${activeSection === href ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'}
-                            `}
-                        />
                     </a>
                 </li>
             ))}
@@ -53,27 +50,32 @@ function NavLinkList({ activeSection, onNavigate, links }: { activeSection: stri
     )
 }
 
-function MobileMenuButton({ menuOpen, onToggle, openLabel, closeLabel }: { menuOpen: boolean; onToggle: () => void; openLabel: string; closeLabel: string }) {
+function MobileMenuButton({
+    menuOpen,
+    onToggle,
+    openLabel,
+    closeLabel,
+    settled,
+}: {
+    menuOpen: boolean
+    onToggle: () => void
+    openLabel: string
+    closeLabel: string
+    settled: boolean
+}) {
     return (
         <button
-            className={`
-                flex md:hidden flex-col items-center justify-center gap-1.25 w-9 h-9
-                rounded-full border transition-all duration-200
-                ${menuOpen
-                    ? 'bg-[var(--surface-card)] border-[var(--border-hover)]'
-                    : 'bg-[var(--surface)] border-[var(--border)] hover:bg-[var(--surface-card)] hover:scale-[1.08]'
-                }
-            `}
+            className={`nav-island flex h-11 w-11 items-center justify-center p-0 md:hidden ${settled || menuOpen ? 'nav-island--settled' : ''}`}
             onClick={onToggle}
             aria-label={menuOpen ? closeLabel : openLabel}
         >
             {menuOpen ? (
-                <span className="text-[var(--text)] text-lg leading-none">✕</span>
+                <span className="text-lg leading-none text-[var(--text)]">✕</span>
             ) : (
-                <span className="flex flex-col gap-1 items-center">
-                    <span className="block w-4 h-0.5 bg-[var(--text)] rounded-sm" />
-                    <span className="block w-3 h-0.5 bg-[var(--text)] rounded-sm" />
-                    <span className="block w-4 h-0.5 bg-[var(--text)] rounded-sm" />
+                <span className="flex flex-col items-center gap-1">
+                    <span className="block h-0.5 w-4 rounded-sm bg-[var(--text)]" />
+                    <span className="block h-0.5 w-3 rounded-sm bg-[var(--text)]" />
+                    <span className="block h-0.5 w-4 rounded-sm bg-[var(--text)]" />
                 </span>
             )}
         </button>
@@ -132,19 +134,17 @@ function MobileDrawer({
                 role="dialog"
                 aria-modal="true"
                 aria-label={navigationLabel}
-                className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(85%,320px)] flex flex-col overflow-y-auto border-l border-[var(--border)] shadow-[var(--shadow)] pt-3 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`fixed inset-y-0 right-0 z-[300] h-dvh max-h-dvh w-[min(85%,320px)] flex flex-col overflow-y-auto rounded-l-[32px] border-l border-[var(--border)] shadow-[var(--shadow-lifted)] pt-4 pb-8 transition-transform duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
                 style={{ background: 'var(--bg)' }}
             >
                 <section className="mb-6 flex flex-row items-center justify-between gap-4 px-6">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
-                        {navigationLabel}
-                    </span>
+                    <span className="text-sm text-[var(--text-subtle)]">{navigationLabel}</span>
 
                     <button
                         type="button"
                         onClick={onClose}
                         aria-label={closeLabel}
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition-all duration-200 hover:scale-[1.05] hover:bg-[var(--surface-card)]"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-0 text-[var(--text)] transition-colors duration-200 hover:bg-[var(--surface-card)]"
                     >
                         <span className="text-lg leading-none">✕</span>
                     </button>
@@ -156,7 +156,7 @@ function MobileDrawer({
                             <button
                                 key={href}
                                 onClick={() => onNavigate(href)}
-                                className="w-full border-b border-[var(--border)] px-6 py-4 text-left text-sm font-medium text-[var(--text-subtle)] transition-all duration-200 hover:bg-[var(--surface-card)] hover:pl-8 hover:text-[var(--text)]"
+                                className="w-full rounded-none border-b border-[var(--border)] px-6 py-4 text-left text-[15px] font-medium text-[var(--text-subtle)] transition-all duration-200 hover:bg-[var(--surface-card)] hover:pl-8 hover:text-[var(--text)]"
                             >
                                 {label}
                             </button>
@@ -165,9 +165,7 @@ function MobileDrawer({
                 )}
 
                 <div className="mt-4 border-t border-[var(--border)] px-6 pt-5">
-                    <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--text-subtle)]">
-                        {settingsLabel}
-                    </p>
+                    <p className="mb-3 text-sm text-[var(--text-subtle)]">{settingsLabel}</p>
 
                     <SettingsPanel />
                 </div>
@@ -175,7 +173,7 @@ function MobileDrawer({
                 <a
                     href="/contact"
                     onClick={onClose}
-                    className="mx-6 mt-6 rounded-full bg-[var(--accent)] px-4 py-3 text-center text-xs font-semibold text-black transform transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] active:translate-y-0 active:scale-[0.99] motion-reduce:transition-none hover:text-white"
+                    className="mx-6 mt-6 rounded-full bg-[var(--accent)] px-4 py-3 text-center text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 ease-out hover:-translate-y-0.5 motion-reduce:transition-none"
                 >
                     {contactLabel}
                 </a>
@@ -184,7 +182,7 @@ function MobileDrawer({
     )
 }
 
-export default function NavSection() {
+export default function NavSection({ settled = false }: { settled?: boolean }) {
     const location = useLocation()
     const { t } = useTranslation()
     const isHomePage = location.pathname === '/'
@@ -283,12 +281,17 @@ export default function NavSection() {
     }
 
     return (
-        <nav className="flex items-center justify-between gap-3 flex-1 min-w-0">
-            <div className="flex items-center gap-3 flex-1 min-w-0">
+        <nav className="flex min-w-0 items-center justify-end gap-2.5">
+            <div className="flex min-w-0 items-center gap-3">
                 {isHomePage ? (
-                    <NavLinkList activeSection={activeSection} onNavigate={navigate} links={links} />
+                    <NavLinkList
+                        activeSection={activeSection}
+                        onNavigate={navigate}
+                        links={links}
+                        settled={settled}
+                    />
                 ) : (
-                    <BackButton />
+                    <BackButton settled={settled} />
                 )}
 
             </div>
@@ -299,6 +302,7 @@ export default function NavSection() {
                     onToggle={toggleMenu}
                     openLabel={t('header.openMenu')}
                     closeLabel={t('header.closeMenu')}
+                    settled={settled}
                 />
             </div>
 

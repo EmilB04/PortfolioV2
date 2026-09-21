@@ -83,7 +83,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
     return (
         <div className={`flex flex-col gap-4 ${className}`}>
             <section>
-                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                <h3 className="mb-2 px-1 text-sm font-medium text-[var(--text-subtle)]">
                     {t('languageSwitcher.section')}
                 </h3>
                 <div role="listbox" aria-label={t('languageSwitcher.choose')} className="flex flex-col gap-1">
@@ -97,7 +97,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                                 aria-selected={selected}
                                 onClick={() => void handleLanguageSelect(language.code)}
                                 className={`
-                                    flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left
+                                    pebble-sm flex w-full items-center justify-between px-3 py-2.5 text-left
                                     transition-all duration-200 ease-out motion-reduce:transition-none
                                     ${selected
                                         ? 'bg-[color:color-mix(in_srgb,var(--accent)_16%,var(--surface-card))] text-[var(--text)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_30%,transparent)]'
@@ -116,12 +116,12 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
             </section>
 
             <section className="border-t border-[var(--border)] pt-4">
-                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                <h3 className="mb-2 px-1 text-sm font-medium text-[var(--text-subtle)]">
                     {t('settingsMenu.appearance')}
                 </h3>
-                <div className="relative grid grid-cols-3 gap-1 rounded-xl bg-[var(--surface)] p-1">
+                <div className="pebble-sm relative grid grid-cols-3 gap-1 p-1" style={{ background: 'var(--surface-sunken)' }}>
                     <span
-                        className="absolute inset-y-1 rounded-lg transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] pointer-events-none"
+                        className="pebble-sm pointer-events-none absolute inset-y-1 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
                         style={{
                             width: 'calc(33.333% - 3px)',
                             transform: INDICATOR_TRANSLATE[theme],
@@ -138,7 +138,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                                 aria-pressed={selected}
                                 onClick={() => setTheme(value)}
                                 style={{ color: selected ? activeColor : 'var(--text-subtle)' }}
-                                className="relative z-10 flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-colors duration-200 hover:text-[var(--text)]"
+                                className="pebble-sm relative z-10 flex items-center justify-center gap-1.5 px-2 py-2 text-xs font-semibold transition-colors duration-200 hover:text-[var(--text)]"
                             >
                                 <Icon />
                                 {label}
@@ -149,7 +149,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
             </section>
 
             <section className="border-t border-[var(--border)] pt-4">
-                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                <h3 className="mb-2 px-1 text-sm font-medium text-[var(--text-subtle)]">
                     {t('settingsMenu.accentColor')}
                 </h3>
                 <div role="listbox" aria-label={t('settingsMenu.chooseAccent')} className="flex flex-wrap gap-2 px-1">
@@ -185,7 +185,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
             </section>
 
             <section className="border-t border-[var(--border)] pt-4">
-                <h3 className="mb-2 px-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-subtle)]">
+                <h3 className="mb-2 px-1 text-sm font-medium text-[var(--text-subtle)]">
                     {t('cookieConsent.section')}
                 </h3>
                 <p className="mb-2 px-1 text-xs text-[var(--text-subtle)]">
@@ -200,14 +200,14 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                         <button
                             type="button"
                             onClick={accept}
-                            className="flex-1 rounded-xl bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-black transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                            className="pebble-sm flex-1 bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-[var(--on-accent)] transition-transform duration-200 hover:-translate-y-0.5"
                         >
                             {t('cookieConsent.accept')}
                         </button>
                         <button
                             type="button"
                             onClick={decline}
-                            className="flex-1 rounded-xl border border-[var(--border)] px-3 py-2 text-xs font-semibold text-[var(--text-subtle)] transition-colors duration-200 hover:text-[var(--text)]"
+                            className="pebble-sm flex-1 border border-[var(--border)] px-3 py-2 text-xs font-semibold text-[var(--text-subtle)] transition-colors duration-200 hover:text-[var(--text)]"
                         >
                             {t('cookieConsent.decline')}
                         </button>
@@ -227,7 +227,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
     )
 }
 
-export default function SettingsMenu() {
+export default function SettingsMenu({ settled = false }: { settled?: boolean }) {
     const { t } = useTranslation()
     const [open, setOpen] = useState(false)
     const rootRef = useRef<HTMLDivElement | null>(null)
@@ -265,11 +265,11 @@ export default function SettingsMenu() {
                 aria-label={t('header.settings')}
                 onClick={() => setOpen((value) => !value)}
                 className={`
-                    group relative inline-flex h-10 w-10 items-center justify-center rounded-full border p-0
-                    transition-all duration-200 ease-out motion-reduce:transition-none
+                    nav-island group relative inline-flex h-11 w-11 items-center justify-center p-0
+                    transition-all duration-500 ease-out motion-reduce:transition-none
                     ${open
-                        ? 'border-[var(--accent)] bg-[var(--surface-card)] text-[var(--text)] shadow-[0_12px_30px_rgba(0,0,0,0.18)] ring-4 ring-[color:color-mix(in_srgb,var(--accent)_16%,transparent)]'
-                        : 'border-[var(--border)] bg-[var(--surface)] text-[var(--text)] shadow-[0_8px_24px_rgba(0,0,0,0.14)] hover:-translate-y-[1px] hover:border-[var(--border-hover)] hover:bg-[var(--surface-card)] active:translate-y-0 active:scale-[0.985] active:shadow-[0_4px_14px_rgba(0,0,0,0.14)]'
+                        ? 'nav-island--settled !border-[var(--accent-border)] text-[var(--text)]'
+                        : `text-[var(--text)] hover:-translate-y-[1px] ${settled ? 'nav-island--settled' : ''}`
                     }
                 `}
             >
@@ -288,9 +288,9 @@ export default function SettingsMenu() {
                 aria-label={t('header.settings')}
                 className={`
                     absolute right-0 top-[calc(100%+0.6rem)] z-[400] w-72 max-w-[calc(100vw-2rem)]
-                    max-h-[70vh] overflow-y-auto rounded-2xl border border-[var(--border)]
-                    bg-[var(--bg)]
-                    shadow-[0_18px_48px_rgba(0,0,0,0.22)]
+                    max-h-[70vh] overflow-y-auto border border-[var(--border)]
+                    bg-[var(--bg)] [border-radius:var(--pebble-c)]
+                    shadow-[var(--shadow-lifted)]
                     transition-all duration-200 ease-out origin-top-right motion-reduce:transition-none
                     ${open
                         ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'

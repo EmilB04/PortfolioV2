@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import HeaderSection from './ui/HeaderSection';
 import FooterSection from './ui/FooterSection';
 import AIStarterWidget from './ui/AIStarterWidget';
-import ShootingStars from '../styles/ShootingStars';
+import TerrainBackdrop from '../styles/TerrainBackdrop';
 import ToTopButton from './ui/ToTopButton';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
     return (
         <div className="relative min-h-screen overflow-x-hidden">
-            <ShootingStars />
+            <TerrainBackdrop />
 
             <a
                 href="#main-content"

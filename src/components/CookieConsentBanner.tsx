@@ -16,30 +16,30 @@ export default function CookieConsentBanner() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 24 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="fixed inset-x-0 bottom-0 z-[500] flex justify-center px-4 pb-4 md:px-6"
+                    className="pointer-events-none fixed inset-x-0 bottom-0 z-[500] flex justify-center px-4 pb-4 md:px-6"
                 >
                     <div
-                        className="flex w-full max-w-screen-md flex-col gap-3 rounded-2xl border p-4 shadow-[0_18px_48px_rgba(0,0,0,0.28)] backdrop-blur-2xl md:flex-row md:items-center md:justify-between"
+                        className="pointer-events-auto pebble flex w-full max-w-screen-md flex-col gap-4 border p-5 shadow-[var(--shadow-lifted)] backdrop-blur-2xl md:flex-row md:items-center md:justify-between"
                         style={{
                             background: 'color-mix(in srgb, var(--surface-card) 94%, transparent)',
                             borderColor: 'var(--border)',
                         }}
                     >
-                        <p className="text-sm text-[var(--text-subtle)]">
+                        <p className="text-sm text-[var(--text-muted)]">
                             {t('cookieConsent.message')}
                         </p>
                         <div className="flex shrink-0 gap-2">
                             <button
                                 type="button"
                                 onClick={decline}
-                                className="rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--text-subtle)] transition-colors duration-200 hover:text-[var(--text)]"
+                                className="pebble-sm border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--text-subtle)] transition-colors duration-200 hover:text-[var(--text)]"
                             >
                                 {t('cookieConsent.decline')}
                             </button>
                             <button
                                 type="button"
                                 onClick={accept}
-                                className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-black transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                                className="pebble-sm bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-200 hover:-translate-y-0.5"
                             >
                                 {t('cookieConsent.accept')}
                             </button>

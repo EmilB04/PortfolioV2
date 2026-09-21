@@ -167,7 +167,7 @@ export default function SpesificProjectPage() {
 
     if (loading) {
         return (
-            <div className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
+            <div className="px-5 pb-16 pt-28 md:px-10" style={{ color: 'var(--text)' }}>
                 <ProjectDetailSkeleton />
             </div>
         )
@@ -175,54 +175,47 @@ export default function SpesificProjectPage() {
 
     if (notFound || !project) {
         return (
-            <div className="flex flex-col items-center justify-center gap-4" style={{ minHeight: 'calc(100vh - 4rem)', marginTop: '4rem', color: 'var(--text)' }}>
+            <div className="flex flex-col items-center justify-center gap-4" style={{ minHeight: 'calc(100vh - 4rem)', color: 'var(--text)' }}>
                 <p className="text-[var(--text-muted)]">{t('projectDetails.notFound')}</p>
             </div>
         )
     }
 
     return (
-        <div className="px-4 py-12" style={{ marginTop: '4rem', color: 'var(--text)' }}>
-            <div className="mx-auto max-w-screen-xl backdrop-blur-xl">
-                {/* Title + live badge — centered, large */}
-                <div className="mb-4 flex flex-wrap items-center justify-center gap-3 text-center">
-                    <h2 className="w-full text-5xl font-bold text-[var(--accent-text)] sm:text-6xl">{project.title}</h2>
+        <div className="px-5 pb-16 pt-28 md:px-10" style={{ color: 'var(--text)' }}>
+            <div className="mx-auto max-w-screen-xl">
+                {/* Title + live badge */}
+                <div className="mb-3 flex flex-wrap items-baseline gap-4">
+                    <h1 className="m-0">{project.title}</h1>
                     {project.live_url && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800 dark:bg-green-500/15 dark:text-green-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400" aria-hidden="true" />
+                        <span className="inline-flex items-center gap-1.5 text-sm text-[var(--text-subtle)]">
+                            <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#5c8a55' }} aria-hidden="true" />
                             {t('projectCard.live')}
                         </span>
                     )}
                 </div>
 
-                {/* Tech stack — below title */}
+                {/* Tech stack */}
                 {project.languages?.length > 0 && (
-                    <div className="mb-8 flex flex-col items-center gap-2">
-                        <span className="text-sm font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
-                            {t('projectDetails.stack')}
-                        </span>
-                        <div className="flex flex-wrap justify-center gap-1.5">
-                            {project.languages.map((lang) => (
-                                <span
-                                    key={lang}
-                                    className="rounded-full bg-[color:color-mix(in_srgb,var(--accent)_10%,transparent)] px-2.5 py-0.5 text-xs font-medium text-[var(--accent-text)]"
-                                >
-                                    {lang}
-                                </span>
-                            ))}
-                        </div>
+                    <div className="mb-10 flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
+                        <span className="text-sm text-[var(--text-subtle)]">{t('projectDetails.stack')}</span>
+                        {project.languages.map((lang) => (
+                            <span key={lang} className="text-sm text-[var(--accent-text)]">
+                                {lang}
+                            </span>
+                        ))}
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_220px]">
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_15rem]">
                     {/* Main content */}
                     <div className="flex flex-col gap-6">
-                        <p className="text-base font-medium leading-relaxed text-[var(--text)]">
+                        <p className="prose-organic text-lg leading-relaxed text-[var(--text)]">
                             {project.description}
                         </p>
 
                         {project.details && (
-                            <p className="whitespace-pre-line text-sm leading-relaxed text-[var(--text-muted)]">
+                            <p className="prose-organic whitespace-pre-line text-[var(--text-muted)]">
                                 {project.details}
                             </p>
                         )}
@@ -237,20 +230,13 @@ export default function SpesificProjectPage() {
 
                         {/* Tags — bottom */}
                         {project.tags?.length > 0 && (
-                            <div className="flex flex-col gap-2 pt-2">
-                                <span className="text-sm font-semibold uppercase tracking-widest text-[var(--text-subtle)]">
-                                    {t('projectDetails.tags')}
-                                </span>
-                                <div className="flex flex-wrap gap-1.5">
-                                    {project.tags.map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-medium text-[var(--text-muted)]"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
+                            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-t border-[var(--border)] pt-5">
+                                <span className="text-sm text-[var(--text-subtle)]">{t('projectDetails.tags')}</span>
+                                {project.tags.map((tag) => (
+                                    <span key={tag} className="text-sm text-[var(--text-muted)]">
+                                        {tag}
+                                    </span>
+                                ))}
                             </div>
                         )}
                     </div>
@@ -263,7 +249,7 @@ export default function SpesificProjectPage() {
                                     href={project.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-text)]"
+                                    className="pebble-sm inline-flex items-center justify-center gap-2 border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--border-hover)] hover:text-[var(--text)]"
                                 >
                                     <Github size={15} aria-hidden="true" />
                                     {t('projectCard.sourceCode')}
@@ -274,7 +260,7 @@ export default function SpesificProjectPage() {
                                     href={project.live_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
+                                    className="pebble-sm inline-flex items-center justify-center gap-2 bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
                                 >
                                     <ExternalLink size={15} aria-hidden="true" />
                                     {t('projectsSection.visitSite')}

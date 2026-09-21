@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { motion } from 'framer-motion'
-import { ArrowDown, Code2, Github, Linkedin } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ArrowDown, Github, Linkedin } from 'lucide-react'
 import IndexLayout from './_layout'
 
 const GITHUB_USER = 'EmilB04'
@@ -57,38 +57,51 @@ function Typewriter({ lines }: TypewriterProps) {
     }, [isDeleting, lineIndex, lines, typewriterText])
 
     return (
-        <span className="inline-block px-0 py-2 text-[var(--accent-text)]" style={{ minWidth: '18ch' }}>
+        <span className="text-[var(--accent-text)]">
             {typewriterText}
-            <span className="ml-1 inline-block animate-[blink_0.7s_step-end_infinite] text-[var(--accent-text)]">|</span>
+            <span
+                className="ml-[3px] inline-block h-[0.78em] w-[3px] translate-y-[1px] animate-[blink_0.9s_step-end_infinite] rounded-full align-baseline"
+                style={{ background: 'var(--accent-text)' }}
+                aria-hidden="true"
+            />
         </span>
     )
 }
 
+/**
+ * The portrait is cut as a weathered stone rather than a circle: an
+ * irregular radius that slowly settles between two shapes, ringed by a
+ * single hand-drawn contour line that sits slightly off-register.
+ */
 function AvatarPortrait() {
     const [failed, setFailed] = useState(false)
 
     return (
-        <div className="relative mx-auto flex h-48 w-48 flex-shrink-0 items-center justify-center md:h-56 md:w-56">
-            {/* Slow-spinning gradient ring */}
-            <div
-                className="absolute inset-0 animate-spin rounded-full opacity-80 [animation-duration:9s]"
-                style={{
-                    background: `conic-gradient(from 0deg, var(--accent), transparent 35%, transparent 65%, var(--accent))`,
-                }}
-                aria-hidden="true"
-            />
+        <div className="relative h-56 w-56 shrink-0 md:h-[19rem] md:w-[19rem]">
+            <style>{`
+                @keyframes stoneSettle {
+                    0%   { border-radius: 66% 34% 48% 52% / 36% 62% 38% 64%; }
+                    50%  { border-radius: 42% 58% 63% 37% / 58% 39% 61% 42%; }
+                    100% { border-radius: 66% 34% 48% 52% / 36% 62% 38% 64%; }
+                }
+                .stone { animation: stoneSettle 22s ease-in-out infinite; }
+                .stone-ring { animation: stoneSettle 22s ease-in-out infinite reverse; }
+                @media (prefers-reduced-motion: reduce) {
+                    .stone, .stone-ring { animation: none; }
+                }
+            `}</style>
 
-            {/* Pulsing glow */}
+            {/* Contour ring, rotated a few degrees out of alignment. */}
             <div
-                className="absolute inset-2 animate-pulse rounded-full blur-xl [animation-duration:3s]"
-                style={{ background: 'color-mix(in srgb, var(--accent) 45%, transparent)' }}
+                className="stone-ring pointer-events-none absolute -inset-4 rotate-[7deg] border"
+                style={{ borderColor: 'var(--border-strong)' }}
                 aria-hidden="true"
             />
 
             {failed ? (
                 <div
-                    className="relative flex h-[calc(100%-14px)] w-[calc(100%-14px)] items-center justify-center rounded-full text-4xl font-bold text-white"
-                    style={{ background: 'linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 40%, #7c3aed))' }}
+                    className="stone flex h-full w-full items-center justify-center text-5xl font-semibold text-[var(--on-accent)]"
+                    style={{ background: 'var(--accent)' }}
                 >
                     EB
                 </div>
@@ -98,33 +111,17 @@ function AvatarPortrait() {
                     alt="Emil Berglund"
                     onError={() => setFailed(true)}
                     loading="eager"
-                    className="relative h-[calc(100%-14px)] w-[calc(100%-14px)] rounded-full object-cover"
-                    style={{ boxShadow: '0 0 0 4px var(--bg)' }}
+                    className="stone h-full w-full object-cover"
+                    style={{ boxShadow: 'var(--shadow-lifted)' }}
                 />
             )}
-
-            {/* Decorative code badge */}
-            <motion.div
-                initial={{ scale: 0, rotate: -20 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ delay: 0.8, type: 'spring', stiffness: 260, damping: 18 }}
-                className="absolute -bottom-1 -right-1 flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--border)] shadow-lg"
-                style={{ background: 'var(--surface-card)', backdropFilter: 'blur(8px)' }}
-                aria-hidden="true"
-            >
-                <Code2 size={20} className="text-[var(--accent-text)]" />
-            </motion.div>
         </div>
     )
 }
 
-const fadeUp = {
-    hidden: { opacity: 0, y: 24 },
-    show: { opacity: 1, y: 0 },
-}
-
-export default function Landing({ shouldUseAos = false, onScrollNextSection }: LandingProps) {
+export default function Landing({ onScrollNextSection }: LandingProps) {
     const { t, i18n } = useTranslation()
+    const prefersReducedMotion = useReducedMotion()
     const typewriterLines = t('home.roles', { returnObjects: true }) as string[]
 
     function handleScrollNextSection() {
@@ -136,77 +133,87 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
         document.getElementById('next-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
 
+    // The single orchestrated entrance on the site: the hero settles once,
+    // and nothing else on the page announces itself this way.
+    const rise = {
+        hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 18 },
+        show: { opacity: 1, y: 0 },
+    }
+
     return (
         <IndexLayout id="landing" className="text-left">
-            <style>{`
-                @keyframes heroFloat {
-                    from { transform: translate(0, 0); }
-                    to { transform: translate(-16px, -26px); }
-                }
-                .hero-orb-1 { animation: heroFloat 9s ease-in-out infinite alternate; }
-                .hero-orb-2 { animation: heroFloat 12s ease-in-out infinite alternate-reverse; }
-                @media (prefers-reduced-motion: reduce) {
-                    .hero-orb-1, .hero-orb-2 { animation: none; }
-                }
-            `}</style>
-
-            <section className="about-me relative w-full max-w-screen-xl">
-                {/* Ambient background glow */}
-                <div
-                    className="hero-orb-1 pointer-events-none absolute -left-24 -top-24 z-[-1] h-72 w-72 rounded-full opacity-25 blur-3xl"
-                    style={{ background: 'var(--accent)' }}
-                    aria-hidden="true"
-                />
-                <div
-                    className="hero-orb-2 pointer-events-none absolute -right-16 bottom-0 z-[-1] h-64 w-64 rounded-full opacity-20 blur-3xl"
-                    style={{ background: 'color-mix(in srgb, var(--accent) 60%, #7c3aed)' }}
-                    aria-hidden="true"
-                />
-
-                <div className="flex flex-col-reverse items-center gap-10 md:flex-row md:items-center md:justify-between md:gap-16">
-                    <motion.div
-                        className="w-full md:flex-1"
-                        initial="hidden"
-                        animate="show"
-                        variants={{ show: { transition: { staggerChildren: 0.12 } } }}
-                    >
-                        <motion.h1
-                            variants={fadeUp}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
-                            style={{ background: 'none' }}
-                            className="mb-8 text-4xl font-semibold leading-tight text-[var(--text-h)] md:text-6xl"
+            <section className="about-me flex w-full flex-col justify-center pt-6 md:min-h-[82vh] md:pt-0">
+                <motion.div
+                    className="flex flex-col-reverse items-start gap-12 md:flex-row md:items-center md:justify-between md:gap-20"
+                    initial="hidden"
+                    animate="show"
+                    variants={{ show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } }}
+                >
+                    <div className="w-full md:flex-1">
+                        <motion.p
+                            variants={rise}
+                            transition={{ duration: 0.6, ease: [0.32, 0.72, 0.28, 1] }}
+                            className="mb-5 flex items-center gap-3 text-sm text-[var(--text-subtle)]"
                         >
                             <span
-                                className="bg-clip-text text-transparent"
-                                style={{ backgroundImage: 'linear-gradient(135deg, var(--text-h), var(--accent))' }}
-                            >
-                                {t('home.title')}
-                            </span>
-                            <br />
-                            <Typewriter key={i18n.language} lines={typewriterLines} />
+                                className="inline-block h-px w-10"
+                                style={{ background: 'var(--border-strong)' }}
+                                aria-hidden="true"
+                            />
+                            {t('home.location')}
+                        </motion.p>
+
+                        <motion.h1
+                            variants={rise}
+                            transition={{ duration: 0.6, ease: [0.32, 0.72, 0.28, 1] }}
+                            className="mb-6 max-w-[14ch]"
+                        >
+                            {t('home.title')}
                         </motion.h1>
 
                         <motion.p
-                            variants={fadeUp}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
-                            className="mb-10 max-w-5xl text-lg leading-relaxed md:text-2xl"
+                            variants={rise}
+                            transition={{ duration: 0.6, ease: [0.32, 0.72, 0.28, 1] }}
+                            className="mb-7 min-h-[1.6em] font-sans text-2xl font-medium md:text-3xl"
+                        >
+                            <Typewriter key={i18n.language} lines={typewriterLines} />
+                        </motion.p>
+
+                        <motion.p
+                            variants={rise}
+                            transition={{ duration: 0.6, ease: [0.32, 0.72, 0.28, 1] }}
+                            className="prose-organic mb-10 text-[var(--text-muted)]"
                         >
                             {t('home.intro')}
                         </motion.p>
 
                         <motion.div
-                            variants={fadeUp}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
-                            className="mb-8 flex flex-wrap items-center gap-4"
+                            variants={rise}
+                            transition={{ duration: 0.6, ease: [0.32, 0.72, 0.28, 1] }}
+                            className="flex flex-wrap items-center gap-3"
                         >
+                            <button
+                                type="button"
+                                onClick={handleScrollNextSection}
+                                className="pebble-sm group inline-flex items-center gap-3 px-7 py-4 text-base font-semibold text-[var(--on-accent)] transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0.28,1)] hover:-translate-y-0.5"
+                                style={{ background: 'var(--accent)' }}
+                            >
+                                {t('home.cta')}
+                                <ArrowDown
+                                    className="h-5 w-5 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0.28,1)] group-hover:translate-y-1"
+                                    aria-hidden="true"
+                                />
+                            </button>
+
                             <a
                                 href="https://github.com/EmilB04"
                                 target="_blank"
                                 rel="noreferrer"
                                 aria-label={t('home.githubAria')}
-                                className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent)] hover:text-white"
+                                className="pebble-sm inline-flex h-[54px] w-[54px] items-center justify-center border border-[var(--border)] text-[var(--text)] transition-colors duration-300 hover:border-[var(--border-hover)] hover:text-[var(--accent-text)]"
+                                style={{ background: 'var(--surface-card)' }}
                             >
-                                <Github size={28} aria-hidden="true" />
+                                <Github size={22} aria-hidden="true" />
                             </a>
 
                             <a
@@ -214,35 +221,22 @@ export default function Landing({ shouldUseAos = false, onScrollNextSection }: L
                                 target="_blank"
                                 rel="noreferrer"
                                 aria-label={t('home.linkedinAria')}
-                                className="inline-flex h-12 w-16 items-center justify-center rounded-2xl border border-[var(--border)] bg-white text-black transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent)] hover:text-white"
+                                className="pebble-sm inline-flex h-[54px] w-[54px] items-center justify-center border border-[var(--border)] text-[var(--text)] transition-colors duration-300 hover:border-[var(--border-hover)] hover:text-[var(--accent-text)]"
+                                style={{ background: 'var(--surface-card)' }}
                             >
-                                <Linkedin size={28} aria-hidden="true" />
+                                <Linkedin size={22} aria-hidden="true" />
                             </a>
                         </motion.div>
-
-                        <motion.button
-                            variants={fadeUp}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
-                            type="button"
-                            onClick={handleScrollNextSection}
-                            data-aos={shouldUseAos ? 'zoom-in-up' : undefined}
-                            data-aos-delay={shouldUseAos ? '0' : undefined}
-                            data-aos-duration={shouldUseAos ? '1500' : undefined}
-                            className="inline-flex items-center gap-4 rounded-3xl bg-[var(--accent)] px-10 py-5 text-xl font-semibold text-black transition-opacity duration-200 hover:opacity-90"
-                        >
-                            <ArrowDown className="h-7 w-7 animate-bounce" aria-hidden="true" />
-                            {t('home.cta')}
-                        </motion.button>
-                    </motion.div>
+                    </div>
 
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+                        variants={rise}
+                        transition={{ duration: 0.7, ease: [0.32, 0.72, 0.28, 1] }}
+                        className="md:-mt-10"
                     >
                         <AvatarPortrait />
                     </motion.div>
-                </div>
+                </motion.div>
             </section>
         </IndexLayout>
     )

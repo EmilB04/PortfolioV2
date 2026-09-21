@@ -116,6 +116,7 @@ const en = {
         githubAria: 'GitHub profile',
         linkedinAria: 'LinkedIn profile',
         cta: 'Take a look',
+        location: 'Halden, Norway',
     },
     about: {
         title: 'Who am I?',
@@ -136,6 +137,9 @@ const en = {
         },
     },
     showcase: {
+        title: 'Live domains',
+        intro: 'Sites I have built and keep online.',
+        goToSlide: 'Go to slide {{number}}',
         status: 'Live',
         visit: 'Visit site',
         browserLabel: 'Browser preview',
@@ -273,6 +277,8 @@ const en = {
         intro: 'Internal courses and certifications I have completed, spanning compliance, sales, services, and systems.',
         switcherLabel: 'Course provider',
         totalLabel: '{{count}} completed courses',
+        courseCount_one: '{{count}} course',
+        courseCount_other: '{{count}} courses',
         categories: {
             compliance: 'Compliance',
             hr: 'HR',
@@ -352,7 +358,7 @@ const no: TranslationSchema = {
         statusUndecided: 'Du har ikke tatt et valg ennå.',
     },
     contactButton: {
-        label: 'Kontakt meg',
+        label: 'Ta kontakt',
     },
     backButton: {
         aria: 'Tilbake til forsiden',
@@ -417,6 +423,7 @@ const no: TranslationSchema = {
         githubAria: 'GitHub-profil',
         linkedinAria: 'LinkedIn-profil',
         cta: 'Ta en titt',
+        location: 'Halden, Norge',
     },
     about: {
         title: 'Hvem er jeg?',
@@ -437,6 +444,9 @@ const no: TranslationSchema = {
         },
     },
     showcase: {
+        title: 'Domener i drift',
+        intro: 'Nettsteder jeg har bygget og holder i drift.',
+        goToSlide: 'Gå til slide {{number}}',
         status: 'Live',
         visit: 'Besøk siden',
         browserLabel: 'Nettleserforhåndsvisning',
@@ -574,6 +584,8 @@ const no: TranslationSchema = {
         intro: 'Interne kurs og sertifiseringer jeg har fullført, innen compliance, salg, tjenester og systemer.',
         switcherLabel: 'Kurssted',
         totalLabel: '{{count}} fullførte kurs',
+        courseCount_one: '{{count}} kurs',
+        courseCount_other: '{{count}} kurs',
         categories: {
             compliance: 'Compliance',
             hr: 'HR',
@@ -715,6 +727,7 @@ const es: TranslationSchema = {
         githubAria: 'Perfil de GitHub',
         linkedinAria: 'Perfil de LinkedIn',
         cta: 'Echa un vistazo',
+        location: 'Halden, Noruega',
     },
     about: {
         title: '¿Quién soy?',
@@ -735,6 +748,9 @@ const es: TranslationSchema = {
         },
     },
     showcase: {
+        title: 'Dominios activos',
+        intro: 'Sitios que he creado y mantengo en línea.',
+        goToSlide: 'Ir a la diapositiva {{number}}',
         status: 'En vivo',
         visit: 'Visitar sitio',
         browserLabel: 'Vista previa del navegador',
@@ -872,6 +888,8 @@ const es: TranslationSchema = {
         intro: 'Cursos y certificaciones internas que he completado, sobre cumplimiento, ventas, servicios y sistemas.',
         switcherLabel: 'Proveedor de cursos',
         totalLabel: '{{count}} cursos completados',
+        courseCount_one: '{{count}} curso',
+        courseCount_other: '{{count}} cursos',
         categories: {
             compliance: 'Cumplimiento',
             hr: 'RR. HH.',

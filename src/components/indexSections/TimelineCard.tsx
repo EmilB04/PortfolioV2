@@ -15,24 +15,26 @@ type Props = {
 
 export default function TimelineCard({ event }: Props) {
     return (
-        <div className="mt-1 flex flex-col gap-4">
+        <div className="pebble-set grid gap-4 md:grid-cols-2">
             {event.courses.map((course) => (
                 <a
                     key={`${event.semester}-${course.code ?? course.name}`}
-                    className="group rounded-[1rem] border border-[var(--border)] bg-[var(--surface)] p-4 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[var(--accent-border)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.22)]"
+                    className="card-organic group block p-5 text-left hover:-translate-y-0.5"
                     href={course.link}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    <h4 className="m-0 mb-1 text-lg font-bold text-[var(--text)] transition-colors group-hover:text-[var(--text-muted)] sm:text-xl">
-                        {course.name}
-                    </h4>
-                    {course.code ? (
-                        <p className="m-0 text-sm font-semibold text-[var(--accent-text)] sm:text-[0.9rem]">
-                            {course.code}
-                        </p>
-                    ) : null}
-                    <p className="m-0 mt-2 text-sm leading-6 text-[var(--text-muted)] sm:text-[0.95rem]">
+                    <div className="mb-2 flex items-baseline justify-between gap-3">
+                        <h4 className="m-0 text-[var(--text)] transition-colors group-hover:text-[var(--accent-text)]">
+                            {course.name}
+                        </h4>
+                        {course.code ? (
+                            <span className="shrink-0 font-mono text-xs text-[var(--text-subtle)]">
+                                {course.code}
+                            </span>
+                        ) : null}
+                    </div>
+                    <p className="prose-organic m-0 text-[14.5px] leading-6 text-[var(--text-muted)]">
                         {course.description}
                     </p>
                 </a>

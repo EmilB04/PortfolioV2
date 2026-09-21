@@ -314,8 +314,8 @@ export default function AIStarterWidget() {
     const showCounter = input.length > MAX_INPUT_CHARS * 0.8
 
     const panelSize = expanded
-        ? 'md:h-[calc(100dvh-6rem)] md:w-[min(34rem,calc(100vw-3rem))]'
-        : 'md:h-[min(32rem,calc(100dvh-8rem))] md:w-[22rem]'
+        ? 'md:h-[calc(100dvh-6rem)] md:w-[min(30rem,calc(100vw-3rem))]'
+        : 'md:h-[min(30rem,calc(100dvh-9rem))] md:w-[20rem]'
 
     return (
         <>
@@ -338,7 +338,7 @@ export default function AIStarterWidget() {
                         role="dialog"
                         aria-modal="true"
                         aria-label={t('aiWidget.assistant')}
-                        className={`fixed inset-0 z-50 flex flex-col overflow-hidden border shadow-2xl md:absolute md:inset-auto md:bottom-full md:left-0 md:mb-3 md:rounded-3xl ${panelSize}`}
+                        className={`fixed inset-0 z-50 flex flex-col overflow-hidden border shadow-2xl md:absolute md:inset-auto md:bottom-full md:left-0 md:mb-3 md:[border-radius:var(--pebble-c)] ${panelSize}`}
                         style={{
                             background: 'var(--bg)',
                             borderColor: 'var(--border)',
@@ -417,7 +417,7 @@ export default function AIStarterWidget() {
                                 {/* welcome — reactive to language changes */}
                                 <div className="flex justify-start">
                                     <div
-                                        className="max-w-[85%] rounded-2xl rounded-bl-md px-3.5 py-2.5 text-sm leading-relaxed"
+                                        className="max-w-[85%] [border-radius:18px_18px_18px_6px] px-3.5 py-2.5 text-sm leading-relaxed"
                                         style={{ background: 'var(--surface-card)', color: 'var(--text)', border: '1px solid var(--border)' }}
                                     >
                                         {t('aiWidget.welcome')}
@@ -427,7 +427,7 @@ export default function AIStarterWidget() {
                                 {isEmpty && !loading && (
                                     <div className="mt-1 flex flex-col gap-2">
                                         <span
-                                            className="text-[11px] font-semibold uppercase tracking-[0.14em]"
+                                            className="text-[11px]"
                                             style={{ color: 'var(--text-subtle)' }}
                                         >
                                             {t('aiWidget.suggestionsTitle')}
@@ -461,7 +461,7 @@ export default function AIStarterWidget() {
                                         className={`group flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
                                     >
                                         <div
-                                            className={`max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${msg.role === 'user' ? 'rounded-br-md' : 'rounded-bl-md'}`}
+                                            className={`max-w-[85%] whitespace-pre-wrap break-words px-3.5 py-2.5 text-sm leading-relaxed ${msg.role === 'user' ? '[border-radius:18px_18px_6px_18px]' : '[border-radius:18px_18px_18px_6px]'}`}
                                             style={
                                                 msg.role === 'user'
                                                     ? { background: 'var(--accent)', color: '#fff' }
@@ -518,7 +518,7 @@ export default function AIStarterWidget() {
                                 {loading && (
                                     <div className="flex justify-start">
                                         <div
-                                            className="flex items-center gap-1.5 rounded-2xl rounded-bl-md px-3.5 py-3"
+                                            className="flex items-center gap-1.5 [border-radius:18px_18px_18px_6px] px-3.5 py-3"
                                             style={{ background: 'var(--surface-card)', border: '1px solid var(--border)' }}
                                         >
                                             <span className="sr-only">{t('aiWidget.thinking')}</span>
@@ -537,7 +537,7 @@ export default function AIStarterWidget() {
                                 {failed && (
                                     <div className="flex flex-col items-start gap-2">
                                         <div
-                                            className="max-w-[85%] rounded-2xl rounded-bl-md px-3.5 py-2.5 text-sm leading-relaxed"
+                                            className="max-w-[85%] [border-radius:18px_18px_18px_6px] px-3.5 py-2.5 text-sm leading-relaxed"
                                             style={{
                                                 background: 'var(--accent-bg)',
                                                 border: '1px solid var(--accent-border)',
@@ -591,7 +591,7 @@ export default function AIStarterWidget() {
                             }}
                         >
                             <div
-                                className="ai-input-shell flex items-end gap-2 rounded-2xl border px-3 py-2 transition-colors focus-within:border-[var(--accent-border)]"
+                                className="ai-input-shell pebble-sm flex items-end gap-2 border px-3 py-2 transition-colors focus-within:border-[var(--accent-border)]"
                                 style={{ background: 'var(--surface-card)', borderColor: 'var(--border)' }}
                             >
                                 <textarea
@@ -654,31 +654,31 @@ export default function AIStarterWidget() {
                     onClick={() => setIsOpen((v) => !v)}
                     aria-label={isOpen ? t('aiWidget.closed') : t('aiWidget.open')}
                     aria-expanded={isOpen}
-                    className={`group inline-flex items-center gap-3 rounded-full border p-3 text-left shadow-2xl transition-all duration-200 hover:-translate-y-0.5 md:px-4 ${isOpen ? 'hidden md:inline-flex' : ''}`}
+                    className={`ai-launcher pebble-sm group inline-flex items-center border p-2 text-left transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0.28,1)] hover:-translate-y-0.5 ${isOpen ? 'hidden md:inline-flex' : ''}`}
                     style={{
                         background: 'var(--surface)',
                         borderColor: 'var(--border)',
                         color: 'var(--text)',
                         backdropFilter: 'blur(12px)',
                         WebkitBackdropFilter: 'blur(12px)',
-                        boxShadow: '0 18px 50px rgba(0,0,0,0.18)',
+                        boxShadow: 'var(--shadow-lifted)',
                     }}
                 >
                     <span
                         className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-                        style={{ background: 'var(--accent)', color: '#fff' }}
+                        style={{ background: 'var(--accent)', color: 'var(--on-accent)' }}
                     >
                         <BotMessageSquare size={18} aria-hidden="true" />
                     </span>
-                    <span className="hidden flex-col md:flex">
-                        <span
-                            className="text-xs font-semibold uppercase tracking-[0.14em]"
-                            style={{ color: 'var(--text-muted)' }}
-                        >
-                            {t('aiWidget.assistant')}
-                        </span>
-                        <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
-                            {t('aiWidget.teaser')}
+
+                    <span className="ai-launcher-label hidden md:grid" aria-hidden="true">
+                        <span className="flex flex-col pr-2">
+                            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                                {t('aiWidget.assistant')}
+                            </span>
+                            <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
+                                {t('aiWidget.teaser')}
+                            </span>
                         </span>
                     </span>
                 </button>

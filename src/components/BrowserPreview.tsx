@@ -45,7 +45,7 @@ export default function BrowserPreview({ url, imageUrl, placeholderUrl }: Props)
 
     return (
         <div
-            className="w-full overflow-hidden rounded-xl"
+            className="pebble w-full overflow-hidden"
             style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.15), 0 0 0 1px var(--border)' }}
         >
             {/* Chrome bar */}
