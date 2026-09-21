@@ -4,7 +4,9 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Send } from 'lucide-react'
 import IndexLayout from '../components/indexSections/_layout'
 
-const AVATAR_URL = 'https://github.com/EmilB04.png'
+// avatars.githubusercontent.com serves the same image without the cookies
+// github.com sets on its redirect (_gh_sess, _octo, logged_in).
+const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=400'
 
 const fadeUp = {
     hidden: { opacity: 0, y: 24 },
@@ -124,7 +126,7 @@ function EmailPreview({ composeLabel, subject }: { composeLabel: string; subject
             <div className="mt-4 flex justify-end">
                 <span
                     className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold text-[var(--on-accent)]"
-                    style={{ background: 'var(--accent)' }}
+                    style={{ background: 'var(--accent-solid)' }}
                 >
                     Send
                     <Send size={11} aria-hidden="true" />

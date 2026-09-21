@@ -90,7 +90,7 @@ export default function ProjectsSection() {
                                 type="button"
                                 onClick={() => setActiveIndex(i)}
                                 className={`pebble-sm flex-shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 ${i === activeIndex
-                                    ? 'bg-[var(--accent)] text-[var(--on-accent)]'
+                                    ? 'bg-[var(--accent-solid)] text-[var(--on-accent)]'
                                     : 'border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-hover)] hover:text-[var(--text)]'
                                     }`}
                             >
@@ -194,7 +194,7 @@ export default function ProjectsSection() {
                                                             href={active.live_url}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="pebble-sm inline-flex items-center gap-2 bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
+                                                            className="pebble-sm inline-flex items-center gap-2 bg-[var(--accent-solid)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
                                                         >
                                                             {t('projectsSection.visitSite')}
                                                             <ExternalLink size={14} aria-hidden="true" />

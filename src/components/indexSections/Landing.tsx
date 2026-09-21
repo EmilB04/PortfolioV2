@@ -5,7 +5,10 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowDown, Github, Linkedin } from 'lucide-react'
 import IndexLayout from './_layout'
 
-const GITHUB_USER = 'EmilB04'
+// Straight to the avatar host: github.com/<user>.png answers with a 302 and
+// sets _gh_sess, _octo and logged_in on the visitor before any consent.
+// 111691856 is the GitHub user id for EmilB04.
+const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=400'
 
 type LandingProps = {
     shouldUseAos?: boolean
@@ -101,13 +104,13 @@ function AvatarPortrait() {
             {failed ? (
                 <div
                     className="stone flex h-full w-full items-center justify-center text-5xl font-semibold text-[var(--on-accent)]"
-                    style={{ background: 'var(--accent)' }}
+                    style={{ background: 'var(--accent-solid)' }}
                 >
                     EB
                 </div>
             ) : (
                 <img
-                    src={`https://github.com/${GITHUB_USER}.png`}
+                    src={AVATAR_URL}
                     alt="Emil Berglund"
                     onError={() => setFailed(true)}
                     loading="eager"
@@ -144,11 +147,19 @@ export default function Landing({ onScrollNextSection }: LandingProps) {
         <IndexLayout id="landing" className="text-left">
             <section className="about-me flex w-full flex-col justify-center pt-6 md:min-h-[82vh] md:pt-0">
                 <motion.div
-                    className="flex flex-col-reverse items-start gap-12 md:flex-row md:items-center md:justify-between md:gap-20"
+                    className="flex flex-col items-start gap-12 md:flex-row-reverse md:items-center md:justify-between md:gap-20"
                     initial="hidden"
                     animate="show"
                     variants={{ show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } }}
                 >
+                    <motion.div
+                        variants={rise}
+                        transition={{ duration: 0.7, ease: [0.32, 0.72, 0.28, 1] }}
+                        className="md:-mt-10"
+                    >
+                        <AvatarPortrait />
+                    </motion.div>
+
                     <div className="w-full md:flex-1">
                         <motion.p
                             variants={rise}
@@ -196,7 +207,7 @@ export default function Landing({ onScrollNextSection }: LandingProps) {
                                 type="button"
                                 onClick={handleScrollNextSection}
                                 className="pebble-sm group inline-flex items-center gap-3 px-7 py-4 text-base font-semibold text-[var(--on-accent)] transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0.28,1)] hover:-translate-y-0.5"
-                                style={{ background: 'var(--accent)' }}
+                                style={{ background: 'var(--accent-solid)' }}
                             >
                                 {t('home.cta')}
                                 <ArrowDown
@@ -228,14 +239,6 @@ export default function Landing({ onScrollNextSection }: LandingProps) {
                             </a>
                         </motion.div>
                     </div>
-
-                    <motion.div
-                        variants={rise}
-                        transition={{ duration: 0.7, ease: [0.32, 0.72, 0.28, 1] }}
-                        className="md:-mt-10"
-                    >
-                        <AvatarPortrait />
-                    </motion.div>
                 </motion.div>
             </section>
         </IndexLayout>

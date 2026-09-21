@@ -200,7 +200,7 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                         <button
                             type="button"
                             onClick={accept}
-                            className="pebble-sm flex-1 bg-[var(--accent)] px-3 py-2 text-xs font-semibold text-[var(--on-accent)] transition-transform duration-200 hover:-translate-y-0.5"
+                            className="pebble-sm flex-1 bg-[var(--accent-solid)] px-3 py-2 text-xs font-semibold text-[var(--on-accent)] transition-transform duration-200 hover:-translate-y-0.5"
                         >
                             {t('cookieConsent.accept')}
                         </button>

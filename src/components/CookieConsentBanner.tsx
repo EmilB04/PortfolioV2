@@ -39,7 +39,7 @@ export default function CookieConsentBanner() {
                             <button
                                 type="button"
                                 onClick={accept}
-                                className="pebble-sm bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-200 hover:-translate-y-0.5"
+                                className="pebble-sm bg-[var(--accent-solid)] px-4 py-2 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-200 hover:-translate-y-0.5"
                             >
                                 {t('cookieConsent.accept')}
                             </button>

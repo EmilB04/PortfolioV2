@@ -173,7 +173,7 @@ function MobileDrawer({
                 <a
                     href="/contact"
                     onClick={onClose}
-                    className="mx-6 mt-6 rounded-full bg-[var(--accent)] px-4 py-3 text-center text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 ease-out hover:-translate-y-0.5 motion-reduce:transition-none"
+                    className="mx-6 mt-6 rounded-full bg-[var(--accent-solid)] px-4 py-3 text-center text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 ease-out hover:-translate-y-0.5 motion-reduce:transition-none"
                 >
                     {contactLabel}
                 </a>

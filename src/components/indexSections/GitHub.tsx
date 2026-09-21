@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AlertTriangle, ExternalLink, FolderGit2, GitCommitHorizontal, GitFork, GitPullRequest, MapPin, Star, Users } from 'lucide-react'
 import IndexLayout from './_layout'
+import { readStored, writeStored } from '../../lib/cookieConsent'
 import SectionHeading from '../ui/SectionHeading'
 import { CommitActivitySkeleton, GitHubProfileSkeleton, RepoCardSkeleton } from '../ui/Skeleton'
 import { INDEX_PATHS } from '../../routes/indexPaths'
@@ -11,7 +12,7 @@ const BLACKLIST = new Set(['EmilB04', 'Kommunikasjonsdesign'])
 const MAX_REPOS = 8
 const MAX_ACTIVITY = 5
 const RELATIVE_TIME_LOCALES: Record<string, string> = { no: 'nb' }
-const CACHE_VERSION = 2 // bump when repo sort/shape changes to invalidate stale sessionStorage caches
+const CACHE_VERSION = 2 // bump when repo sort/shape changes to invalidate stale caches
 const CACHE_KEY = `github-section:${GITHUB_USER}:v${CACHE_VERSION}`
 const CACHE_TTL_MS = 10 * 60_000
 const BLOCK_KEY = `github-section:${GITHUB_USER}:blocked-until`
@@ -174,33 +175,39 @@ type CachedGitHubData = {
     cachedAt: number
 }
 
+// Without cookie consent nothing may be kept on the device, so the cache and
+// the rate-limit backoff fall back to module state: they still spare GitHub a
+// second round of calls within this page view, and vanish when it closes.
+let memoryCache: CachedGitHubData | null = null
+let memoryBlockedUntil = 0
+
 function readCache(): CachedGitHubData | null {
-    try {
-        const raw = sessionStorage.getItem(CACHE_KEY)
-        if (!raw) return null
-        const parsed = JSON.parse(raw) as CachedGitHubData
-        if (Date.now() - parsed.cachedAt > CACHE_TTL_MS) return null
-        return parsed
-    } catch {
-        return null
+    const raw = readStored(CACHE_KEY, 'session')
+    let parsed: CachedGitHubData | null = memoryCache
+
+    if (raw) {
+        try {
+            parsed = JSON.parse(raw) as CachedGitHubData
+        } catch {
+            parsed = memoryCache
+        }
     }
+
+    if (!parsed) return null
+    if (Date.now() - parsed.cachedAt > CACHE_TTL_MS) return null
+    return parsed
 }
 
 function writeCache(data: Omit<CachedGitHubData, 'cachedAt'>) {
-    try {
-        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ...data, cachedAt: Date.now() }))
-    } catch {
-        // sessionStorage unavailable (private browsing, quota) — skip caching
-    }
+    const entry = { ...data, cachedAt: Date.now() }
+    memoryCache = entry
+    writeStored(CACHE_KEY, JSON.stringify(entry), 'session')
 }
 
 function isBlocked(): boolean {
-    try {
-        const until = Number(sessionStorage.getItem(BLOCK_KEY))
-        return Number.isFinite(until) && until > Date.now()
-    } catch {
-        return false
-    }
+    const stored = Number(readStored(BLOCK_KEY, 'session'))
+    const until = Number.isFinite(stored) && stored > 0 ? stored : memoryBlockedUntil
+    return until > Date.now()
 }
 
 function recordBlock(responses: Response[]) {
@@ -208,11 +215,8 @@ function recordBlock(responses: Response[]) {
     const resetMs = resetHeader ? Number(resetHeader) * 1000 : NaN
     const until = Number.isFinite(resetMs) && resetMs > Date.now() ? resetMs : Date.now() + DEFAULT_BLOCK_MS
 
-    try {
-        sessionStorage.setItem(BLOCK_KEY, String(until))
-    } catch {
-        // sessionStorage unavailable — nothing to back off with, next mount will just retry
-    }
+    memoryBlockedUntil = until
+    writeStored(BLOCK_KEY, String(until), 'session')
 }
 
 export default function GitHub() {

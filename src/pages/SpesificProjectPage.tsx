@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { readStored, writeStored } from '../lib/cookieConsent'
 import { ExternalLink, Github, Upload, X, Check, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import type { Project } from '../hooks/useProjects'
@@ -13,20 +14,17 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? ''
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
 const ADMIN_KEY_SESSION_STORAGE_KEY = 'portfolio_admin_upload_key'
 
+// Held in module state when cookies are not accepted, so the key survives
+// navigation inside this page view but is never written to the device.
+let memoryAdminKey: string | null = null
+
 function readStoredAdminKey(): string | null {
-    try {
-        return sessionStorage.getItem(ADMIN_KEY_SESSION_STORAGE_KEY)
-    } catch {
-        return null
-    }
+    return readStored(ADMIN_KEY_SESSION_STORAGE_KEY, 'session') ?? memoryAdminKey
 }
 
 function storeAdminKey(key: string) {
-    try {
-        sessionStorage.setItem(ADMIN_KEY_SESSION_STORAGE_KEY, key)
-    } catch {
-        // sessionStorage unavailable (private browsing, quota) — key just won't persist across reloads
-    }
+    memoryAdminKey = key
+    writeStored(ADMIN_KEY_SESSION_STORAGE_KEY, key, 'session')
 }
 
 async function getSignature(folder: string, publicId: string, timestamp: number, adminKey: string) {
@@ -260,7 +258,7 @@ export default function SpesificProjectPage() {
                                     href={project.live_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="pebble-sm inline-flex items-center justify-center gap-2 bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
+                                    className="pebble-sm inline-flex items-center justify-center gap-2 bg-[var(--accent-solid)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
                                 >
                                     <ExternalLink size={15} aria-hidden="true" />
                                     {t('projectsSection.visitSite')}

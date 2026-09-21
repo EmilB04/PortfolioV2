@@ -40,6 +40,9 @@
     --accent-text: var(--accent-base);
     /* Accent fills are tuned to carry near-black text (see accentContext). */
     --on-accent: #12160f;
+    /* Fallback before AccentProvider's JS runs; it overrides both to guarantee
+       7:1 text contrast for the active preset (see AccentProvider.tsx). */
+    --accent-solid: var(--accent);
 
     --nav-bg: rgba(22, 27, 19, 0.82);
     --nav-bg-transparent: rgba(22, 27, 19, 0.45);

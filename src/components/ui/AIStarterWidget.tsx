@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { readStored, writeStored, removeStored } from '../../lib/cookieConsent'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
     ArrowDown,
@@ -40,7 +41,7 @@ export default function AIStarterWidget() {
     const [expanded, setExpanded] = useState(false)
     const [messages, setMessages] = useState<Message[]>(() => {
         try {
-            const saved = localStorage.getItem(STORAGE_KEY)
+            const saved = readStored(STORAGE_KEY)
             if (!saved) return []
             // Re-validate action ids on load — stored state is as replaceable as any other input.
             return (JSON.parse(saved) as Message[]).map((msg) => ({
@@ -138,12 +139,10 @@ export default function AIStarterWidget() {
         if (isOpen) scrollToBottom('auto')
     }, [isOpen, scrollToBottom])
 
+    // The transcript is only written to the device once cookies are accepted;
+    // without consent it lives in React state for this page view alone.
     useEffect(() => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
-        } catch {
-            // ignore storage errors
-        }
+        writeStored(STORAGE_KEY, JSON.stringify(messages))
     }, [messages])
 
     useEffect(() => () => abortRef.current?.abort(), [])
@@ -154,7 +153,7 @@ export default function AIStarterWidget() {
         setMessages([])
         setFailed(false)
         setInput('')
-        localStorage.removeItem(STORAGE_KEY)
+        removeStored(STORAGE_KEY)
         resizeTextarea(null)
         inputRef.current?.focus()
     }
