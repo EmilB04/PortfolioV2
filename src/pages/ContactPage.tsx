@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { ArrowRight, Send } from 'lucide-react'
 import IndexLayout from '../components/indexSections/_layout'
+import { useSeo } from '../hooks/useSeo'
+import { ROUTE_SEO } from '../lib/seo'
 
 // avatars.githubusercontent.com serves the same image without the cookies
 // github.com sets on its redirect (_gh_sess, _octo, logged_in).
-const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=400'
+const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=128'
 
 const fadeUp = {
     hidden: { opacity: 0, y: 24 },
@@ -175,6 +177,7 @@ export default function Contact() {
     const { t } = useTranslation()
     const roles = t('home.roles', { returnObjects: true }) as string[]
     const headline = roles[0]
+    useSeo(ROUTE_SEO['/contact'].title, ROUTE_SEO['/contact'].description, '/contact')
 
     return (
         <IndexLayout id="contact">

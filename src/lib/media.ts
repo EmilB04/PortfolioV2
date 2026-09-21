@@ -80,7 +80,13 @@ export function resolveMediaUrl(source?: string | null, options: ResolveMediaUrl
     if (CLOUDINARY_CLOUD_NAME) {
         const resourceType = options.resourceType ?? inferResourceType(source)
         const normalizedPublicId = normalizeCloudinaryPublicId(source)
-        const transformationSegment = options.transformations?.filter(Boolean).join(',')
+        // Without a transformation Cloudinary serves the original upload, which
+        // for a screenshot is several megabytes of PNG. f_auto,q_auto lets it
+        // pick a modern format and a sane quality; the width cap keeps a phone
+        // from downloading a desktop-sized image.
+        const requested = options.transformations?.filter(Boolean) ?? []
+        const transformations = requested.length > 0 ? requested : ['f_auto', 'q_auto', 'w_1200', 'c_limit']
+        const transformationSegment = transformations.join(',')
         const transformationPrefix = transformationSegment ? `${transformationSegment}/` : ''
 
         return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload/${transformationPrefix}${normalizedPublicId}`

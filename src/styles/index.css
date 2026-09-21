@@ -24,12 +24,21 @@
    every page carries one shared layer of noise over the whole view. */
 .grain-overlay {
   position: fixed;
-  inset: -50%;
+  /* Viewport-sized: at inset:-50% this layer covered four screens, and a
+     blended layer that size is re-composited on every frame that moves. */
+  inset: 0;
   z-index: 2;
   pointer-events: none;
   opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
+}
+
+/* Blending the grain is a desktop-only luxury; on a phone GPU it costs more
+   than the texture is worth, so there it is a plain faint overlay. */
+@media (min-width: 1024px) {
+  .grain-overlay {
+    mix-blend-mode: soft-light;
+  }
 }
 
 @keyframes blink {
@@ -196,8 +205,6 @@ a:hover {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: var(--nav-bg-transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   box-shadow: none;
   transition:
     background 0.5s var(--ease-organic),
@@ -281,12 +288,13 @@ a:hover {
       transparent 1px 9px);
 }
 
+/* `backdrop-filter` is applied at desktop widths only (see below): a page
+   holds dozens of these cards, and each blurred backdrop is re-rendered
+   whenever anything behind it moves. */
 .card-organic {
   background: var(--surface-card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition:
     border-color var(--transition),
     box-shadow var(--transition),
@@ -296,6 +304,19 @@ a:hover {
 .card-organic:hover {
   border-color: var(--border-hover);
   box-shadow: var(--shadow-lifted);
+}
+
+@media (min-width: 1024px) {
+
+  .nav-island {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .card-organic {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 /* ─── Code ───────────────────────────────────────────────── */

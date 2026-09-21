@@ -47,15 +47,34 @@ export default function ProjectsSection() {
         }
     }, [])
 
-    // Warm Microlink's screenshot cache for every live project up front — switching
-    // tabs later then hits an already-rendering (or cached) screenshot instead of
-    // triggering a fresh cold render.
+    // Warm Microlink's screenshot cache for every live project — switching tabs
+    // later then hits an already-rendering (or cached) screenshot instead of
+    // triggering a fresh cold render. It waits for an idle moment, and is
+    // skipped entirely on phones and metered connections, where five extra
+    // screenshot fetches cost more than the tab switch they save.
     useEffect(() => {
-        projects.forEach((p) => {
-            if (!p.live_url) return
-            const img = new Image()
-            img.src = `https://api.microlink.io/?url=${encodeURIComponent(p.live_url)}&screenshot=true&meta=false&embed=screenshot.url`
-        })
+        if (projects.length === 0) return
+
+        const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+        const onPhone = window.matchMedia('(pointer: coarse)').matches
+        if (onPhone || connection?.saveData) return
+
+        const warm = () => {
+            projects.forEach((p) => {
+                if (!p.live_url) return
+                const img = new Image()
+                img.src = `https://api.microlink.io/?url=${encodeURIComponent(p.live_url)}&screenshot=true&meta=false&embed=screenshot.url`
+            })
+        }
+
+        const idle = window.requestIdleCallback
+        if (idle) {
+            const handle = idle(warm, { timeout: 4000 })
+            return () => window.cancelIdleCallback?.(handle)
+        }
+
+        const timer = window.setTimeout(warm, 2500)
+        return () => window.clearTimeout(timer)
     }, [projects])
 
     const active = projects[activeIndex]

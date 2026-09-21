@@ -25,8 +25,8 @@ interface ShowcaseItem {
 
 const DOMAINS: DomainConfig[] = [
     {
-        previewImage: 'https://res.cloudinary.com/emilber-portfolio/image/upload/v1778535404/spillarena-preview_yif14p.jpg',
-        logoImage: 'https://res.cloudinary.com/emilber-portfolio/image/upload/v1778535404/logo_qgrwwk.png',
+        previewImage: 'https://res.cloudinary.com/emilber-portfolio/image/upload/f_auto,q_auto,w_1200,c_limit/v1778535404/spillarena-preview_yif14p.jpg',
+        logoImage: 'https://res.cloudinary.com/emilber-portfolio/image/upload/f_auto,q_auto,w_112,c_limit/v1778535404/logo_qgrwwk.png',
         href: 'https://spillarena.no',
         accentFrom: '#aa00ff',
         accentTo: '#ff2d78',
@@ -46,7 +46,7 @@ const SLIDE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
 // Live page screenshot via microlink — probes the actual page instead of a static image.
 function screenshotSrc(href: string) {
-    return `https://api.microlink.io/?url=${encodeURIComponent(href)}&screenshot=true&meta=false&embed=screenshot.url`
+    return `https://api.microlink.io/?url=${encodeURIComponent(href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=960&viewport.height=600`
 }
 
 export default function LiveDomainShowcase() {

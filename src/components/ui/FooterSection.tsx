@@ -23,7 +23,6 @@ export default function FooterSection() {
                             href="https://github.com/EmilB04"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Besøk GitHub-profilen til Emil Berglund"
                             className="inline-flex items-center gap-2 text-[15px] font-medium text-[var(--text)] transition-colors hover:text-[var(--accent-text)]"
                         >
                             <Github size={17} aria-hidden="true" />

@@ -95,12 +95,14 @@
     }
     </script>
 
+  <!-- Only the display face is preloaded: the serif is body text further down
+       the page and swaps in without holding up the first paint. -->
   <link rel="preload" href="/fonts/bricolage-grotesque-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/newsreader-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="canonical" href="https://emilb.no/" />
-  <link rel="icon" type="image/png" href="./src/assets/icons/eb_whte.png" />
-  <link rel="apple-touch-icon" href="./src/assets/icons/eb_whte.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/brand/eb-light-96.png" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/brand/eb-dark-96.png" media="(prefers-color-scheme: light)" />
+  <link rel="apple-touch-icon" href="/brand/eb-light-192.png" />
   <title>Emil Berglund - Portfolio</title>
 </head>
 

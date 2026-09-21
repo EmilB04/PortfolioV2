@@ -114,7 +114,7 @@ function SkillTile({ skill }: { skill: Skill }) {
                 >
                     {skill.icon
                         ? <skill.icon size={26} style={{ color: skill.color }} aria-hidden="true" />
-                        : <span aria-hidden="true" className="text-sm font-bold tracking-tight" style={{ color: skill.color }}>{skill.abbr}</span>
+                        : <span aria-hidden="true" className="text-sm font-bold tracking-tight text-[var(--text)]">{skill.abbr}</span>
                     }
                 </button>
             </div>

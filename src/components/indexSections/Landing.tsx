@@ -8,7 +8,8 @@ import IndexLayout from './_layout'
 // Straight to the avatar host: github.com/<user>.png answers with a 302 and
 // sets _gh_sess, _octo and logged_in on the visitor before any consent.
 // 111691856 is the GitHub user id for EmilB04.
-const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=400'
+// Displayed up to 19rem (304px) at md, so request 2x for retina.
+const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=608'
 
 type LandingProps = {
     shouldUseAos?: boolean
