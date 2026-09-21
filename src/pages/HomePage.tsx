@@ -8,8 +8,12 @@ import Certifications from '../components/indexSections/Certifications';
 import GitHub from '../components/indexSections/GitHub';
 import Timeline from '../components/indexSections/Timeline';
 import { INDEX_PATHS } from '../routes/indexPaths'
+import { useSeo } from '../hooks/useSeo'
+import { ROUTE_SEO } from '../lib/seo'
 
 export default function Home() {
+    useSeo(ROUTE_SEO['/'].title, ROUTE_SEO['/'].description, '/')
+
     function handleScrollNextSection() {
         document.getElementById(INDEX_PATHS.ABOUT)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }

@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { ArrowRight, Send } from 'lucide-react'
 import IndexLayout from '../components/indexSections/_layout'
+import { useSeo } from '../hooks/useSeo'
+import { ROUTE_SEO } from '../lib/seo'
 
 // avatars.githubusercontent.com serves the same image without the cookies
 // github.com sets on its redirect (_gh_sess, _octo, logged_in).
@@ -175,6 +177,7 @@ export default function Contact() {
     const { t } = useTranslation()
     const roles = t('home.roles', { returnObjects: true }) as string[]
     const headline = roles[0]
+    useSeo(ROUTE_SEO['/contact'].title, ROUTE_SEO['/contact'].description, '/contact')
 
     return (
         <IndexLayout id="contact">

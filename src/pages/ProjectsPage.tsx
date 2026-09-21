@@ -2,10 +2,13 @@ import { useProjects } from '../hooks/useProjects'
 import ProjectCard from '../components/ProjectCard'
 import { ProjectCardSkeleton } from '../components/ui/Skeleton'
 import { useTranslation } from 'react-i18next'
+import { useSeo } from '../hooks/useSeo'
+import { ROUTE_SEO } from '../lib/seo'
 
 export default function Projects() {
     const { t } = useTranslation()
     const { projects, loading } = useProjects()
+    useSeo(ROUTE_SEO['/projects'].title, ROUTE_SEO['/projects'].description, '/projects')
 
     return (
         <div className="min-h-screen px-5 pb-16 pt-28 md:px-10" style={{ color: 'var(--text)' }}>

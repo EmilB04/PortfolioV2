@@ -7,6 +7,8 @@ import { supabase } from '../lib/supabase'
 import type { Project } from '../hooks/useProjects'
 import { ProjectDetailSkeleton } from '../components/ui/Skeleton'
 import ProjectMediaCarousel from '../components/ProjectMediaCarousel'
+import { useSeo } from '../hooks/useSeo'
+import { absoluteTitle } from '../lib/seo'
 
 const CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME ?? 'emilber-portfolio'
 const API_KEY = import.meta.env.CLOUDINARY_API_KEY ?? ''
@@ -74,6 +76,12 @@ export default function SpesificProjectPage() {
     const [uploading, setUploading] = useState(false)
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const fileInputRef = useRef<HTMLInputElement>(null)
+
+    useSeo(
+        project ? absoluteTitle(project.title) : absoluteTitle('Project'),
+        project?.description ?? 'Software project by Emil Berglund, full-stack developer in Halden, Norway.',
+        `/projects/${projectId}`,
+    )
 
     useEffect(() => {
         let mounted = true
