@@ -1,13 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { Github } from '../../lib/icons'
-// Starter på 0
-const LAST_UPDATED_MONTH_INDEX = 7
-const LAST_UPDATED_YEAR = 2026
 
 export default function FooterSection() {
-    const { t, i18n } = useTranslation()
-    const lastUpdatedDate = new Date(LAST_UPDATED_YEAR, LAST_UPDATED_MONTH_INDEX, 1)
-    const monthName = new Intl.DateTimeFormat(i18n.language, { month: 'long' }).format(lastUpdatedDate)
+    const { t } = useTranslation()
 
     return (
         <footer aria-label="Site footer" className="w-full px-4 pb-4 pt-12 sm:px-6">
@@ -56,10 +51,6 @@ export default function FooterSection() {
 
                 <p className="m-0 text-sm sm:text-[0.98rem]" style={{ color: 'var(--text-muted)' }}>
                     {t('footer.madeBy')} <strong style={{ color: 'var(--text)' }}>Emil Berglund</strong>
-                    <span className="mx-2" style={{ color: 'var(--text-subtle)' }} aria-hidden="true">
-                        •
-                    </span>
-                    <span>{t('footer.updated', { month: monthName, year: LAST_UPDATED_YEAR })}</span>
                 </p>
             </div>
         </footer>

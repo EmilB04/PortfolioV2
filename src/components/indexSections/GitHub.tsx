@@ -11,7 +11,8 @@ const BLACKLIST = new Set(['EmilB04', 'Kommunikasjonsdesign'])
 const MAX_REPOS = 8
 const MAX_ACTIVITY = 5
 const RELATIVE_TIME_LOCALES: Record<string, string> = { no: 'nb' }
-const CACHE_KEY = `github-section:${GITHUB_USER}`
+const CACHE_VERSION = 2 // bump when repo sort/shape changes to invalidate stale sessionStorage caches
+const CACHE_KEY = `github-section:${GITHUB_USER}:v${CACHE_VERSION}`
 const CACHE_TTL_MS = 10 * 60_000
 const BLOCK_KEY = `github-section:${GITHUB_USER}:blocked-until`
 const DEFAULT_BLOCK_MS = 10 * 60_000
@@ -24,7 +25,7 @@ type Repo = {
     stargazers_count: number
     forks_count: number
     language: string | null
-    updated_at: string
+    pushed_at: string
 }
 
 type GitHubProfile = {
@@ -243,7 +244,7 @@ export default function GitHub() {
             try {
                 const responses = await Promise.all([
                     fetch(`https://api.github.com/users/${GITHUB_USER}`),
-                    fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100`),
+                    fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=pushed&direction=desc`),
                     fetch(`https://api.github.com/users/${GITHUB_USER}/events/public?per_page=30`),
                 ])
                 const [profileRes, reposRes, eventsRes] = responses
@@ -257,10 +258,7 @@ export default function GitHub() {
                 const reposData: Repo[] = await reposRes.json()
                 const filteredRepos = reposData
                     .filter((r) => !BLACKLIST.has(r.name))
-                    .sort((a, b) => {
-                        if (b.stargazers_count !== a.stargazers_count) return b.stargazers_count - a.stargazers_count
-                        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-                    })
+                    .sort((a, b) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime())
                     .slice(0, MAX_REPOS)
 
                 const profileData: GitHubProfile | null = profileRes.ok ? await profileRes.json() : null

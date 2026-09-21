@@ -45,8 +45,19 @@ export default function ProjectsSection() {
         }
     }, [])
 
+    // Warm Microlink's screenshot cache for every live project up front — switching
+    // tabs later then hits an already-rendering (or cached) screenshot instead of
+    // triggering a fresh cold render.
+    useEffect(() => {
+        projects.forEach((p) => {
+            if (!p.live_url) return
+            const img = new Image()
+            img.src = `https://api.microlink.io/?url=${encodeURIComponent(p.live_url)}&screenshot=true&meta=false&embed=screenshot.url`
+        })
+    }, [projects])
+
     const active = projects[activeIndex]
-    const previewImage = !active?.live_url ? resolveMediaUrl(active?.images?.[0]) : ''
+    const previewImage = resolveMediaUrl(active?.images?.[0])
     const hasPreview = Boolean(active?.live_url) || Boolean(previewImage)
 
     return (
@@ -159,6 +170,7 @@ export default function ProjectsSection() {
                                                 <div className="min-w-0 lg:flex-1">
                                                     <BrowserPreview
                                                         url={active.live_url}
+                                                        placeholderUrl={previewImage || undefined}
                                                     />
                                                 </div>
                                             ) : previewImage ? (
