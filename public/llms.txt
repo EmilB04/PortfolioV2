@@ -1,0 +1,9 @@
+# Emil Berglund - Portfolio
+
+> Personal portfolio of Emil Berglund, a full-stack developer and computer
+> science student, covering projects, experience, skills and contact
+> information.
+
+- [Portfolio](https://emilb.no/): Home page with projects, skills and experience.
+- [GitHub](https://github.com/EmilB04): Source code and open-source projects.
+- [LinkedIn](https://www.linkedin.com/in/emilber/): Professional profile.

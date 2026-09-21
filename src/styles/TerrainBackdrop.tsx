@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties } from 'react'
+import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 
 /**
  * The page sits in a landscape rather than on a flat colour. Three ridge
@@ -33,11 +33,37 @@ const MOTES = [
 export default function TerrainBackdrop() {
     const rootRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
+    // Layout effect, not a plain effect: the calm/live decision (and the
+    // static --sp it sets) must land before the browser's first paint, or
+    // that paint shows the animated resting transform and the very next
+    // frame snaps to the calm one — a layout shift the Lighthouse CLS
+    // audit flags on .terrain-haze-shell--b.
+    useLayoutEffect(() => {
         const root = rootRef.current
         if (!root) return
 
         const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+        // Phones pay for this scene in dropped frames: every --sp change
+        // re-rasterises the haze, the contours and three SVG ridges at once.
+        // There the landscape is painted once and left alone.
+        const calmQuery = window.matchMedia('(pointer: coarse), (max-width: 1023px)')
+
+        const applyScene = () => {
+            const calm = calmQuery.matches || motionQuery.matches
+            root.dataset.scene = calm ? 'calm' : 'live'
+            return calm
+        }
+
+        if (applyScene()) {
+            root.style.setProperty('--sp', '0')
+            calmQuery.addEventListener('change', applyScene)
+            motionQuery.addEventListener('change', applyScene)
+            return () => {
+                calmQuery.removeEventListener('change', applyScene)
+                motionQuery.removeEventListener('change', applyScene)
+            }
+        }
+
         let frame = 0
         let target = 0
         let current = 0
@@ -73,9 +99,14 @@ export default function TerrainBackdrop() {
 
         window.addEventListener('scroll', onScroll, { passive: true })
         window.addEventListener('resize', onScroll)
+        calmQuery.addEventListener('change', applyScene)
+        motionQuery.addEventListener('change', applyScene)
+
         return () => {
             window.removeEventListener('scroll', onScroll)
             window.removeEventListener('resize', onScroll)
+            calmQuery.removeEventListener('change', applyScene)
+            motionQuery.removeEventListener('change', applyScene)
             if (frame) cancelAnimationFrame(frame)
         }
     }, [])
@@ -130,9 +161,14 @@ export default function TerrainBackdrop() {
 
                 /* Each ridge climbs at its own rate and the whole range grows,
                    so the bands pull far apart on the way down the page. */
+                /* Growing the range by scaling a composited layer instead of
+                   its height: changing height re-runs layout and re-rasterises
+                   the whole SVG on every frame. */
                 .terrain-range {
-                    height: calc(46vh + var(--sp) * 34vh);
-                    will-change: height;
+                    height: 46vh;
+                    transform-origin: 50% 100%;
+                    transform: scaleY(calc(1 + var(--sp) * 0.74));
+                    will-change: transform;
                 }
                 .terrain-ridge {
                     transform: translate(calc(var(--drift) * var(--sp) * 1px), calc(var(--rise) * var(--sp) * -1px));
@@ -145,11 +181,13 @@ export default function TerrainBackdrop() {
                     will-change: transform;
                 }
 
+                /* Transform only: moving background-position repaints a
+                   72vh gradient layer on every frame. */
                 .terrain-contours {
-                    background-position: calc(var(--sp) * 620px) calc(var(--sp) * -900px);
-                    transform: rotate(calc(var(--sp) * 4deg)) scale(calc(1 + var(--sp) * 0.15));
+                    transform: translate3d(calc(var(--sp) * 60px), calc(var(--sp) * -90px), 0)
+                               rotate(calc(var(--sp) * 4deg)) scale(calc(1 + var(--sp) * 0.15));
                     opacity: calc(1 - var(--sp) * 0.45);
-                    will-change: transform, background-position;
+                    will-change: transform;
                 }
 
                 .terrain-mote {
@@ -161,7 +199,6 @@ export default function TerrainBackdrop() {
                     display: block;
                     border-radius: 9999px;
                     background: color-mix(in srgb, var(--accent) 65%, var(--text));
-                    filter: blur(0.5px);
                     animation: moteFloat var(--dur) ease-in-out infinite alternate;
                     animation-delay: var(--delay);
                 }
@@ -172,6 +209,24 @@ export default function TerrainBackdrop() {
                     background:
                         radial-gradient(80% 50% at 50% 100%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 72%),
                         linear-gradient(to bottom, color-mix(in srgb, var(--accent) 12%, transparent), transparent 52%);
+                }
+
+                /* Parked scene: one paint, no per-frame work. */
+                .terrain-backdrop[data-scene='calm'] .terrain-haze,
+                .terrain-backdrop[data-scene='calm'] .terrain-haze--b,
+                .terrain-backdrop[data-scene='calm'] .terrain-sway,
+                .terrain-backdrop[data-scene='calm'] .terrain-mote-dot {
+                    animation: none;
+                }
+                .terrain-backdrop[data-scene='calm'] .terrain-sky,
+                .terrain-backdrop[data-scene='calm'] .terrain-haze-shell,
+                .terrain-backdrop[data-scene='calm'] .terrain-haze-shell--b,
+                .terrain-backdrop[data-scene='calm'] .terrain-ridge,
+                .terrain-backdrop[data-scene='calm'] .terrain-contours,
+                .terrain-backdrop[data-scene='calm'] .terrain-range,
+                .terrain-backdrop[data-scene='calm'] .terrain-mote {
+                    transform: none;
+                    will-change: auto;
                 }
 
                 @media (prefers-reduced-motion: reduce) {
@@ -185,8 +240,7 @@ export default function TerrainBackdrop() {
                     .terrain-ridge,
                     .terrain-contours,
                     .terrain-mote { transform: none; }
-                    .terrain-range { height: 46vh; }
-                    .terrain-contours { background-position: 0 0; }
+                    .terrain-range { transform: none; }
                 }
             `}</style>
 
@@ -202,17 +256,24 @@ export default function TerrainBackdrop() {
             {/* Accent wash layered over the base gradient as the page scrolls. */}
             <div className="terrain-tint absolute inset-0" />
 
-            {/* Two light sources crossing the view in opposite directions. */}
-            <div className="terrain-haze-shell absolute left-[6%] top-[46%] h-[46vh] w-[54vh]">
+            {/* Two light sources crossing the view in opposite directions.
+                Painted as radial gradients rather than blurred discs: a
+                blur(130px) layer is re-rendered on every frame it moves, and
+                on a phone that alone costs more than the rest of the page. */}
+            <div className="terrain-haze-shell absolute left-[-8%] top-[32%] h-[76vh] w-[88vh]">
                 <div
-                    className="terrain-haze h-full w-full rounded-full blur-[130px]"
-                    style={{ background: 'var(--haze)' }}
+                    className="terrain-haze h-full w-full"
+                    style={{
+                        background: 'radial-gradient(closest-side, var(--haze), transparent 78%)',
+                    }}
                 />
             </div>
-            <div className="terrain-haze-shell terrain-haze-shell--b absolute right-[4%] top-[62%] h-[40vh] w-[48vh]">
+            <div className="terrain-haze-shell terrain-haze-shell--b absolute right-[-10%] top-[48%] h-[70vh] w-[80vh]">
                 <div
-                    className="terrain-haze terrain-haze--b h-full w-full rounded-full blur-[150px]"
-                    style={{ background: 'var(--haze)' }}
+                    className="terrain-haze terrain-haze--b h-full w-full"
+                    style={{
+                        background: 'radial-gradient(closest-side, var(--haze), transparent 80%)',
+                    }}
                 />
             </div>
 

@@ -1,9 +1,14 @@
+import { Suspense, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
 import HeaderSection from './ui/HeaderSection';
 import FooterSection from './ui/FooterSection';
-import AIStarterWidget from './ui/AIStarterWidget';
 import TerrainBackdrop from '../styles/TerrainBackdrop';
 import ToTopButton from './ui/ToTopButton';
+
+// The assistant is a corner button until someone opens it, but it carries the
+// chat panel, its markdown handling and its actions. Loading it after the page
+// keeps that weight out of the first parse, which is what a phone feels.
+const AIStarterWidget = lazy(() => import('./ui/AIStarterWidget'));
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const { t } = useTranslation();
@@ -29,7 +34,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <FooterSection />
             </div>
 
-            <AIStarterWidget />
+            <Suspense fallback={null}>
+                <AIStarterWidget />
+            </Suspense>
             <ToTopButton />
         </div>
     );

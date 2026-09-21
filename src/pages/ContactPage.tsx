@@ -6,7 +6,7 @@ import IndexLayout from '../components/indexSections/_layout'
 
 // avatars.githubusercontent.com serves the same image without the cookies
 // github.com sets on its redirect (_gh_sess, _octo, logged_in).
-const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=400'
+const AVATAR_URL = 'https://avatars.githubusercontent.com/u/111691856?v=4&s=128'
 
 const fadeUp = {
     hidden: { opacity: 0, y: 24 },
