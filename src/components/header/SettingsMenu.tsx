@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiSettings } from 'react-icons/fi'
-import { SUPPORTED_LANGUAGES } from '../../lib/i18n.ts'
-import { writePreference } from '../../lib/cookieConsent'
 import { useTheme } from '../../hooks/useTheme'
 import type { Theme } from '../../context/themeContext'
 import { useAccent } from '../../hooks/useAccent'
@@ -59,7 +57,7 @@ const INDICATOR_TRANSLATE: Record<Theme, string> = {
 }
 
 export function SettingsPanel({ className = '' }: { className?: string }) {
-    const { i18n, t } = useTranslation()
+    const { t } = useTranslation()
     const { theme, isDark, setTheme } = useTheme()
     const { accent, setAccent } = useAccent()
     const { consent, accept, decline, showBanner } = useCookieConsent()
@@ -70,52 +68,9 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
         { value: 'light', label: t('themeSwitcher.light'), Icon: SunIcon, activeColor: '#fbbf24' },
     ]
 
-    const currentLanguage =
-        SUPPORTED_LANGUAGES.find((language) => language.code === i18n.language)?.code ??
-        i18n.resolvedLanguage ??
-        'no'
-
-    async function handleLanguageSelect(code: string) {
-        await i18n.changeLanguage(code)
-        writePreference('portfolio-lang', code)
-    }
-
     return (
         <div className={`flex flex-col gap-4 ${className}`}>
             <section>
-                <h3 className="mb-2 px-1 text-sm font-medium text-[var(--text-subtle)]">
-                    {t('languageSwitcher.section')}
-                </h3>
-                <div role="listbox" aria-label={t('languageSwitcher.choose')} className="flex flex-col gap-1">
-                    {SUPPORTED_LANGUAGES.map((language) => {
-                        const selected = language.code === currentLanguage
-                        return (
-                            <button
-                                key={language.code}
-                                type="button"
-                                role="option"
-                                aria-selected={selected}
-                                onClick={() => void handleLanguageSelect(language.code)}
-                                className={`
-                                    pebble-sm flex w-full items-center justify-between px-3 py-2.5 text-left
-                                    transition-all duration-200 ease-out motion-reduce:transition-none
-                                    ${selected
-                                        ? 'bg-[color:color-mix(in_srgb,var(--accent)_16%,var(--surface-card))] text-[var(--text)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_30%,transparent)]'
-                                        : 'text-[var(--text-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text)] active:scale-[0.99]'
-                                    }
-                                `}
-                            >
-                                <span className="font-medium">{language.label}</span>
-                                {selected && (
-                                    <span className="h-2 w-2 rounded-full bg-[var(--accent)]" aria-hidden="true" />
-                                )}
-                            </button>
-                        )
-                    })}
-                </div>
-            </section>
-
-            <section className="border-t border-[var(--border)] pt-4">
                 <h3 className="mb-2 px-1 text-sm font-medium text-[var(--text-subtle)]">
                     {t('settingsMenu.appearance')}
                 </h3>

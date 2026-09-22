@@ -5,8 +5,33 @@ import { readPreference } from './cookieConsent'
 export const SUPPORTED_LANGUAGES = [
     { code: 'no', label: 'Norsk' },
     { code: 'en', label: 'English' },
+    { code: 'de', label: 'Deutsch' },
+    { code: 'fr', label: 'Français' },
     { code: 'es', label: 'Español' },
 ] as const
+
+/** The language the prerendered HTML is baked in. */
+export const PRERENDER_LANGUAGE = 'no'
+
+/** For visitors whose browser asks for no language the site supports. */
+export const FALLBACK_LANGUAGE = 'en'
+
+/** First of the browser's preferred languages the site supports, else English.
+ *  Norwegian arrives as `nb` (Bokmål) or `nn` (Nynorsk) as often as `no`.
+ *  The prerender has no browser to ask, so it stays on PRERENDER_LANGUAGE. */
+function detectBrowserLanguage(): string {
+    if (typeof window === 'undefined') return PRERENDER_LANGUAGE
+
+    const supported = new Set<string>(SUPPORTED_LANGUAGES.map((language) => language.code))
+    const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
+
+    for (const tag of preferred) {
+        const base = tag?.toLowerCase().split('-')[0]
+        const code = base === 'nb' || base === 'nn' ? 'no' : base
+        if (code && supported.has(code)) return code
+    }
+    return FALLBACK_LANGUAGE
+}
 
 const en = {
     nav: {
@@ -923,16 +948,626 @@ const es: TranslationSchema = {
     },
 }
 
+const de: TranslationSchema = {
+    nav: {
+        home: 'Start',
+        about: 'Über mich',
+        domains: 'Domains',
+        timeline: 'Zeitleiste',
+        contact: 'Kontakt',
+        projects: 'Projekte',
+        knowledge: 'Kenntnisse',
+        certifications: 'Kurse',
+        gitHub: 'GitHub',
+    },
+    header: {
+        navigation: 'Navigation',
+        settings: 'Einstellungen',
+        openMenu: 'Menü öffnen',
+        closeMenu: 'Menü schließen',
+        skipToContent: 'Zum Inhalt springen',
+    },
+    languageSwitcher: {
+        section: 'Sprache',
+        choose: 'Sprache wählen',
+    },
+    themeSwitcher: {
+        light: 'Hell',
+        dark: 'Dunkel',
+        system: 'System',
+    },
+    settingsMenu: {
+        appearance: 'Darstellung',
+        accentColor: 'Akzentfarbe',
+        chooseAccent: 'Akzentfarbe wählen',
+    },
+    cookieConsent: {
+        section: 'Datenschutz',
+        message: 'Diese Seite verwendet Cookies, um dein Design, deine Akzentfarbe und deine Sprache zu speichern. Nichts wird an Dritte weitergegeben.',
+        accept: 'Akzeptieren',
+        decline: 'Ablehnen',
+        manage: 'Cookie-Einstellungen ändern',
+        statusAccepted: 'Einstellungen werden auf diesem Gerät gespeichert.',
+        statusDeclined: 'Einstellungen werden nicht gespeichert. Deine Auswahl gilt nur für diese Sitzung.',
+        statusUndecided: 'Du hast noch keine Auswahl getroffen.',
+    },
+    contactButton: {
+        label: 'Kontaktiere mich',
+    },
+    backButton: {
+        aria: 'Zurück zur Startseite',
+        label: 'Zurück',
+    },
+    footer: {
+        tagline: 'Offen für Zusammenarbeit und neue Projekte',
+        github: 'Quellcode auf GitHub ansehen',
+        madeBy: 'Mit ❤️ gemacht von',
+    },
+    aiWidget: {
+        assistant: 'KI-Assistent',
+        title: 'Frag mich etwas',
+        description: 'Frag mich nach Emil, seinen Projekten, Fähigkeiten oder etwas anderem!',
+        close: 'Schließen',
+        open: 'KI-Assistent öffnen',
+        closed: 'KI-Assistent schließen',
+        teaser: 'Frag mich etwas',
+        placeholder: 'Frag mich etwas…',
+        inputLabel: 'Nachrichteneingabe',
+        send: 'Senden',
+        welcome: 'Hallo! Ich bin Emils KI-Assistent. Frag mich nach seinen Projekten, Fähigkeiten oder seinem Hintergrund – oder nach etwas ganz anderem!',
+        thinking: 'Denke nach…',
+        error: 'Etwas ist schiefgelaufen. Versuch es erneut.',
+        newChat: 'Neuer Chat',
+        disclaimer: 'Antworten können Fehler oder Halluzinationen enthalten.',
+        suggestionsTitle: 'Probier mal',
+        suggestions: {
+            s1: 'Wer ist Emil?',
+            s2: 'Welche Projekte hat er gebaut?',
+            s3: 'Mit welchen Technologien arbeitet er?',
+            s4: 'Wie kann ich ihn kontaktieren?',
+        },
+        stop: 'Stopp',
+        retry: 'Erneut versuchen',
+        copy: 'Nachricht kopieren',
+        copied: 'Kopiert',
+        scrollToBottom: 'Zur neuesten Nachricht',
+        expand: 'Fenster vergrößern',
+        collapse: 'Fenster verkleinern',
+        you: 'Du',
+    },
+    toTop: {
+        aria: 'Nach oben',
+        title: 'Nach oben',
+        prefix: 'Zurück nach',
+        label: 'Oben',
+    },
+    home: {
+        title: 'Hallo! Ich bin Emil Berglund',
+        roles: [
+            'Masterstudent in KI',
+            'Informatikstudent',
+            'Full-Stack-Entwickler',
+            'Frontend-Entwickler',
+            'Backend-Entwickler',
+            'KI-interessiert',
+        ],
+        intro:
+            'Ich bin ein technikbegeisterter Mensch mit dem Ziel, stets dazuzulernen und mich weiterzuentwickeln. Ich glaube, dass es mehrere Wege gibt, ein Ziel zu erreichen oder eine Lösung zu finden. ',
+        githubAria: 'GitHub-Profil',
+        linkedinAria: 'LinkedIn-Profil',
+        cta: 'Schau es dir an',
+        location: 'Halden, Norwegen',
+    },
+    about: {
+        title: 'Wer bin ich?',
+        intro: 'Eine Kurzfassung davon, wer ich bin, was ich studiere und womit ich meine Zeit gerne verbringe.',
+        studentTitle: 'Als Student',
+        student:
+            'Ich habe einen Bachelor in Informatik – Design und Entwicklung von IT-Systemen mit Schwerpunkt Programmierung – an der Hochschule Østfold in Halden abgeschlossen (2023–2026). Seit Herbst 2026 studiere ich dort im Master angewandte Informatik mit Schwerpunkt künstliche Intelligenz.',
+        personTitle: 'Als Person',
+        person:
+            'Ich bin {{age}} Jahre alt und wohne in Halden. Technologie hat mich schon immer fasziniert, und ich mag den Prozess, zu lernen, besser zu werden und Lösungen zu finden, die in der Praxis funktionieren.',
+        leisureTitle: 'In meiner Freizeit',
+        leisure:
+            'Neben dem Studium arbeite ich bei Elkjøp als Serviceberater. Dort kann ich mein Interesse für Technik und Elektronik einsetzen und bleibe bei neuen Produkten und Trends auf dem Laufenden. In meiner Freizeit spiele ich gerne, schaue Filme und Serien oder nehme meine Drohne oder Kamera mit, um Motive in der Umgebung einzufangen.',
+        kicker: {
+            student: 'Ausbildung',
+            person: 'Persönlich',
+            leisure: 'Nach Feierabend',
+        },
+    },
+    showcase: {
+        title: 'Live-Domains',
+        intro: 'Seiten, die ich gebaut habe und online halte.',
+        goToSlide: 'Zu Folie {{number}}',
+        status: 'Live',
+        visit: 'Seite besuchen',
+        browserLabel: 'Browser-Vorschau',
+        prev: 'Zurück',
+        next: 'Weiter',
+        items: [
+            {
+                title: 'SpillArena',
+                description: 'Die Arena, in der deine Spiele zusammenkommen. Eine Sammlung von Online-Spielen, die du direkt im Browser spielen kannst – ganz ohne Download.',
+                tags: ['Webspiele', 'Bot-Gegner', 'Norwegisch / Englisch'],
+                url: 'spillarena.no',
+                logoAlt: 'SpillArena-Logo',
+                previewAlt: 'Vorschau der SpillArena-Website',
+            },
+            {
+                title: "Emil's Tools",
+                description: 'Eine praktische Sammlung persönlicher Tools und Entwicklerwerkzeuge an einem Ort.',
+                tags: ['Hilfsprogramme', 'Entwicklertools'],
+                url: 'tools.emilb.no',
+                logoAlt: 'Tools-Logo',
+                previewAlt: 'Vorschau der Tools-Website',
+            },
+        ],
+    },
+    timeline: {
+        title: 'Zeitleiste',
+        intro: 'Ein Überblick über die Kurse, die ich während meines Studiums an der HiØ abgeschlossen habe.',
+        loading: 'Zeitleiste wird geladen…',
+        error: 'Zeitleiste konnte nicht geladen werden: {{error}}',
+        semesterLabel: '{{number}}. Semester',
+        semesterLabelMaster: '{{number}}. Semester (Master)',
+        stats: {
+            years: 'Jahre IT-Ausbildung',
+            courses: 'Abgeschlossene Kurse',
+            institution: 'Hochschule Østfold',
+        },
+        seasons: {
+            spring: 'Frühjahr',
+            autumn: 'Herbst',
+        },
+        degrees: {
+            bachelor: {
+                kicker: 'Studienbeginn',
+                title: 'Bachelor in Informatik',
+                description:
+                    'Design und Entwicklung von IT-Systemen mit Schwerpunkt Programmierung. Hochschule Østfold, 2023–2026.',
+            },
+            master: {
+                kicker: 'Neues Kapitel',
+                title: 'Master in angewandter Informatik',
+                description:
+                    'Schwerpunkt künstliche Intelligenz. Hochschule Østfold, 2026–2028.',
+            },
+        },
+        items: [
+            {
+                time: '2023',
+                title: 'Studium begonnen',
+                description: 'Mit dem Informatikstudium in Halden angefangen.',
+            },
+            {
+                time: '2024',
+                title: 'Portfolio-Funktionen gebaut',
+                description: 'Neue Bereiche, Routing und Animationen auf der Seite umgesetzt.',
+            },
+            {
+                time: '2025',
+                title: 'Weiter gelernt',
+                description: 'TypeScript, React und praktische Produktarbeit vertieft.',
+            },
+            {
+                time: '2026',
+                title: 'Bachelor fertig, Master als Nächstes',
+                description: 'Im Juni meinen Bachelor abgeschlossen und einen Master in angewandter Informatik mit Schwerpunkt KI begonnen.',
+            },
+        ],
+    },
+    projectsSection: {
+        title: 'Ausgewählte Projekte',
+        intro: 'Ein Überblick über Projekte, an denen ich während meines Studiums gearbeitet habe – sowohl Studien- als auch private Projekte.',
+        cta: 'Alle Projekte ansehen',
+        visitSite: 'Seite besuchen',
+    },
+    projectsPage: {
+        title: 'Meine Projekte',
+        subtitle: 'Entdecke meine Projekte und sieh dir an, woran ich gearbeitet habe',
+        loading: 'Wird geladen…',
+        empty: 'Keine Projekte gefunden.',
+    },
+    projectCard: {
+        github: 'GitHub',
+        live: 'Live',
+        sourceCode: 'Quellcode',
+        readMore: 'Mehr lesen',
+    },
+    projectDetails: {
+        notFound: 'Projekt nicht gefunden.',
+        stack: 'Tech-Stack',
+        tags: 'Tags',
+    },
+    contactPage: {
+        title: 'Lass uns in Kontakt treten',
+        subtitle: 'Hast du Fragen oder möchtest zusammenarbeiten? Melde dich gerne!',
+        cards: {
+            linkedin: {
+                title: 'LinkedIn',
+                description: 'Vernetze dich mit mir',
+                button: 'KONTAKT',
+            },
+            github: {
+                title: 'GitHub',
+                description: 'Sieh dir meine Projekte und Beiträge an',
+                button: 'PROFIL ANSEHEN',
+            },
+            email: {
+                title: 'E-Mail',
+                description: 'Schick mir eine direkte Nachricht',
+                button: 'E-MAIL SENDEN',
+                compose: 'Neue Nachricht',
+                subject: 'Lass uns gemeinsam etwas bauen',
+            },
+        },
+    },
+    knowledge: {
+        title: 'Fähigkeiten & Technologien',
+        intro: 'Technologien und Werkzeuge, mit denen ich in Frontend, Backend und Tooling Erfahrung habe.',
+        categories: {
+            frontend: 'Frontend',
+            backend: 'Backend',
+            tools: 'Tools & Plattformen',
+        },
+    },
+    certifications: {
+        title: 'Kurse & Zertifikate',
+        intro: 'Interne Kurse und Zertifikate, die ich abgeschlossen habe – von Compliance über Vertrieb und Services bis zu Systemen.',
+        switcherLabel: 'Kursanbieter',
+        totalLabel: '{{count}} abgeschlossene Kurse',
+        courseCount_one: '{{count}} Kurs',
+        courseCount_other: '{{count}} Kurse',
+        categories: {
+            compliance: 'Compliance',
+            hr: 'Personal',
+            b2b: 'B2B',
+            services: 'Services',
+            system: 'System',
+            program: 'Programm',
+            selfDev: 'Persönliche Entwicklung',
+            sales: 'Vertrieb',
+            intro: 'Einführung',
+            other: 'Produkte & Sonstiges',
+        },
+    },
+    github: {
+        title: 'GitHub',
+        intro: 'Einige meiner aktivsten Repositories. Besuche mein Profil, um alles zu sehen.',
+        noDescription: 'Keine Beschreibung verfügbar.',
+        loading: 'Repositories werden geladen…',
+        loadError: 'GitHub-Daten konnten nicht geladen werden. Versuch es später erneut.',
+        rateLimited: 'Das Limit der öffentlichen GitHub-API wurde für dieses Netzwerk erreicht – dieser Bereich funktioniert wieder, sobald es zurückgesetzt wird, meist innerhalb einer Stunde.',
+        viewRepo: 'Repository ansehen',
+        visitProfile: 'Zu GitHub',
+        followers: 'Follower',
+        publicRepos: 'öffentliche Repos',
+        recentActivity: 'Letzte Aktivität',
+        pushedTo: 'Push nach {{repo}}',
+        prOpened: 'Geöffnet',
+        prMerged: 'Gemergt',
+        prClosed: 'Geschlossen',
+        prReopened: 'Wieder geöffnet',
+    },
+}
+
+const fr: TranslationSchema = {
+    nav: {
+        home: 'Accueil',
+        about: 'À propos',
+        domains: 'Domaines',
+        timeline: 'Parcours',
+        contact: 'Contact',
+        projects: 'Projets',
+        knowledge: 'Compétences',
+        certifications: 'Formations',
+        gitHub: 'GitHub',
+    },
+    header: {
+        navigation: 'Navigation',
+        settings: 'Paramètres',
+        openMenu: 'Ouvrir le menu',
+        closeMenu: 'Fermer le menu',
+        skipToContent: 'Aller au contenu',
+    },
+    languageSwitcher: {
+        section: 'Langue',
+        choose: 'Choisir la langue',
+    },
+    themeSwitcher: {
+        light: 'Clair',
+        dark: 'Sombre',
+        system: 'Système',
+    },
+    settingsMenu: {
+        appearance: 'Apparence',
+        accentColor: "Couleur d'accent",
+        chooseAccent: "Choisir la couleur d'accent",
+    },
+    cookieConsent: {
+        section: 'Confidentialité',
+        message: "Ce site utilise des cookies pour mémoriser votre thème, votre couleur d'accent et votre langue. Rien n'est partagé avec des tiers.",
+        accept: 'Accepter',
+        decline: 'Refuser',
+        manage: 'Modifier les préférences de cookies',
+        statusAccepted: 'Vos préférences sont enregistrées sur cet appareil.',
+        statusDeclined: "Vos préférences ne sont pas enregistrées. Vos choix ne valent que pour cette session.",
+        statusUndecided: "Vous n'avez pas encore fait de choix.",
+    },
+    contactButton: {
+        label: 'Me contacter',
+    },
+    backButton: {
+        aria: "Retour à l'accueil",
+        label: 'Retour',
+    },
+    footer: {
+        tagline: 'Disponible pour des collaborations et de nouveaux projets',
+        github: 'Voir le code source sur GitHub',
+        madeBy: 'Fait avec ❤️ par',
+    },
+    aiWidget: {
+        assistant: 'Assistant IA',
+        title: 'Posez-moi une question',
+        description: "Posez-moi des questions sur Emil, ses projets, ses compétences ou n'importe quoi d'autre !",
+        close: 'Fermer',
+        open: "Ouvrir l'assistant IA",
+        closed: "Fermer l'assistant IA",
+        teaser: 'Posez-moi une question',
+        placeholder: 'Posez-moi une question…',
+        inputLabel: 'Saisie du message',
+        send: 'Envoyer',
+        welcome: "Bonjour ! Je suis l'assistant IA d'Emil. Posez-moi des questions sur ses projets, ses compétences ou son parcours — ou sur tout autre sujet !",
+        thinking: 'Réflexion…',
+        error: "Une erreur s'est produite. Réessayez.",
+        newChat: 'Nouvelle discussion',
+        disclaimer: 'Les réponses peuvent contenir des erreurs ou des hallucinations.',
+        suggestionsTitle: 'Essayez de demander',
+        suggestions: {
+            s1: 'Qui est Emil ?',
+            s2: "Quels projets a-t-il réalisés ?",
+            s3: 'Avec quelles technologies travaille-t-il ?',
+            s4: 'Comment le contacter ?',
+        },
+        stop: 'Arrêter',
+        retry: 'Réessayer',
+        copy: 'Copier le message',
+        copied: 'Copié',
+        scrollToBottom: 'Aller au dernier message',
+        expand: 'Agrandir le panneau',
+        collapse: 'Réduire le panneau',
+        you: 'Vous',
+    },
+    toTop: {
+        aria: 'Retour en haut',
+        title: 'Retour en haut',
+        prefix: 'Retour en',
+        label: 'Haut',
+    },
+    home: {
+        title: 'Bonjour ! Je suis Emil Berglund',
+        roles: [
+            'Étudiant en master IA',
+            'Étudiant en informatique',
+            'Développeur full-stack',
+            'Développeur frontend',
+            'Développeur backend',
+            "Passionné d'IA",
+        ],
+        intro:
+            "Je suis passionné de technologie, avec l'envie d'apprendre et de progresser. Je crois qu'il existe plusieurs chemins pour atteindre un objectif ou trouver une solution. ",
+        githubAria: 'Profil GitHub',
+        linkedinAria: 'Profil LinkedIn',
+        cta: 'Jetez un œil',
+        location: 'Halden, Norvège',
+    },
+    about: {
+        title: 'Qui suis-je ?',
+        intro: "Une version courte de qui je suis, de ce que j'étudie et de ce que j'aime faire de mon temps.",
+        studentTitle: 'En tant qu’étudiant',
+        student:
+            "J'ai obtenu une licence en informatique — conception et développement de systèmes informatiques, spécialisation programmation — à l'Université des sciences appliquées d'Østfold à Halden (2023–2026). Depuis l'automne 2026, j'y suis un master en informatique appliquée, spécialisé en intelligence artificielle.",
+        personTitle: 'En tant que personne',
+        person:
+            "J'ai {{age}} ans et j'habite à Halden. La technologie m'a toujours fasciné, et j'aime le fait d'apprendre, de m'améliorer et de trouver des solutions qui fonctionnent en pratique.",
+        leisureTitle: 'Pendant mon temps libre',
+        leisure:
+            "En parallèle de mes études, je travaille chez Elkjøp comme conseiller service. J'y mets à profit mon intérêt pour la technologie et l'électronique tout en suivant les nouveaux produits et tendances. Pendant mon temps libre, j'aime jouer aux jeux vidéo, regarder des films et des séries, ou sortir mon drone ou mon appareil photo pour capturer des paysages des environs.",
+        kicker: {
+            student: 'Formation',
+            person: 'Personnel',
+            leisure: 'Hors du travail',
+        },
+    },
+    showcase: {
+        title: 'Domaines en ligne',
+        intro: "Des sites que j'ai créés et que je maintiens en ligne.",
+        goToSlide: 'Aller à la diapositive {{number}}',
+        status: 'En ligne',
+        visit: 'Visiter le site',
+        browserLabel: 'Aperçu du navigateur',
+        prev: 'Précédent',
+        next: 'Suivant',
+        items: [
+            {
+                title: 'SpillArena',
+                description: "L'arène où vos jeux se retrouvent. Une collection de jeux en ligne jouables directement dans le navigateur — sans téléchargement.",
+                tags: ['Jeux web', 'Adversaire bot', 'Norvégien / Anglais'],
+                url: 'spillarena.no',
+                logoAlt: 'Logo SpillArena',
+                previewAlt: 'Aperçu du site SpillArena',
+            },
+            {
+                title: "Emil's Tools",
+                description: "Une collection pratique d'outils personnels et pour développeurs, réunis au même endroit.",
+                tags: ['Utilitaires', 'Outils de développement'],
+                url: 'tools.emilb.no',
+                logoAlt: 'Logo Tools',
+                previewAlt: 'Aperçu du site Tools',
+            },
+        ],
+    },
+    timeline: {
+        title: 'Parcours',
+        intro: "Un aperçu des cours que j'ai suivis pendant mes études à HiØ.",
+        loading: 'Chargement du parcours…',
+        error: 'Impossible de charger le parcours : {{error}}',
+        semesterLabel: 'Semestre {{number}}',
+        semesterLabelMaster: 'Semestre {{number}} (master)',
+        stats: {
+            years: "Années d'études en informatique",
+            courses: 'Cours validés',
+            institution: "Université des sciences appliquées d'Østfold",
+        },
+        seasons: {
+            spring: 'Printemps',
+            autumn: 'Automne',
+        },
+        degrees: {
+            bachelor: {
+                kicker: 'Début des études',
+                title: 'Licence en informatique',
+                description:
+                    "Conception et développement de systèmes informatiques, spécialisation programmation. Université des sciences appliquées d'Østfold, 2023-2026.",
+            },
+            master: {
+                kicker: 'Nouveau chapitre',
+                title: 'Master en informatique appliquée',
+                description:
+                    "Spécialisation en intelligence artificielle. Université des sciences appliquées d'Østfold, 2026-2028.",
+            },
+        },
+        items: [
+            {
+                time: '2023',
+                title: 'Début des études',
+                description: "J'ai commencé mes études d'informatique à Halden.",
+            },
+            {
+                time: '2024',
+                title: 'Nouvelles fonctionnalités du portfolio',
+                description: 'Ajout de nouvelles sections, du routage et des animations sur le site.',
+            },
+            {
+                time: '2025',
+                title: "Toujours en apprentissage",
+                description: 'Approfondissement de TypeScript, React et du travail produit concret.',
+            },
+            {
+                time: '2026',
+                title: 'Licence terminée, place au master',
+                description: "Licence obtenue en juin, puis début d'un master en informatique appliquée avec une spécialisation en IA.",
+            },
+        ],
+    },
+    projectsSection: {
+        title: 'Projets sélectionnés',
+        intro: "Un aperçu des projets sur lesquels j'ai travaillé pendant mes études, qu'ils soient scolaires ou personnels.",
+        cta: 'Voir tous les projets',
+        visitSite: 'Visiter le site',
+    },
+    projectsPage: {
+        title: 'Mes projets',
+        subtitle: 'Découvrez mes projets et ce sur quoi je travaille',
+        loading: 'Chargement…',
+        empty: 'Aucun projet trouvé.',
+    },
+    projectCard: {
+        github: 'GitHub',
+        live: 'En ligne',
+        sourceCode: 'Code source',
+        readMore: 'En savoir plus',
+    },
+    projectDetails: {
+        notFound: 'Projet introuvable.',
+        stack: 'Stack technique',
+        tags: 'Tags',
+    },
+    contactPage: {
+        title: 'Restons en contact',
+        subtitle: "Des questions ou envie de collaborer ? N'hésitez pas à me contacter !",
+        cards: {
+            linkedin: {
+                title: 'LinkedIn',
+                description: 'Rejoignez mon réseau',
+                button: 'CONTACTER',
+            },
+            github: {
+                title: 'GitHub',
+                description: 'Découvrez mes projets et contributions',
+                button: 'VOIR LE PROFIL',
+            },
+            email: {
+                title: 'E-mail',
+                description: 'Envoyez-moi un message direct',
+                button: 'ENVOYER UN E-MAIL',
+                compose: 'Nouveau message',
+                subject: 'Construisons quelque chose ensemble',
+            },
+        },
+    },
+    knowledge: {
+        title: 'Compétences & Technologies',
+        intro: "Les technologies et outils avec lesquels j'ai de l'expérience, côté frontend, backend et outillage.",
+        categories: {
+            frontend: 'Frontend',
+            backend: 'Backend',
+            tools: 'Outils & Plateformes',
+        },
+    },
+    certifications: {
+        title: 'Formations & Certifications',
+        intro: "Formations internes et certifications que j'ai validées, couvrant conformité, vente, services et systèmes.",
+        switcherLabel: 'Organisme de formation',
+        totalLabel: '{{count}} formations validées',
+        courseCount_one: '{{count}} formation',
+        courseCount_other: '{{count}} formations',
+        categories: {
+            compliance: 'Conformité',
+            hr: 'RH',
+            b2b: 'B2B',
+            services: 'Services',
+            system: 'Système',
+            program: 'Programme',
+            selfDev: 'Développement personnel',
+            sales: 'Vente',
+            intro: 'Introduction',
+            other: 'Produits & autres',
+        },
+    },
+    github: {
+        title: 'GitHub',
+        intro: 'Quelques-uns de mes dépôts les plus actifs. Visitez mon profil pour tout voir.',
+        noDescription: 'Aucune description disponible.',
+        loading: 'Chargement des dépôts…',
+        loadError: 'Impossible de charger les données GitHub. Réessayez plus tard.',
+        rateLimited: "La limite de l'API publique de GitHub a été atteinte pour ce réseau — cette section fonctionnera de nouveau après sa réinitialisation, généralement en moins d'une heure.",
+        viewRepo: 'Voir le dépôt',
+        visitProfile: 'Aller sur GitHub',
+        followers: 'abonnés',
+        publicRepos: 'dépôts publics',
+        recentActivity: 'Activité récente',
+        pushedTo: 'Push vers {{repo}}',
+        prOpened: 'Ouverte',
+        prMerged: 'Fusionnée',
+        prClosed: 'Fermée',
+        prReopened: 'Rouverte',
+    },
+}
+
 i18n.use(initReactI18next).init({
     resources: {
         no: { translation: no },
         en: { translation: en },
         es: { translation: es },
+        de: { translation: de },
+        fr: { translation: fr },
     },
     supportedLngs: SUPPORTED_LANGUAGES.map((language) => language.code),
     load: 'languageOnly',
-    lng: readPreference('portfolio-lang') ?? 'no',
-    fallbackLng: 'no',
+    lng: readPreference('portfolio-lang') ?? detectBrowserLanguage(),
+    fallbackLng: FALLBACK_LANGUAGE,
     interpolation: {
         escapeValue: false,
     },

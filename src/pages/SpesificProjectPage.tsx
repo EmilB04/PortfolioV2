@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { readStored, writeStored } from '../lib/cookieConsent'
 import { ExternalLink, Github, Upload, X, Check, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { useLocalizedProject } from '../hooks/useProjects'
 import type { Project } from '../hooks/useProjects'
 import { ProjectDetailSkeleton } from '../components/ui/Skeleton'
 import ProjectMediaCarousel from '../components/ProjectMediaCarousel'
@@ -76,10 +77,11 @@ export default function SpesificProjectPage() {
     const [uploading, setUploading] = useState(false)
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const localized = useLocalizedProject(project)
 
     useSeo(
         project ? absoluteTitle(project.title) : absoluteTitle('Project'),
-        project?.description ?? 'Software project by Emil Berglund, full-stack developer in Halden, Norway.',
+        localized?.description ?? 'Software project by Emil Berglund, full-stack developer in Halden, Norway.',
         `/projects/${projectId}`,
     )
 
@@ -217,12 +219,12 @@ export default function SpesificProjectPage() {
                     {/* Main content */}
                     <div className="flex flex-col gap-6">
                         <p className="prose-organic text-lg leading-relaxed text-[var(--text)]">
-                            {project.description}
+                            {localized?.description}
                         </p>
 
-                        {project.details && (
+                        {localized?.details && (
                             <p className="prose-organic whitespace-pre-line text-[var(--text-muted)]">
-                                {project.details}
+                                {localized.details}
                             </p>
                         )}
 

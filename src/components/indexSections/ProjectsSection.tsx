@@ -10,6 +10,7 @@ import { FeaturedProjectsSkeleton } from '../ui/Skeleton'
 import BrowserPreview from '../BrowserPreview'
 import { resolveMediaUrl } from '../../lib/media'
 import { supabase } from '../../lib/supabase'
+import { useLocalizedProject } from '../../hooks/useProjects'
 import type { Project } from '../../hooks/useProjects'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 import { ROUTES } from '../../routes/routes'
@@ -77,7 +78,7 @@ export default function ProjectsSection() {
         return () => window.clearTimeout(timer)
     }, [projects])
 
-    const active = projects[activeIndex]
+    const active = useLocalizedProject(projects[activeIndex])
     const previewImage = resolveMediaUrl(active?.images?.[0])
     const hasPreview = Boolean(active?.live_url) || Boolean(previewImage)
 

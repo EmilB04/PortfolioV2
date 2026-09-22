@@ -13,6 +13,7 @@ import {
     FileText,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { useLocalizedProject } from '../hooks/useProjects'
 import type { Project } from '../hooks/useProjects'
 import { ROUTES } from '../routes/routes'
 
@@ -27,8 +28,9 @@ const PROJECT_ICONS: Record<string, LucideIcon> = {
     'streamdeck-battery-monitor': BatteryFull,
 }
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({ project: sourceProject }: { project: Project }) {
     const { t } = useTranslation()
+    const project = useLocalizedProject(sourceProject)
     const Icon = PROJECT_ICONS[project.local_path] ?? FolderOpen
 
     return (
