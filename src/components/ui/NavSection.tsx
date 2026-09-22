@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BackButton from '../header/BackButton'
 import { SettingsPanel } from '../header/SettingsMenu'
+import { LanguageDisclosure } from '../header/LanguageMenu'
 import { INDEX_NAV_ITEMS } from '../../routes/indexPaths'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 
@@ -165,6 +166,10 @@ function MobileDrawer({
                 )}
 
                 <div className="mt-4 border-t border-[var(--border)] px-6 pt-5">
+                    <LanguageDisclosure />
+                </div>
+
+                <div className="mt-5 border-t border-[var(--border)] px-6 pt-5">
                     <p className="mb-3 text-sm text-[var(--text-subtle)]">{settingsLabel}</p>
 
                     <SettingsPanel />

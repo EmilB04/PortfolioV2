@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import BrandMark from '../header/BrandMark'
 import ContactButton from '../header/ContactButton'
+import LanguageMenu from '../header/LanguageMenu'
 import SettingsMenu from '../header/SettingsMenu'
 import NavSection from './NavSection.tsx'
 
 /**
  * The header is a transparent rail. Everything visible in it is a separate
- * island — links, settings, contact — so the page shows through between them.
+ * island — links, language, settings, contact — so the page shows through between them.
  * Once content scrolls underneath, the islands settle: the rail tightens and
  * each island takes on a solid backing and a shadow.
  */
@@ -35,6 +36,7 @@ export default function HeaderSection() {
                     <NavSection settled={settled} />
 
                     <div className="hidden items-center gap-2.5 md:flex">
+                        <LanguageMenu settled={settled} />
                         <SettingsMenu settled={settled} />
                         <ContactButton />
                     </div>

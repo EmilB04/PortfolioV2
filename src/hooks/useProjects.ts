@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { useLanguage } from './useLanguage'
+import type { LanguageCode } from './useLanguage'
+
+type ProjectText = Partial<Pick<Project, 'description' | 'details'>>
 
 export interface Project {
     id: number
@@ -13,6 +17,25 @@ export interface Project {
     images: string[]
     videos: string[]
     tags: string[]
+    /** Non-English text by language code; `description` / `details` above are English. */
+    translations?: Partial<Record<LanguageCode, ProjectText>> | null
+}
+
+/** The project with its text in `lang`, falling back to English field by field. */
+export function localizeProject(project: Project, lang: LanguageCode): Project {
+    const text = project.translations?.[lang]
+    if (!text) return project
+    return {
+        ...project,
+        description: text.description || project.description,
+        details: text.details || project.details,
+    }
+}
+
+/** Project in the language the page is currently shown in. */
+export function useLocalizedProject<T extends Project | null | undefined>(project: T): T {
+    const { current } = useLanguage()
+    return (project ? localizeProject(project, current) : project) as T
 }
 
 export function useProjects() {
