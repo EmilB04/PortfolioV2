@@ -12,49 +12,49 @@ import IndexLayout from './_layout'
 import SectionHeading from '../ui/SectionHeading'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 
-type Skill = { name: string; color: string; tooltip: string } & ({ icon: IconType; abbr?: never } | { abbr: string; icon?: never })
+type Skill = { name: string; key: string; color: string } & ({ icon: IconType; abbr?: never } | { abbr: string; icon?: never })
 
 const CATEGORIES: { key: 'frontend' | 'backend' | 'tools'; skills: Skill[] }[] = [
     {
         key: 'frontend',
         skills: [
-            { name: 'Vue', icon: SiVuedotjs, color: '#4FC08D', tooltip: 'Progressive JS framework for building UIs' },
-            { name: 'React', icon: SiReact, color: '#61DAFB', tooltip: 'Component-based UI library by Meta' },
-            { name: 'React Native', icon: SiReact, color: '#7EB8CF', tooltip: 'Build native mobile apps using React' },
-            { name: 'Quasar', icon: SiQuasar, color: '#1976D2', tooltip: 'Full-stack Vue framework with rich component library' },
-            { name: 'HTML', icon: SiHtml5, color: '#E34F26', tooltip: 'Standard markup language for web pages' },
-            { name: 'CSS', icon: SiCss, color: '#1572B6', tooltip: 'Stylesheet language for visual presentation' },
-            { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E', tooltip: 'Dynamic scripting language of the web' },
-            { name: 'TypeScript', icon: SiTypescript, color: '#3178C6', tooltip: 'JavaScript with static type safety' },
-            { name: 'SASS', icon: SiSass, color: '#CC6699', tooltip: 'CSS preprocessor with variables and nesting' },
+            { name: 'Vue', key: 'vue', icon: SiVuedotjs, color: '#4FC08D' },
+            { name: 'React', key: 'react', icon: SiReact, color: '#61DAFB' },
+            { name: 'React Native', key: 'reactNative', icon: SiReact, color: '#7EB8CF' },
+            { name: 'Quasar', key: 'quasar', icon: SiQuasar, color: '#1976D2' },
+            { name: 'HTML', key: 'html', icon: SiHtml5, color: '#E34F26' },
+            { name: 'CSS', key: 'css', icon: SiCss, color: '#1572B6' },
+            { name: 'JavaScript', key: 'javascript', icon: SiJavascript, color: '#F7DF1E' },
+            { name: 'TypeScript', key: 'typescript', icon: SiTypescript, color: '#3178C6' },
+            { name: 'SASS', key: 'sass', icon: SiSass, color: '#CC6699' },
         ],
     },
     {
         key: 'backend',
         skills: [
-            { name: 'Node.js', icon: SiNodedotjs, color: '#339933', tooltip: 'JavaScript runtime for server-side development' },
-            { name: '.NET', icon: SiDotnet, color: '#512BD4', tooltip: 'Microsoft cross-platform application framework' },
-            { name: 'Python', icon: SiPython, color: '#3776AB', tooltip: 'Versatile language for scripting and backends' },
-            { name: 'Java', icon: BiLogoJava, color: '#5382A1', tooltip: 'Object-oriented language for enterprise applications' },
-            { name: 'C#', abbr: 'C#', color: '#68217A', tooltip: 'Microsoft language for .NET applications' },
-            { name: 'MySQL', icon: SiMysql, color: '#4479A1', tooltip: 'Open-source relational database system' },
-            { name: 'Supabase', icon: SiSupabase, color: '#3FCF8E', tooltip: 'Postgres backend with auth, storage and edge functions' },
-            { name: 'Auth0', icon: SiAuth0, color: '#EB5424', tooltip: 'Managed authentication and authorization platform' },
-            { name: 'C/Shell', icon: SiGnubash, color: '#A8B9CC', tooltip: 'Systems programming and Unix shell scripting' },
+            { name: 'Node.js', key: 'nodejs', icon: SiNodedotjs, color: '#339933' },
+            { name: '.NET', key: 'dotnet', icon: SiDotnet, color: '#512BD4' },
+            { name: 'Python', key: 'python', icon: SiPython, color: '#3776AB' },
+            { name: 'Java', key: 'java', icon: BiLogoJava, color: '#5382A1' },
+            { name: 'C#', key: 'csharp', abbr: 'C#', color: '#68217A' },
+            { name: 'MySQL', key: 'mysql', icon: SiMysql, color: '#4479A1' },
+            { name: 'Supabase', key: 'supabase', icon: SiSupabase, color: '#3FCF8E' },
+            { name: 'Auth0', key: 'auth0', icon: SiAuth0, color: '#EB5424' },
+            { name: 'C/Shell', key: 'cShell', icon: SiGnubash, color: '#A8B9CC' },
         ],
     },
     {
         key: 'tools',
         skills: [
-            { name: 'Expo', icon: SiExpo, color: '#8B8B8B', tooltip: 'Toolchain for building React Native apps' },
-            { name: 'Git', icon: SiGit, color: '#F05032', tooltip: 'Distributed version control system' },
-            { name: 'GitHub', icon: SiGithub, color: '#6E5494', tooltip: 'Code hosting and collaboration platform' },
-            { name: 'Azure', icon: VscAzure, color: '#0078D4', tooltip: 'Microsoft cloud computing platform' },
-            { name: 'Cloudflare', icon: SiCloudflare, color: '#F38020', tooltip: 'CDN, DNS and edge compute platform' },
-            { name: 'Render', icon: SiRender, color: '#46E3B7', tooltip: 'Cloud hosting for web services and databases' },
-            { name: 'Cloudinary', icon: SiCloudinary, color: '#3448C5', tooltip: 'Media storage with on-the-fly image optimization' },
-            { name: 'Figma', icon: SiFigma, color: '#F24E1E', tooltip: 'Collaborative UI/UX design tool' },
-            { name: 'Trello', icon: SiTrello, color: '#0052CC', tooltip: 'Visual project management with boards' },
+            { name: 'Expo', key: 'expo', icon: SiExpo, color: '#8B8B8B' },
+            { name: 'Git', key: 'git', icon: SiGit, color: '#F05032' },
+            { name: 'GitHub', key: 'github', icon: SiGithub, color: '#6E5494' },
+            { name: 'Azure', key: 'azure', icon: VscAzure, color: '#0078D4' },
+            { name: 'Cloudflare', key: 'cloudflare', icon: SiCloudflare, color: '#F38020' },
+            { name: 'Render', key: 'render', icon: SiRender, color: '#46E3B7' },
+            { name: 'Cloudinary', key: 'cloudinary', icon: SiCloudinary, color: '#3448C5' },
+            { name: 'Figma', key: 'figma', icon: SiFigma, color: '#F24E1E' },
+            { name: 'Trello', key: 'trello', icon: SiTrello, color: '#0052CC' },
         ],
     },
 ]
@@ -91,6 +91,8 @@ export default function Knowledge() {
 }
 
 function SkillTile({ skill }: { skill: Skill }) {
+    const { t } = useTranslation()
+
     return (
         <div className="flex w-[4.9rem] cursor-default flex-col items-center gap-2.5">
             {/* group scoped to icon only — tooltip won't fire on label hover */}
@@ -100,7 +102,7 @@ function SkillTile({ skill }: { skill: Skill }) {
                     style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-lifted)' }}
                 >
                     <p className="mb-1 text-sm font-semibold text-[var(--text)]">{skill.name}</p>
-                    <p className="text-[13px] leading-relaxed text-[var(--text-muted)]">{skill.tooltip}</p>
+                    <p className="text-[13px] leading-relaxed text-[var(--text-muted)]">{t(`knowledge.skills.${skill.key}`)}</p>
                 </div>
 
                 <button
