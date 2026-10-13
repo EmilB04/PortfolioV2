@@ -1,153 +1,78 @@
-# Portfolio V2
+<h1 align="center">Portfolio V2</h1>
 
-A modern personal portfolio built with React, TypeScript, Vite, Tailwind CSS, and Supabase.
+<p align="center"><strong>My personal portfolio.</strong><br />
+Projects, contact and a bit of personality, in three languages.</p>
 
-## Tech Stack
+<p align="center">
+  <a href="https://emilb.no">emilb.no</a> ·
+  <a href="docs/cloudinary-schema.md">Cloudinary schema</a>
+</p>
 
-- **React 19** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Fast build tool
-- **Tailwind CSS** - Styling
-- **Supabase** - Backend & database
-- **React Router v7** - Routing
-- **Framer Motion** - Animations
-- **i18next** - Internationalization
-- **Lucide React** - Icon library
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React 19" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare Pages" />
+  <img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT licence" />
+</p>
 
-## Setup
+## Highlights
 
-1. Install dependencies:
+- **Projects from Supabase.** The project list and contact messages live in a database.
+- **Three languages.** Norwegian, English and Spanish through i18next, easy to extend.
+- **Smooth motion** with Framer Motion presets, and Lucide icons throughout.
+- **Mobile-first**, with a Tailwind setup that supports dark mode.
+- **Fast media.** Images come from Cloudinary in production and fall back to local assets in development.
+- **Prerendered pages** for search engines.
+
+## Run locally
+
 ```bash
 npm install
-```
-
-2. Create a `.env` file (copy from `.env.example`):
-```bash
 cp .env.example .env
-```
-
-3. Add your Supabase credentials:
-```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-4. Add your Cloudinary settings for images and media:
-```
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-```
-
-The frontend only reads `CLOUDINARY_CLOUD_NAME`. Keep the API key and secret out of the client bundle and use them only in backend upload tooling or server-side code. If you keep your Cloudinary public IDs aligned with the current `/images/...` paths, the app will use Cloudinary in production and fall back to local assets in development.
-
-The recommended folder schema lives in [docs/cloudinary-schema.md](docs/cloudinary-schema.md).
-
-5. Start development server:
-```bash
 npm run dev
 ```
 
-## Project Structure
+Fill in `.env`:
 
-```
-src/
-  components/
-    HeaderSection.tsx    # Navigation with i18n & lucide icons
-    FooterSection.tsx    # Footer with social links
-    ProjectCard.tsx      # Project card component
-    _layout.tsx          # Layout wrapper
-  pages/                 # Page components
-  lib/
-    supabase.ts         # Supabase client
-    i18n.ts             # i18n configuration
-    animations.ts       # Framer Motion presets
-    icons.ts            # Lucide icon exports
-  hooks/
-    useProjects.ts      # Fetch projects from Supabase
-  App.tsx               # Main app routes
-  main.tsx              # Entry point
-  index.css             # Tailwind imports
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 ```
 
-## Features
-
-- **Multi-language support** - English & Spanish (easily extendable)
-- **Smooth animations** - Using Framer Motion
-- **Icons** - Lucide React icons throughout
-- **Mobile responsive** - Mobile-first design
-- **Dark mode ready** - Tailwind configuration supports dark mode
-- **Supabase integration** - Database for projects and contact messages
-
-## Usage
-
-### Add Animations
-
-Use animations from `src/lib/animations.ts`:
-```tsx
-import { motion, fadeIn } from '@/lib/animations'
-
-<motion.div {...fadeIn}>
-  Content
-</motion.div>
-```
-
-### Use Icons
-
-Import from lucide-react or from `src/lib/icons.ts`:
-```tsx
-import { Code, GitHub } from 'lucide-react'
-
-<Code size={24} />
-```
-
-### Translations
-
-Add translation keys to `src/lib/i18n.ts` and use with `useTranslation()`:
-```tsx
-import { useTranslation } from 'react-i18next'
-
-const { t } = useTranslation()
-
-<p>{t('nav.projects')}</p>
-```
-
-## Build & Deploy
+The frontend only reads `CLOUDINARY_CLOUD_NAME`. Keep the Cloudinary API key and secret out of the client bundle and use them only in server-side code or upload tooling. If your Cloudinary public IDs match the `/images/...` paths, the app uses Cloudinary in production. See the [folder schema](docs/cloudinary-schema.md).
 
 ```bash
-npm run build
+npm run lint
+npm run build      # type-check, client build, SSR build and prerender
 npm run preview
 ```
 
-Deploy to Cloudflare Pages:
-1. Push to GitHub
-2. Connect repo to Cloudflare Pages
-3. Set build command: `npm run build`
-4. Set output directory: `dist`
+## Built with
+
+React · TypeScript · Vite · Tailwind CSS · Supabase · React Router · Framer Motion · i18next · Lucide
+
+```text
+src/
+  components/   Header, footer, project card and layout
+  pages/        Home, projects, project detail and contact
+  lib/          Supabase client, i18n, animation presets, icons
+  hooks/        useProjects and other data hooks
+functions/      Cloudflare Pages Functions
+workers/        Cloudflare Workers
+supabase/       Database setup
+docs/           Cloudinary folder schema
+```
+
+## Deploy
+
+Connect the repo to Cloudflare Pages with build command `npm run build` and output directory `dist`.
 
 ## License
 
 MIT
-import reactDom from 'eslint-plugin-react-dom'
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+Created by [Emil Berglund](https://github.com/EmilB04)
