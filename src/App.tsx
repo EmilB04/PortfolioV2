@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/_layout';
 import LoadingSpinner from './components/ui/LoadingSpinner';
+import PageLayout from './components/ui/PageLayout';
 
 const Home = lazy(() => import('./pages/HomePage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
@@ -12,7 +13,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 export default function App() {
   return (
     <Layout>
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<PageLayout><LoadingSpinner /></PageLayout>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<ContactPage />} />

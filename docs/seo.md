@@ -36,9 +36,9 @@ browser's initial render. The browser still refreshes data from the public
 API; an API outage preserves the initial project content.
 
 The generated `dist/sitemap.xml` combines the three static URLs from
-`public/sitemap.xml` with every project URL. With the current ten projects,
-there are 13 indexable pages. Project entries omit `lastmod` because the
-public data does not provide a reliable modification timestamp.
+`public/sitemap.xml` with every project URL, including newly added projects.
+Project entries omit `lastmod` because the public data does not provide a
+reliable modification timestamp.
 
 Rebuild and deploy after adding, removing or substantially editing projects
 so the static pages, metadata and sitemap stay current.

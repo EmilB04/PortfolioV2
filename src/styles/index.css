@@ -1,9 +1,21 @@
+@layer theme, base, components;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+/* Keep utilities in the same cascade as our existing styles, as in Tailwind 3.
+   A separate utilities layer lets unlayered element defaults override them. */
+@import 'tailwindcss/utilities.css';
 @import './fonts.css';
 @import './color-palette.css';
+@import './layout.css';
+@import '../components/ProjectCard.css';
+@import '../pages/ProjectsPage.css';
+@config "../../tailwind.config.cjs";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* The original config defines only md; v4 otherwise adds its own breakpoints. */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-md: 1024px;
+}
 
 /* ─── Backdrop ───────────────────────────────────────────── */
 .terrain-backdrop {

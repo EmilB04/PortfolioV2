@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Github } from '../../lib/icons'
+import Container from './Container'
 
 /**
  * The page ends on the ground line of the backdrop, so the footer stays open —
@@ -9,8 +10,8 @@ export default function FooterSection() {
     const { t } = useTranslation()
 
     return (
-        <footer aria-label="Site footer" className="w-full px-5 pb-10 pt-24 md:px-10">
-            <div className="mx-auto w-full max-w-screen-xl">
+        <footer aria-label="Site footer" className="w-full pb-10 pt-24">
+            <Container>
                 <div className="h-px w-full" style={{ background: 'var(--border)' }} aria-hidden="true" />
 
                 <div className="flex flex-col gap-6 pt-7 md:flex-row md:items-center md:justify-between">
@@ -37,7 +38,7 @@ export default function FooterSection() {
                         </p>
                     </div>
                 </div>
-            </div>
+            </Container>
         </footer>
     )
 }

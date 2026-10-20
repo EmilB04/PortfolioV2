@@ -81,7 +81,7 @@ export function LanguageOptions({ onSelected }: { onSelected?: () => void }) {
                         className={`
                             pebble-sm group flex min-h-[3.25rem] w-full items-center gap-3 px-2.5 py-2 text-left
                             transition-all duration-200 ease-out motion-reduce:transition-none
-                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]
+                            focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent)]
                             ${selected
                                 ? 'bg-[color:color-mix(in_srgb,var(--accent)_16%,var(--surface-card))] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_30%,transparent)]'
                                 : 'hover:bg-[var(--surface)] active:scale-[0.99]'

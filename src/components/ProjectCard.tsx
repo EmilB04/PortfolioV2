@@ -11,13 +11,19 @@ import {
     FolderOpen,
     Eye,
     FileText,
+    Lightbulb,
+    Gamepad2,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useLocalizedProject } from '../hooks/useProjects'
 import type { Project } from '../hooks/useProjects'
 import { ROUTES } from '../routes/routes'
 
+export type ProjectView = 'grid' | 'list'
+
 const PROJECT_ICONS: Record<string, LucideIcon> = {
+    spillarena: Gamepad2,
+    lumabridge: Lightbulb,
     pageprobe: Code2,
     varsel: Zap,
     chorechamp: Smartphone,
@@ -28,7 +34,7 @@ const PROJECT_ICONS: Record<string, LucideIcon> = {
     'streamdeck-battery-monitor': BatteryFull,
 }
 
-export default function ProjectCard({ project: sourceProject }: { project: Project }) {
+export default function ProjectCard({ project: sourceProject, view = 'grid' }: { project: Project; view?: ProjectView }) {
     const { t } = useTranslation()
     const project = useLocalizedProject(sourceProject)
     const Icon = PROJECT_ICONS[project.local_path] ?? FolderOpen
@@ -36,33 +42,31 @@ export default function ProjectCard({ project: sourceProject }: { project: Proje
     return (
         <Link
             to={ROUTES.PROJECT_DETAILS.path.replace(':projectId', project.local_path)}
-            className="card-organic group flex h-full flex-col items-start gap-4 p-6 text-left hover:-translate-y-1"
+            className={`card-organic project-card project-card--${view}`}
         >
-            <div
-                className="pebble-sm p-3"
-                style={{ background: 'color-mix(in srgb, var(--accent) 13%, transparent)' }}
-            >
-                <Icon size={26} style={{ color: 'var(--accent-text)' }} aria-hidden="true" />
+            <div className="project-card__heading">
+                <span className="project-card__icon">
+                    <Icon size={20} aria-hidden="true" />
+                </span>
+                <h2 className="project-card__title">{project.title}</h2>
             </div>
 
-            <h2 className="m-0 text-lg font-semibold text-[var(--text)]">{project.title}</h2>
-
-            <p className="prose-organic flex-1 text-[15px] leading-relaxed text-[var(--text-muted)]">
+            <p className="project-card__description">
                 {project.description}
             </p>
 
             {project.languages?.length > 0 && (
-                <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+                <div className="project-card__stack">
                     {project.languages.map((lang) => (
-                        <span key={lang} className="text-[13px] text-[var(--text-subtle)]">
+                        <span key={lang}>
                             {lang}
                         </span>
                     ))}
                 </div>
             )}
 
-            <span className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-[var(--accent-text)]">
-                {t('projectCard.readMore')}
+            <span className="project-card__action">
+                <span className="project-card__action-label">{t('projectCard.readMore')}</span>
                 <ArrowRight size={14} aria-hidden="true" />
             </span>
         </Link>

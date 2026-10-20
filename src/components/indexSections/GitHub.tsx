@@ -324,7 +324,7 @@ export default function GitHub() {
                                 src={profile.avatar_url}
                                 alt={profile.login}
                                 loading="lazy"
-                                className="h-24 w-24 flex-shrink-0 object-cover"
+                                className="h-24 w-24 shrink-0 object-cover"
                                 style={{ borderRadius: 'var(--pebble-b)', boxShadow: 'var(--shadow)' }}
                             />
 
@@ -383,11 +383,11 @@ export default function GitHub() {
                                             className="group flex items-center gap-3 py-3 text-sm"
                                         >
                                             {item.kind === 'push' ? (
-                                                <GitCommitHorizontal size={14} className="flex-shrink-0 text-[var(--text-subtle)]" aria-hidden="true" />
+                                                <GitCommitHorizontal size={14} className="shrink-0 text-[var(--text-subtle)]" aria-hidden="true" />
                                             ) : (
-                                                <GitPullRequest size={14} className="flex-shrink-0 text-[var(--text-subtle)]" aria-hidden="true" />
+                                                <GitPullRequest size={14} className="shrink-0 text-[var(--text-subtle)]" aria-hidden="true" />
                                             )}
-                                            <span className="flex-shrink-0 font-mono text-xs text-[var(--accent-text)]">
+                                            <span className="shrink-0 font-mono text-xs text-[var(--accent-text)]">
                                                 {item.repo.split('/')[1]}
                                             </span>
                                             <span className="min-w-0 flex-1 truncate text-[var(--text-muted)] transition-colors group-hover:text-[var(--text)]">
@@ -395,7 +395,7 @@ export default function GitHub() {
                                                     ? item.message ?? t('github.pushedTo', { repo: item.repo.split('/')[1] })
                                                     : `${t(PR_ACTION_LABEL_KEYS[item.action])}: ${item.title}`}
                                             </span>
-                                            <span className="flex-shrink-0 text-xs text-[var(--text-subtle)]">
+                                            <span className="shrink-0 text-xs text-[var(--text-subtle)]">
                                                 {formatRelativeTime(item.date, i18n.language)}
                                             </span>
                                         </a>

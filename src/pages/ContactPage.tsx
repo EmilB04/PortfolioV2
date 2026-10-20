@@ -2,9 +2,10 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { ArrowRight, Send } from 'lucide-react'
-import IndexLayout from '../components/indexSections/_layout'
+import PageLayout from '../components/ui/PageLayout'
 import { useSeo } from '../hooks/useSeo'
 import { ROUTE_SEO } from '../lib/seo'
+import PageHeader from '../components/ui/PageHeader'
 
 // avatars.githubusercontent.com serves the same image without the cookies
 // github.com sets on its redirect (_gh_sess, _octo, logged_in).
@@ -27,7 +28,7 @@ function WindowChrome({ label, dark, children }: { label: string; dark?: boolean
                 className="flex items-center gap-3 px-4 py-2.5"
                 style={{ background: dark ? '#161b22' : 'var(--surface)' }}
             >
-                <div className="flex flex-shrink-0 gap-1.5">
+                <div className="flex shrink-0 gap-1.5">
                     <div className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
                     <div className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
                     <div className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
@@ -111,11 +112,11 @@ function EmailPreview({ composeLabel, subject }: { composeLabel: string; subject
 
             <div className="space-y-2 text-xs">
                 <div className="flex items-center gap-2 border-b border-[var(--border)] pb-2">
-                    <span className="flex-shrink-0 text-[var(--text-subtle)]">To:</span>
+                    <span className="shrink-0 text-[var(--text-subtle)]">To:</span>
                     <span className="truncate text-[var(--text)]">emil.berglund+portfolio@live.no</span>
                 </div>
                 <div className="flex items-center gap-2 border-b border-[var(--border)] pb-2">
-                    <span className="flex-shrink-0 text-[var(--text-subtle)]">Subject:</span>
+                    <span className="shrink-0 text-[var(--text-subtle)]">Subject:</span>
                     <span className="truncate font-medium text-[var(--text)]">{subject}</span>
                 </div>
             </div>
@@ -180,60 +181,53 @@ export default function Contact() {
     useSeo(ROUTE_SEO['/contact'].title, ROUTE_SEO['/contact'].description, '/contact')
 
     return (
-        <IndexLayout id="contact">
-            <section className="pt-16">
-                <motion.div
-                    className="mb-14 flex flex-col gap-4"
-                    initial="hidden"
-                    animate="show"
-                    variants={fadeUp}
-                >
-                    <h1 className="m-0 max-w-[18ch]">{t('contactPage.title')}</h1>
-                    <p className="prose-organic max-w-[54ch] text-[var(--text-muted)]">
-                        {t('contactPage.subtitle')}
-                    </p>
-                </motion.div>
+        <PageLayout id="contact">
+            <PageHeader>
+                <h1 className="m-0 max-w-[18ch]">{t('contactPage.title')}</h1>
+                <p className="prose-organic max-w-[54ch] text-[var(--text-muted)]">
+                    {t('contactPage.subtitle')}
+                </p>
+            </PageHeader>
 
-                <motion.div
-                    className="pebble-set grid items-stretch gap-6 md:grid-cols-3"
-                    initial="hidden"
-                    animate="show"
-                    variants={containerVariants}
-                >
-                    <PlatformCard
-                        href="https://www.linkedin.com/in/emilber/"
-                        label="linkedin.com/in/emilber"
-                        preview={<LinkedInPreview headline={headline} />}
-                        title={t('contactPage.cards.linkedin.title')}
-                        description={t('contactPage.cards.linkedin.description')}
-                        buttonLabel={t('contactPage.cards.linkedin.button')}
-                    />
+            <motion.div
+                className="pebble-set grid items-stretch gap-6 md:grid-cols-3"
+                initial="hidden"
+                animate="show"
+                variants={containerVariants}
+            >
+                <PlatformCard
+                    href="https://www.linkedin.com/in/emilber/"
+                    label="linkedin.com/in/emilber"
+                    preview={<LinkedInPreview headline={headline} />}
+                    title={t('contactPage.cards.linkedin.title')}
+                    description={t('contactPage.cards.linkedin.description')}
+                    buttonLabel={t('contactPage.cards.linkedin.button')}
+                />
 
-                    <PlatformCard
-                        href="https://github.com/emilb04"
-                        label="github.com/EmilB04"
-                        dark
-                        preview={<GitHubPreview />}
-                        title={t('contactPage.cards.github.title')}
-                        description={t('contactPage.cards.github.description')}
-                        buttonLabel={t('contactPage.cards.github.button')}
-                    />
+                <PlatformCard
+                    href="https://github.com/emilb04"
+                    label="github.com/EmilB04"
+                    dark
+                    preview={<GitHubPreview />}
+                    title={t('contactPage.cards.github.title')}
+                    description={t('contactPage.cards.github.description')}
+                    buttonLabel={t('contactPage.cards.github.button')}
+                />
 
-                    <PlatformCard
-                        href="mailto:emil.berglund+portfolio@live.no"
-                        label={t('contactPage.cards.email.compose')}
-                        preview={
-                            <EmailPreview
-                                composeLabel={t('contactPage.cards.email.compose')}
-                                subject={t('contactPage.cards.email.subject')}
-                            />
-                        }
-                        title={t('contactPage.cards.email.title')}
-                        description={t('contactPage.cards.email.description')}
-                        buttonLabel={t('contactPage.cards.email.button')}
-                    />
-                </motion.div>
-            </section>
-        </IndexLayout>
+                <PlatformCard
+                    href="mailto:emil.berglund+portfolio@live.no"
+                    label={t('contactPage.cards.email.compose')}
+                    preview={
+                        <EmailPreview
+                            composeLabel={t('contactPage.cards.email.compose')}
+                            subject={t('contactPage.cards.email.subject')}
+                        />
+                    }
+                    title={t('contactPage.cards.email.title')}
+                    description={t('contactPage.cards.email.description')}
+                    buttonLabel={t('contactPage.cards.email.button')}
+                />
+            </motion.div>
+        </PageLayout>
     )
 }

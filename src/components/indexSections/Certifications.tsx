@@ -250,7 +250,7 @@ function CategoryCard({
         <div className="card-organic flex flex-col p-5">
             <div className="mb-4 flex items-center gap-2.5">
                 <div
-                    className="pebble-sm flex h-9 w-9 flex-shrink-0 items-center justify-center"
+                    className="pebble-sm flex h-9 w-9 shrink-0 items-center justify-center"
                     style={{
                         background: `color-mix(in srgb, ${category.color} 15%, var(--surface-card))`,
                         boxShadow: `0 0 0 1px color-mix(in srgb, ${category.color} 26%, transparent)`,
@@ -272,7 +272,7 @@ function CategoryCard({
                     >
                         <span
                             aria-hidden="true"
-                            className="mt-[0.45rem] h-1 w-1 flex-shrink-0 rounded-full"
+                            className="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full"
                             style={{ background: category.color }}
                         />
                         {course}

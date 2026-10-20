@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react'
+import Container from '../ui/Container'
 
 type IndexSectionProps = {
     id?: string
     children: ReactNode
     className?: string
-    fullscreen?: boolean
-    fullWidth?: boolean
     /** Lays the section on a sunken stratum with soft, uneven edges. */
     band?: boolean
 }
@@ -37,38 +36,12 @@ export default function IndexLayout({
     id,
     children,
     className = '',
-    fullscreen = false,
-    fullWidth = false,
     band = false,
 }: IndexSectionProps) {
-    if (fullscreen) {
-        return (
-            <section
-                id={id}
-                className={`scroll-mt-24 flex h-screen w-screen items-center justify-center overflow-hidden ${className}`}
-                style={{ color: 'var(--text)' }}
-            >
-                {children}
-            </section>
-        )
-    }
-
-    if (fullWidth) {
-        return (
-            <section
-                id={id}
-                className={`scroll-mt-24 flex w-full items-center justify-center py-20 md:py-28 ${className}`}
-                style={{ color: 'var(--text)' }}
-            >
-                {children}
-            </section>
-        )
-    }
-
     return (
         <section
             id={id}
-            className="relative isolate w-full scroll-mt-24 py-20 md:py-28"
+            className="index-section relative isolate w-full scroll-mt-24"
             style={{ color: 'var(--text)' }}
         >
             {band && (
@@ -87,9 +60,9 @@ export default function IndexLayout({
                 </>
             )}
 
-            <div className={`mx-auto w-full max-w-screen-xl px-5 md:px-10 ${className}`}>
+            <Container className={className}>
                 {children}
-            </div>
+            </Container>
         </section>
     )
 }

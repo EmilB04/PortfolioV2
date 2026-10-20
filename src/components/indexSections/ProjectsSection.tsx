@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
@@ -14,43 +14,13 @@ import { INDEX_PATHS } from '../../routes/indexPaths'
 import { ROUTES } from '../../routes/routes'
 
 // Change these slugs to control which projects are featured here
-const FEATURED_SLUGS = ['streamdeck-battery-monitor', 'varsel', 'perceivo', 'readme-generator', 'pageprobe'] as const
+const FEATURED_SLUGS = ['lumabridge', 'spillarena', 'streamdeck-battery-monitor', 'varsel', 'perceivo', 'readme-generator', 'pageprobe'] as const
 
 export default function ProjectsSection() {
     const { t } = useTranslation()
     const { projects: allProjects, loading } = useProjects()
     const projects = useMemo(() => FEATURED_SLUGS.flatMap(slug => allProjects.filter(project => project.local_path === slug)), [allProjects])
     const [activeIndex, setActiveIndex] = useState(0)
-
-    // Warm Microlink's screenshot cache for every live project — switching tabs
-    // later then hits an already-rendering (or cached) screenshot instead of
-    // triggering a fresh cold render. It waits for an idle moment, and is
-    // skipped entirely on phones and metered connections, where five extra
-    // screenshot fetches cost more than the tab switch they save.
-    useEffect(() => {
-        if (projects.length === 0) return
-
-        const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-        const onPhone = window.matchMedia('(pointer: coarse)').matches
-        if (onPhone || connection?.saveData) return
-
-        const warm = () => {
-            projects.forEach((p) => {
-                if (!p.live_url) return
-                const img = new Image()
-                img.src = `https://api.microlink.io/?url=${encodeURIComponent(p.live_url)}&screenshot=true&meta=false&embed=screenshot.url`
-            })
-        }
-
-        const idle = window.requestIdleCallback
-        if (idle) {
-            const handle = idle(warm, { timeout: 4000 })
-            return () => window.cancelIdleCallback?.(handle)
-        }
-
-        const timer = window.setTimeout(warm, 2500)
-        return () => window.clearTimeout(timer)
-    }, [projects])
 
     const active = useLocalizedProject(projects[activeIndex])
     const previewImage = resolveMediaUrl(active?.images?.[0])
@@ -83,7 +53,7 @@ export default function ProjectsSection() {
                                 key={p.id}
                                 type="button"
                                 onClick={() => setActiveIndex(i)}
-                                className={`pebble-sm flex-shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 ${i === activeIndex
+                                className={`pebble-sm shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 ${i === activeIndex
                                     ? 'bg-[var(--accent-solid)] text-[var(--on-accent)]'
                                     : 'border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-hover)] hover:text-[var(--text)]'
                                     }`}
@@ -171,13 +141,13 @@ export default function ProjectsSection() {
                                                     <img
                                                         src={previewImage}
                                                         alt={active.title}
-                                                        className="aspect-video w-full object-cover"
+                                                        className="aspect-video w-full object-contain"
                                                         loading="lazy"
                                                     />
                                                 </div>
                                             ) : null}
 
-                                            <div className={`flex flex-col gap-5 ${hasPreview ? 'md:w-64 md:flex-shrink-0' : ''}`}>
+                                            <div className={`flex flex-col gap-5 ${hasPreview ? 'md:w-64 md:shrink-0' : ''}`}>
                                                 <p className="prose-organic text-[15px] text-[var(--text-muted)]">
                                                     {active.description}
                                                 </p>
