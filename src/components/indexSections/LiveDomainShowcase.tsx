@@ -147,7 +147,7 @@ export default function LiveDomainShowcase() {
                     }}
                 >
                     {/* Left: what the site is */}
-                    <div className="flex w-full flex-col gap-4 md:w-[22rem] md:flex-shrink-0">
+                    <div className="flex w-full flex-col gap-4 md:w-[22rem] md:shrink-0">
                         {domain.logoImage ? (
                             <img
                                 src={domain.logoImage}
@@ -207,7 +207,7 @@ export default function LiveDomainShowcase() {
                             style={{ background: 'var(--surface-raised)', boxShadow: 'var(--shadow-lifted)' }}
                         >
                             <div className="flex items-center gap-3 border-b border-[var(--border)] px-4 py-2.5">
-                                <div className="flex flex-shrink-0 gap-1.5" aria-hidden="true">
+                                <div className="flex shrink-0 gap-1.5" aria-hidden="true">
                                     <span className="h-2.5 w-2.5 rounded-full" style={{ background: 'var(--border-strong)' }} />
                                     <span className="h-2.5 w-2.5 rounded-full" style={{ background: 'var(--border-strong)' }} />
                                     <span className="h-2.5 w-2.5 rounded-full" style={{ background: 'var(--border-strong)' }} />

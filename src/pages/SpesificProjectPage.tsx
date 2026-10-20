@@ -9,6 +9,8 @@ import ProjectMediaCarousel from '../components/ProjectMediaCarousel'
 import { useSeo } from '../hooks/useSeo'
 import { NOT_FOUND_SEO, projectSeoFor } from '../lib/seo'
 import { useLanguage } from '../hooks/useLanguage'
+import PageHeader from '../components/ui/PageHeader'
+import PageLayout from '../components/ui/PageLayout'
 
 const CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME ?? 'emilber-portfolio'
 const API_KEY = import.meta.env.CLOUDINARY_API_KEY ?? ''
@@ -153,26 +155,29 @@ export default function SpesificProjectPage() {
 
     if (loading) {
         return (
-            <div className="px-5 pb-16 pt-28 md:px-10" style={{ color: 'var(--text)' }}>
+            <PageLayout>
+                <PageHeader fallback="/projects" className="mb-6" />
                 <ProjectDetailSkeleton />
-            </div>
+            </PageLayout>
         )
     }
 
     if (notFound || !project) {
         return (
-            <div className="flex flex-col items-center justify-center gap-4" style={{ minHeight: 'calc(100vh - 4rem)', color: 'var(--text)' }}>
-                <h1>{t(error ? 'projectDetails.loadError' : 'projectDetails.notFound')}</h1>
-                <Link to="/projects" className="text-[var(--accent-text)] underline">{t('nav.projects')}</Link>
-            </div>
+            <PageLayout>
+                <PageHeader fallback="/projects">
+                    <h1 className="m-0">{t(error ? 'projectDetails.loadError' : 'projectDetails.notFound')}</h1>
+                    <Link to="/projects" className="self-start text-[var(--accent-text)] underline">{t('nav.projects')}</Link>
+                </PageHeader>
+            </PageLayout>
         )
     }
 
     return (
-        <div className="px-5 pb-16 pt-28 md:px-10" style={{ color: 'var(--text)' }}>
-            <div className="mx-auto max-w-screen-xl">
+        <PageLayout>
+            <PageHeader fallback="/projects">
                 {/* Title + live badge */}
-                <div className="mb-3 flex flex-wrap items-baseline gap-4">
+                <div className="flex flex-wrap items-baseline gap-4">
                     <h1 className="m-0">{project.title}</h1>
                     {project.live_url && (
                         <span className="inline-flex items-center gap-1.5 text-sm text-[var(--text-subtle)]">
@@ -184,7 +189,7 @@ export default function SpesificProjectPage() {
 
                 {/* Tech stack */}
                 {project.languages?.length > 0 && (
-                    <div className="mb-10 flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
+                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
                         <span className="text-sm text-[var(--text-subtle)]">{t('projectDetails.stack')}</span>
                         {project.languages.map((lang) => (
                             <span key={lang} className="text-sm text-[var(--accent-text)]">
@@ -193,74 +198,73 @@ export default function SpesificProjectPage() {
                         ))}
                     </div>
                 )}
+            </PageHeader>
 
-                <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_15rem]">
-                    {/* Main content */}
-                    <div className="flex flex-col gap-6">
-                        <p className="prose-organic text-lg leading-relaxed text-[var(--text)]">
-                            {localized?.description}
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_15rem]">
+                {/* Main content */}
+                <div className="flex flex-col gap-6">
+                    <p className="prose-organic text-lg leading-relaxed text-[var(--text)]">
+                        {localized?.description}
+                    </p>
+
+                    {localized?.details && (
+                        <p className="prose-organic whitespace-pre-line text-[var(--text-muted)]">
+                            {localized.details}
                         </p>
+                    )}
 
-                        {localized?.details && (
-                            <p className="prose-organic whitespace-pre-line text-[var(--text-muted)]">
-                                {localized.details}
-                            </p>
+                    {/* Media carousel */}
+                    <ProjectMediaCarousel
+                        images={project.images ?? []}
+                        videos={project.videos ?? []}
+                        title={project.title}
+                        liveUrl={project.live_url}
+                    />
+
+                    {/* Tags — bottom */}
+                    {project.tags?.length > 0 && (
+                        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-t border-[var(--border)] pt-5">
+                            <span className="text-sm text-[var(--text-subtle)]">{t('projectDetails.tags')}</span>
+                            {project.tags.map((tag) => (
+                                <span key={tag} className="text-sm text-[var(--text-muted)]">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Sidebar */}
+                <aside className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
+                        {project.url && (
+                            <a
+                                href={project.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="pebble-sm inline-flex items-center justify-center gap-2 border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--border-hover)] hover:text-[var(--text)]"
+                            >
+                                <Github size={15} aria-hidden="true" />
+                                {t('projectCard.sourceCode')}
+                            </a>
                         )}
-
-                        {/* Media carousel */}
-                        <ProjectMediaCarousel
-                            images={project.images ?? []}
-                            videos={project.videos ?? []}
-                            title={project.title}
-                            liveUrl={project.live_url}
-                        />
-
-                        {/* Tags — bottom */}
-                        {project.tags?.length > 0 && (
-                            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-t border-[var(--border)] pt-5">
-                                <span className="text-sm text-[var(--text-subtle)]">{t('projectDetails.tags')}</span>
-                                {project.tags.map((tag) => (
-                                    <span key={tag} className="text-sm text-[var(--text-muted)]">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
+                        {project.live_url && (
+                            <a
+                                href={project.live_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="pebble-sm inline-flex items-center justify-center gap-2 bg-[var(--accent-solid)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
+                            >
+                                <ExternalLink size={15} aria-hidden="true" />
+                                {t('projectsSection.visitSite')}
+                            </a>
                         )}
                     </div>
-
-                    {/* Sidebar */}
-                    <aside className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-2">
-                            {project.url && (
-                                <a
-                                    href={project.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="pebble-sm inline-flex items-center justify-center gap-2 border border-[var(--border)] px-4 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--border-hover)] hover:text-[var(--text)]"
-                                >
-                                    <Github size={15} aria-hidden="true" />
-                                    {t('projectCard.sourceCode')}
-                                </a>
-                            )}
-                            {project.live_url && (
-                                <a
-                                    href={project.live_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="pebble-sm inline-flex items-center justify-center gap-2 bg-[var(--accent-solid)] px-4 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-transform duration-300 hover:-translate-y-0.5"
-                                >
-                                    <ExternalLink size={15} aria-hidden="true" />
-                                    {t('projectsSection.visitSite')}
-                                </a>
-                            )}
-                        </div>
-                    </aside>
-                </div>
+                </aside>
             </div>
-
             {/* Dev mode indicator */}
             {devMode && (
-                <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/10 px-3 py-1.5 text-xs font-semibold text-yellow-400 backdrop-blur-sm">
+                <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/10 px-3 py-1.5 text-xs font-semibold text-yellow-400 backdrop-blur-xs">
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-yellow-400" />
                     DEV MODE
                 </div>
@@ -268,7 +272,7 @@ export default function SpesificProjectPage() {
 
             {/* Dev upload panel */}
             {devMode && (
-                <div className="fixed bottom-14 right-4 z-40 w-72 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-4 shadow-xl backdrop-blur-sm">
+                <div className="fixed bottom-14 right-4 z-40 w-72 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] p-4 shadow-xl backdrop-blur-xs">
                     <div className="mb-3 flex items-center justify-between">
                         <span className="text-xs font-semibold text-[var(--text-subtle)] uppercase tracking-wider">
                             Upload media — {project.local_path}
@@ -319,6 +323,6 @@ export default function SpesificProjectPage() {
                     </p>
                 </div>
             )}
-        </div>
+        </PageLayout>
     )
 }

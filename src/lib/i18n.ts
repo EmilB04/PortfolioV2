@@ -64,7 +64,7 @@ const en = {
         label: 'Contact me',
     },
     backButton: {
-        aria: 'Back to home',
+        aria: 'Go back',
         label: 'Back',
     },
     footer: {
@@ -241,6 +241,11 @@ const en = {
         subtitle: 'Explore my projects and see what I have been working on',
         loading: 'Loading…',
         empty: 'No projects found.',
+        count_one: '{{count}} project',
+        count_other: '{{count}} projects',
+        viewLabel: 'Project view',
+        gridView: 'Grid',
+        listView: 'List',
     },
     projectCard: {
         github: 'GitHub',
@@ -404,7 +409,7 @@ const no: TranslationSchema = {
         label: 'Ta kontakt',
     },
     backButton: {
-        aria: 'Tilbake til forsiden',
+        aria: 'Gå tilbake',
         label: 'Tilbake',
     },
     footer: {
@@ -582,6 +587,11 @@ const no: TranslationSchema = {
         subtitle: 'Utforsk mine prosjekter og se hva jeg har jobbet med',
         loading: 'Laster…',
         empty: 'Ingen prosjekter funnet.',
+        count_one: '{{count}} prosjekt',
+        count_other: '{{count}} prosjekter',
+        viewLabel: 'Prosjektvisning',
+        gridView: 'Rutenett',
+        listView: 'Liste',
     },
     projectCard: {
         github: 'GitHub',
@@ -743,7 +753,7 @@ const es: TranslationSchema = {
         label: 'Contáctame',
     },
     backButton: {
-        aria: 'Volver al inicio',
+        aria: 'Volver',
         label: 'Volver',
     },
     footer: {
@@ -920,6 +930,11 @@ const es: TranslationSchema = {
         subtitle: 'Explora mis proyectos y mira en qué he estado trabajando',
         loading: 'Cargando…',
         empty: 'No se encontraron proyectos.',
+        count_one: '{{count}} proyecto',
+        count_other: '{{count}} proyectos',
+        viewLabel: 'Vista de proyectos',
+        gridView: 'Cuadrícula',
+        listView: 'Lista',
     },
     projectCard: {
         github: 'GitHub',
@@ -1081,7 +1096,7 @@ const de: TranslationSchema = {
         label: 'Kontaktiere mich',
     },
     backButton: {
-        aria: 'Zurück zur Startseite',
+        aria: 'Zurück',
         label: 'Zurück',
     },
     footer: {
@@ -1258,6 +1273,11 @@ const de: TranslationSchema = {
         subtitle: 'Entdecke meine Projekte und sieh dir an, woran ich gearbeitet habe',
         loading: 'Wird geladen…',
         empty: 'Keine Projekte gefunden.',
+        count_one: '{{count}} Projekt',
+        count_other: '{{count}} Projekte',
+        viewLabel: 'Projektansicht',
+        gridView: 'Raster',
+        listView: 'Liste',
     },
     projectCard: {
         github: 'GitHub',
@@ -1419,7 +1439,7 @@ const fr: TranslationSchema = {
         label: 'Me contacter',
     },
     backButton: {
-        aria: "Retour à l'accueil",
+        aria: 'Retour',
         label: 'Retour',
     },
     footer: {
@@ -1596,6 +1616,11 @@ const fr: TranslationSchema = {
         subtitle: 'Découvrez mes projets et ce sur quoi je travaille',
         loading: 'Chargement…',
         empty: 'Aucun projet trouvé.',
+        count_one: '{{count}} projet',
+        count_other: '{{count}} projets',
+        viewLabel: 'Affichage des projets',
+        gridView: 'Grille',
+        listView: 'Liste',
     },
     projectCard: {
         github: 'GitHub',

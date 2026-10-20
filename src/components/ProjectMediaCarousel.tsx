@@ -149,7 +149,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                                 onClick={() => setIndex(i)}
                                 aria-label={`View media ${i + 1}`}
                                 aria-current={i === index}
-                                className={`pebble-sm flex-shrink-0 overflow-hidden border-2 transition-all duration-150 ${
+                                className={`pebble-sm shrink-0 overflow-hidden border-2 transition-all duration-150 ${
                                     i === index
                                         ? 'border-[var(--accent)]'
                                         : 'border-transparent opacity-50 hover:opacity-80'
@@ -179,7 +179,7 @@ export default function ProjectMediaCarousel({ images, videos, title, liveUrl }:
                     role="dialog"
                     aria-modal="true"
                     aria-label={`${title} ${index + 1}`}
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-xs"
                     onClick={() => setLightbox(false)}
                 >
                     <button

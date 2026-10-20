@@ -12,6 +12,7 @@ import ContactPage from './pages/ContactPage'
 import ProjectsPage from './pages/ProjectsPage'
 import CookieConsentBanner from './components/CookieConsentBanner'
 import LoadingSpinner from './components/ui/LoadingSpinner'
+import PageLayout from './components/ui/PageLayout'
 import SpesificProjectPage from './pages/SpesificProjectPage'
 import NotFoundPage from './pages/NotFoundPage'
 import { ProjectDataContext } from './context/projectDataContext'
@@ -32,7 +33,7 @@ export async function render(url: string, projects: Project[]) {
                             <StaticRouter location={url}>
                                 <ErrorBoundary>
                                     <Layout>
-                                        <Suspense fallback={<LoadingSpinner />}>
+                                        <Suspense fallback={<PageLayout><LoadingSpinner /></PageLayout>}>
                                             <Routes>
                                                 <Route path="/" element={<Home />} />
                                                 <Route path="/contact" element={<ContactPage />} />

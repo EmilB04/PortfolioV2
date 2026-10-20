@@ -146,7 +146,7 @@ export default function Landing({ onScrollNextSection }: LandingProps) {
 
     return (
         <IndexLayout id="landing" className="text-left">
-            <section className="about-me flex w-full flex-col justify-center pt-6 md:min-h-[82vh] md:pt-0">
+            <section className="about-me flex w-full flex-col justify-center md:min-h-[82vh]">
                 <motion.div
                     className="flex flex-col items-start gap-12 md:flex-row-reverse md:items-center md:justify-between md:gap-20"
                     initial="hidden"

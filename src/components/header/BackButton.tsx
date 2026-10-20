@@ -5,11 +5,9 @@ import { useTranslation } from 'react-i18next'
 type BackButtonProps = {
     fallback?: string
     className?: string
-    /** Matches the header rail: solid backing once the page scrolls. */
-    settled?: boolean
 }
 
-export default function BackButton({ fallback = '/', className = '', settled = false }: BackButtonProps) {
+export default function BackButton({ fallback = '/', className = '' }: BackButtonProps) {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
@@ -27,7 +25,7 @@ export default function BackButton({ fallback = '/', className = '', settled = f
             onClick={handleBack}
             aria-label={t('backButton.aria')}
             className={
-                `nav-island inline-flex h-11 gap-2 px-5 text-sm font-medium text-[var(--text)] ${settled ? 'nav-island--settled' : ''} ${className}`
+                `inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--border-hover)] hover:bg-[var(--surface-card)] hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-text)] motion-reduce:transition-none ${className}`
             }
         >
             <ArrowLeft size={16} aria-hidden="true" />

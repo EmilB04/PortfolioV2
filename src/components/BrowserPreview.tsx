@@ -50,7 +50,7 @@ export default function BrowserPreview({ url, imageUrl, placeholderUrl }: Props)
         >
             {/* Chrome bar */}
             <div className="flex items-center gap-3 border-b border-[var(--border)] bg-[var(--surface)] px-3 py-2">
-                <div className="flex flex-shrink-0 gap-1.5">
+                <div className="flex shrink-0 gap-1.5">
                     <div className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
                     <div className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
                     <div className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
@@ -63,7 +63,7 @@ export default function BrowserPreview({ url, imageUrl, placeholderUrl }: Props)
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 rounded p-1 text-[var(--text-subtle)] transition-colors hover:text-[var(--text)]"
+                    className="shrink-0 rounded p-1 text-[var(--text-subtle)] transition-colors hover:text-[var(--text)]"
                     aria-label="Open in new tab"
                 >
                     <ExternalLink size={13} aria-hidden="true" />

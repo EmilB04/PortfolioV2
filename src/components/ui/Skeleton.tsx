@@ -2,21 +2,23 @@ export function Skeleton({ className = '' }: { className?: string }) {
     return <div className={`animate-pulse rounded-md bg-[var(--surface-sunken)] ${className}`} />
 }
 
-export function ProjectCardSkeleton() {
+export function ProjectCardSkeleton({ view = 'grid' }: { view?: 'grid' | 'list' }) {
     return (
-        <div className="pebble flex h-full flex-col gap-4 border border-[var(--border)] bg-[var(--surface)] p-6">
-            <Skeleton className="pebble-sm h-14 w-14" />
-            <Skeleton className="h-5 w-32" />
-            <div className="flex w-full flex-col items-center gap-2">
+        <div className={`card-organic project-card project-card--${view}`}>
+            <div className="project-card__heading">
+                <Skeleton className="h-9 w-9 shrink-0" />
+                <Skeleton className="h-5 w-32 max-w-full" />
+            </div>
+            <div className="project-card__description project-card__description--loading">
                 <Skeleton className="h-3 w-full" />
                 <Skeleton className="h-3 w-5/6" />
                 <Skeleton className="h-3 w-2/3" />
             </div>
-            <div className="flex gap-1.5">
-                <Skeleton className="h-5 w-14 rounded-full" />
-                <Skeleton className="h-5 w-16 rounded-full" />
+            <div className="project-card__stack">
+                <Skeleton className="h-3 w-14" />
+                <Skeleton className="h-3 w-16" />
             </div>
-            <Skeleton className="mt-auto h-9 w-28 rounded-full" />
+            <span className="project-card__action"><Skeleton className="h-4 w-20" /></span>
         </div>
     )
 }
@@ -44,7 +46,7 @@ export function RepoCardSkeleton() {
 export function GitHubProfileSkeleton() {
     return (
         <div className="pebble flex w-full flex-col gap-5 border border-[var(--border)] bg-[var(--surface-card)] p-6 md:flex-row md:items-center">
-            <Skeleton className="h-20 w-20 flex-shrink-0 rounded-full sm:h-24 sm:w-24" />
+            <Skeleton className="h-20 w-20 shrink-0 rounded-full sm:h-24 sm:w-24" />
             <div className="flex w-full flex-1 flex-col items-center gap-2 sm:items-start">
                 <Skeleton className="h-5 w-40" />
                 <Skeleton className="h-3 w-full max-w-sm" />
@@ -68,10 +70,10 @@ export function CommitActivitySkeleton() {
                         key={i}
                         className="pebble-sm flex items-center gap-3 border border-[var(--border)] bg-[var(--surface-card)] px-4 py-3"
                     >
-                        <Skeleton className="h-1.5 w-1.5 flex-shrink-0 rounded-full" />
-                        <Skeleton className="h-3 w-20 flex-shrink-0" />
+                        <Skeleton className="h-1.5 w-1.5 shrink-0 rounded-full" />
+                        <Skeleton className="h-3 w-20 shrink-0" />
                         <Skeleton className="h-3 flex-1" />
-                        <Skeleton className="h-3 w-10 flex-shrink-0" />
+                        <Skeleton className="h-3 w-10 shrink-0" />
                     </div>
                 ))}
             </div>
@@ -84,7 +86,7 @@ export function FeaturedProjectsSkeleton() {
         <div className="w-full overflow-hidden">
             <div className="mb-5 flex gap-2 overflow-x-auto pb-1 sm:hidden">
                 {Array.from({ length: 4 }).map((_, i) => (
-                    <Skeleton key={i} className="h-9 w-24 flex-shrink-0 rounded-full" />
+                    <Skeleton key={i} className="h-9 w-24 shrink-0 rounded-full" />
                 ))}
             </div>
 
@@ -128,7 +130,7 @@ export function TimelineSkeleton() {
                         <div className="col-start-1 flex justify-center md:col-start-2 md:self-start">
                             <span
                                 aria-hidden="true"
-                                className="mt-4 inline-flex h-[0.95rem] w-[0.95rem] flex-shrink-0 animate-pulse rounded-full bg-[var(--border)]"
+                                className="mt-4 inline-flex h-[0.95rem] w-[0.95rem] shrink-0 animate-pulse rounded-full bg-[var(--border)]"
                             />
                         </div>
 
@@ -155,21 +157,21 @@ export function TimelineSkeleton() {
 
 export function ProjectDetailSkeleton() {
     return (
-        <div className="mx-auto max-w-screen-xl backdrop-blur-xl">
-            <div className="mb-4 flex flex-col items-center gap-3">
+        <div className="w-full">
+            <div className="mb-4 flex flex-col items-start gap-3">
                 <Skeleton className="h-10 w-72 max-w-full" />
             </div>
 
-            <div className="mb-8 flex flex-col items-center gap-2">
+            <div className="mb-10 flex flex-col items-start gap-2">
                 <Skeleton className="h-3 w-24" />
-                <div className="flex flex-wrap justify-center gap-1.5">
+                <div className="flex flex-wrap gap-1.5">
                     <Skeleton className="h-5 w-16 rounded-full" />
                     <Skeleton className="h-5 w-20 rounded-full" />
                     <Skeleton className="h-5 w-14 rounded-full" />
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_220px]">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_15rem]">
                 <div className="flex flex-col gap-6">
                     <Skeleton className="h-4 w-full" />
                     <Skeleton className="h-4 w-5/6" />

@@ -605,7 +605,7 @@ export default function AIStarterWidget() {
                                     maxLength={MAX_INPUT_CHARS}
                                     placeholder={t('aiWidget.placeholder')}
                                     aria-label={t('aiWidget.inputLabel')}
-                                    className="max-h-[120px] flex-1 resize-none bg-transparent py-1 text-sm leading-relaxed outline-none focus-visible:outline-none"
+                                    className="max-h-[120px] flex-1 resize-none bg-transparent py-1 text-sm leading-relaxed outline-hidden focus-visible:outline-hidden"
                                     style={{ color: 'var(--text)' }}
                                 />
                                 {loading ? (

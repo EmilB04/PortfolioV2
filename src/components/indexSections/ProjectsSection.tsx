@@ -83,7 +83,7 @@ export default function ProjectsSection() {
                                 key={p.id}
                                 type="button"
                                 onClick={() => setActiveIndex(i)}
-                                className={`pebble-sm flex-shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 ${i === activeIndex
+                                className={`pebble-sm shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 ${i === activeIndex
                                     ? 'bg-[var(--accent-solid)] text-[var(--on-accent)]'
                                     : 'border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-hover)] hover:text-[var(--text)]'
                                     }`}
@@ -177,7 +177,7 @@ export default function ProjectsSection() {
                                                 </div>
                                             ) : null}
 
-                                            <div className={`flex flex-col gap-5 ${hasPreview ? 'md:w-64 md:flex-shrink-0' : ''}`}>
+                                            <div className={`flex flex-col gap-5 ${hasPreview ? 'md:w-64 md:shrink-0' : ''}`}>
                                                 <p className="prose-organic text-[15px] text-[var(--text-muted)]">
                                                     {active.description}
                                                 </p>

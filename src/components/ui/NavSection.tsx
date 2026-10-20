@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import BackButton from '../header/BackButton'
 import { SettingsPanel } from '../header/SettingsMenu'
 import { LanguageDisclosure } from '../header/LanguageMenu'
 import { INDEX_NAV_ITEMS } from '../../routes/indexPaths'
@@ -30,7 +29,7 @@ function NavLinkList({
 }) {
     return (
         <ul
-            className={`nav-island m-0 hidden h-11 list-none gap-0.5 px-1.5 md:flex ${settled ? 'nav-island--settled' : ''}`}
+            className={`nav-island m-0 hidden h-11 list-none gap-0.5 px-1.5 min-[1200px]:flex ${settled ? 'nav-island--settled' : ''}`}
         >
             {links.map(({ href, label }) => (
                 <li key={href} className="h-full py-1">
@@ -66,17 +65,20 @@ function MobileMenuButton({
 }) {
     return (
         <button
-            className={`nav-island flex h-11 w-11 items-center justify-center p-0 md:hidden ${settled || menuOpen ? 'nav-island--settled' : ''}`}
+            type="button"
+            className={`nav-island flex h-11 w-11 items-center justify-center p-0 min-[1200px]:hidden ${settled || menuOpen ? 'nav-island--settled' : ''}`}
             onClick={onToggle}
             aria-label={menuOpen ? closeLabel : openLabel}
+            aria-expanded={menuOpen}
+            aria-controls={menuOpen ? 'mobile-navigation' : undefined}
         >
             {menuOpen ? (
                 <span className="text-lg leading-none text-[var(--text)]">✕</span>
             ) : (
                 <span className="flex flex-col items-center gap-1">
-                    <span className="block h-0.5 w-4 rounded-sm bg-[var(--text)]" />
-                    <span className="block h-0.5 w-3 rounded-sm bg-[var(--text)]" />
-                    <span className="block h-0.5 w-4 rounded-sm bg-[var(--text)]" />
+                    <span className="block h-0.5 w-4 rounded-xs bg-[var(--text)]" />
+                    <span className="block h-0.5 w-3 rounded-xs bg-[var(--text)]" />
+                    <span className="block h-0.5 w-4 rounded-xs bg-[var(--text)]" />
                 </span>
             )}
         </button>
@@ -127,11 +129,12 @@ function MobileDrawer({
             <div
                 aria-hidden="true"
                 onClick={onClose}
-                className={`fixed inset-0 z-[290] bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+                className={`fixed inset-0 z-[290] bg-black/40 backdrop-blur-xs transition-opacity duration-300 ease-out motion-reduce:transition-none ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
             />
 
             <div
                 ref={drawerRef}
+                id="mobile-navigation"
                 role="dialog"
                 aria-modal="true"
                 aria-label={navigationLabel}
@@ -219,7 +222,10 @@ export default function NavSection({ settled = false }: { settled?: boolean }) {
 
     useEffect(() => {
         function onResize() {
-            if (window.innerWidth >= 1024) setMenuOpen(false)
+            if (window.innerWidth >= 1200) {
+                setDrawerOpen(false)
+                setMenuOpen(false)
+            }
         }
         window.addEventListener('resize', onResize)
         return () => window.removeEventListener('resize', onResize)
@@ -287,21 +293,16 @@ export default function NavSection({ settled = false }: { settled?: boolean }) {
 
     return (
         <nav className="flex min-w-0 items-center justify-end gap-2.5">
-            <div className="flex min-w-0 items-center gap-3">
-                {isHomePage ? (
-                    <NavLinkList
-                        activeSection={activeSection}
-                        onNavigate={navigate}
-                        links={links}
-                        settled={settled}
-                    />
-                ) : (
-                    <BackButton settled={settled} />
-                )}
+            {isHomePage && (
+                <NavLinkList
+                    activeSection={activeSection}
+                    onNavigate={navigate}
+                    links={links}
+                    settled={settled}
+                />
+            )}
 
-            </div>
-
-            <div className="flex items-center gap-2 md:hidden">
+            <div className="flex items-center gap-2 min-[1200px]:hidden">
                 <MobileMenuButton
                     menuOpen={menuOpen}
                     onToggle={toggleMenu}

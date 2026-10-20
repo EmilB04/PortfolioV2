@@ -231,7 +231,7 @@ export default function SettingsMenu({ settled = false }: { settled?: boolean })
                 <FiSettings
                     aria-hidden="true"
                     className={`
-                        h-4.5 w-4.5 shrink-0 transition-transform duration-300 ease-out
+                        h-4 w-4 shrink-0 transition-transform duration-300 ease-out
                         ${open ? 'rotate-45 text-[var(--accent-text)]' : 'text-[var(--text-subtle)] group-hover:text-[var(--text)]'}
                     `}
                 />
