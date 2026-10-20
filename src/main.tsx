@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import i18n, { PRERENDER_LANGUAGE } from './lib/i18n'
+import { getConsent } from './lib/cookieConsent'
 import './styles/index.css'
 import App from './App.tsx'
 import { ThemeProvider } from './context/ThemeProvider'
@@ -34,10 +35,12 @@ const rootEl = document.getElementById('root')!
 // page's markup and hydrating against it would just produce a mismatch, so a
 // plain client render replaces it instead. The same goes for language: the
 // HTML is baked in PRERENDER_LANGUAGE, so a visitor reading another language
-// gets a fresh render rather than a hydration mismatch.
+// gets a fresh render rather than a hydration mismatch. Returning visitors'
+// consent and saved appearance also differ from the anonymous static HTML.
 const ssrPath = rootEl.getAttribute('data-ssr-path')
 const ssrMatchesLanguage = (i18n.resolvedLanguage ?? i18n.language) === PRERENDER_LANGUAGE
-if (ssrPath && ssrPath === window.location.pathname && ssrMatchesLanguage) {
+const ssrMatchesPreferences = getConsent() === null
+if (ssrPath && ssrPath === window.location.pathname && ssrMatchesLanguage && ssrMatchesPreferences) {
   hydrateRoot(rootEl, app)
 } else {
   createRoot(rootEl).render(app)

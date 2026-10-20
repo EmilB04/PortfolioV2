@@ -13,25 +13,9 @@ export const SUPPORTED_LANGUAGES = [
 /** The language the prerendered HTML is baked in. */
 export const PRERENDER_LANGUAGE = 'no'
 
-/** For visitors whose browser asks for no language the site supports. */
-export const FALLBACK_LANGUAGE = 'en'
-
-/** First of the browser's preferred languages the site supports, else English.
- *  Norwegian arrives as `nb` (Bokmål) or `nn` (Nynorsk) as often as `no`.
- *  The prerender has no browser to ask, so it stays on PRERENDER_LANGUAGE. */
-function detectBrowserLanguage(): string {
-    if (typeof window === 'undefined') return PRERENDER_LANGUAGE
-
-    const supported = new Set<string>(SUPPORTED_LANGUAGES.map((language) => language.code))
-    const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
-
-    for (const tag of preferred) {
-        const base = tag?.toLowerCase().split('-')[0]
-        const code = base === 'nb' || base === 'nn' ? 'no' : base
-        if (code && supported.has(code)) return code
-    }
-    return FALLBACK_LANGUAGE
-}
+/** Keep the public URL Norwegian, including after Google renders JavaScript.
+ * Visitors can still choose any supported language and save that preference. */
+export const FALLBACK_LANGUAGE = PRERENDER_LANGUAGE
 
 const en = {
     nav: {
@@ -1711,7 +1695,7 @@ i18n.use(initReactI18next).init({
     },
     supportedLngs: SUPPORTED_LANGUAGES.map((language) => language.code),
     load: 'languageOnly',
-    lng: readPreference('portfolio-lang') ?? detectBrowserLanguage(),
+    lng: readPreference('portfolio-lang') ?? PRERENDER_LANGUAGE,
     fallbackLng: FALLBACK_LANGUAGE,
     interpolation: {
         escapeValue: false,
@@ -1720,7 +1704,7 @@ i18n.use(initReactI18next).init({
 
 function applyHtmlLang(lng: string) {
     if (typeof document !== 'undefined') {
-        document.documentElement.lang = lng
+        document.documentElement.lang = lng === 'no' ? 'nb' : lng
     }
 }
 applyHtmlLang(i18n.resolvedLanguage ?? i18n.language)

@@ -18,25 +18,6 @@ const ROUTES = [
     { path: '/contact', out: 'contact/index.html' },
 ]
 
-// Kept in sync with src/lib/seo.ts by hand — this script runs on plain Node
-// against build output, so it can't import the TS module directly.
-const SEO = {
-    '/': {
-        title: 'Emil Berglund - Full-Stack Developer & Computer Science Student in Halden, Norway',
-        description:
-            'Emil Berglund is a full-stack developer and computer science student in Halden, Norway, building with React, TypeScript, .NET and Python. Portfolio with projects, experience and skills.',
-    },
-    '/projects': {
-        title: 'Projects - Emil Berglund',
-        description:
-            'Software projects built by Emil Berglund, full-stack developer in Halden, Norway — web apps, tools and experiments using React, TypeScript, .NET and Python.',
-    },
-    '/contact': {
-        title: 'Contact - Emil Berglund',
-        description: 'Get in touch with Emil Berglund, full-stack developer and computer science student in Halden, Norway.',
-    },
-}
-
 function escapeAttr(value) {
     return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 }
@@ -49,9 +30,9 @@ function setTagContent(html, tagRegex, attr, value) {
     return html.replace(tagRegex, (tag) => tag.replace(new RegExp(`${attr}="[^"]*"`), `${attr}="${escapeAttr(value)}"`))
 }
 
-function buildPage(template, route, appHtml) {
-    const { title, description } = SEO[route.path]
-    const canonical = route.path === '/' ? 'https://emilb.no/' : `https://emilb.no${route.path}`
+function buildPage(template, route, appHtml, seo, canonicalFor, structuredDataFor) {
+    const { title, description } = seo
+    const canonical = canonicalFor(route.path)
 
     let html = template
     html = html.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(title)}</title>`)
@@ -62,6 +43,11 @@ function buildPage(template, route, appHtml) {
     html = setTagContent(html, /<meta\s+name="twitter:title"[^>]*>/, 'content', title)
     html = setTagContent(html, /<meta\s+name="twitter:description"[^>]*>/, 'content', description)
     html = setTagContent(html, /<link\s+rel="canonical"[^>]*>/, 'href', canonical)
+    const structuredData = JSON.stringify(structuredDataFor(route.path, title, description)).replace(/</g, '\\u003c')
+    html = html.replace(
+        /(<script\s+id="structured-data"\s+type="application\/ld\+json">)[\s\S]*?(<\/script>)/,
+        (_match, start, end) => `${start}${structuredData}${end}`,
+    )
     html = html.replace(
         '<div id="root"></div>',
         `<div id="root" data-ssr-path="${escapeAttr(route.path)}">${appHtml}</div>`,
@@ -78,12 +64,12 @@ async function main() {
         throw new Error('dist-server/entry-server.js not found — run the --ssr build before prerendering.')
     }
 
-    const { render } = await import(pathToFileURL(ssrEntry).href)
+    const { render, routeSeo, canonicalFor, structuredDataFor } = await import(pathToFileURL(ssrEntry).href)
     const template = readFileSync(join(distDir, 'index.html'), 'utf-8')
 
     for (const route of ROUTES) {
-        const appHtml = render(route.path)
-        const page = buildPage(template, route, appHtml)
+        const appHtml = await render(route.path)
+        const page = buildPage(template, route, appHtml, routeSeo[route.path], canonicalFor, structuredDataFor)
         const outPath = join(distDir, route.out)
         mkdirSync(dirname(outPath), { recursive: true })
         writeFileSync(outPath, page)

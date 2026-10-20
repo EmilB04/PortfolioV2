@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { readPreference, writePreference } from '../lib/cookieConsent'
@@ -9,6 +9,16 @@ import type { Theme } from './themeContext'
 function getSystemPreference(): 'dark' | 'light' {
     if (typeof window === 'undefined') return 'dark'
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+function subscribeToSystemTheme(onChange: () => void) {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+}
+
+function getServerTheme(): 'dark' | 'light' {
+    return 'dark'
 }
 
 function getInitialTheme(): Theme {
@@ -27,20 +37,13 @@ function applyTheme(resolved: 'dark' | 'light') {
 export function ThemeProvider({ children }: { children: ReactNode }) {
     const { consent } = useCookieConsent()
     const [theme, setThemeState] = useState<Theme>(getInitialTheme)
-    const [systemPref, setSystemPref] = useState<'dark' | 'light'>(getSystemPreference)
+    // Reuse the prerendered theme during hydration, then apply the browser's
+    // preference. Otherwise React can leave the wrong logo on light browsers.
+    const systemPref = useSyncExternalStore(subscribeToSystemTheme, getSystemPreference, getServerTheme)
     const [flashKey, setFlashKey] = useState(0)
     const isFirstRender = useRef(true)
 
     const resolved = theme === 'system' ? systemPref : theme
-
-    useEffect(() => {
-        const mq = window.matchMedia('(prefers-color-scheme: dark)')
-        const handler = (e: MediaQueryListEvent) => {
-            setSystemPref(e.matches ? 'dark' : 'light')
-        }
-        mq.addEventListener('change', handler)
-        return () => mq.removeEventListener('change', handler)
-    }, [])
 
     useEffect(() => {
         applyTheme(resolved)

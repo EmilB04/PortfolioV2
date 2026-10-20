@@ -1,23 +1,21 @@
 <!doctype html>
-<html lang="no">
+<html lang="nb">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="google-site-verification" content="LkuHAnz3ky-SOwublXFwOmO6FjRLPBRz_bc6IFUU--s" />
   <meta name="color-scheme" content="dark light" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="application-name" content="Emil Berglund - Portfolio" />
-  <meta name="robots" content="index,follow" />
+  <meta name="application-name" content="Emil Berglund" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Emil Berglund - Portfolio" />
+  <meta name="apple-mobile-web-app-title" content="Emil Berglund" />
   <meta name="description"
-    content="Emil Berglund's personal portfolio with projects, experience, skills, and contact information." />
-  <meta name="keywords"
-    content="Emil Berglund, portfolio, full-stack developer, frontend developer, backend developer, projects" />
+    content="Emil Berglund er fullstackutvikler i Halden og masterstudent i anvendt informatikk med fordypning i kunstig intelligens. Se prosjekter, erfaring og kompetanse." />
   <meta name="author" content="Emil Berglund" />
   <meta name="theme-color" content="#12160f" />
   <meta name="theme-color" content="#12160f" media="(prefers-color-scheme: dark)" />
@@ -25,85 +23,40 @@
   <meta name="msapplication-config" content="/browserconfig.xml" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Emil Berglund - Portfolio" />
+  <meta property="og:site_name" content="Emil Berglund" />
   <meta property="og:url" content="https://emilb.no/" />
-  <meta property="og:title" content="Emil Berglund - Portfolio" />
+  <meta property="og:title" content="Emil Berglund – Fullstackutvikler og masterstudent i KI" />
   <meta property="og:description"
-    content="Emil Berglund's personal portfolio with projects, experience, skills, and contact information." />
-  <meta property="og:image" content="https://emilb.no/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="no_NO" />
+    content="Emil Berglund er fullstackutvikler i Halden og masterstudent i anvendt informatikk med fordypning i kunstig intelligens. Se prosjekter, erfaring og kompetanse." />
+  <meta property="og:image" content="https://emilb.no/icons/EB_LOGO-512.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content="Emil Berglunds EB-logo" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:locale" content="nb_NO" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Emil Berglund - Portfolio" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Emil Berglund – Fullstackutvikler og masterstudent i KI" />
   <meta name="twitter:description"
-    content="Emil Berglund's personal portfolio with projects, experience, skills, and contact information." />
-  <meta name="twitter:image" content="https://emilb.no/og-image.png" />
+    content="Emil Berglund er fullstackutvikler i Halden og masterstudent i anvendt informatikk med fordypning i kunstig intelligens. Se prosjekter, erfaring og kompetanse." />
+  <meta name="twitter:image" content="https://emilb.no/icons/EB_LOGO-512.png" />
 
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "@id": "https://emilb.no/#person",
-          "name": "Emil Berglund",
-          "givenName": "Emil",
-          "familyName": "Berglund",
-          "url": "https://emilb.no",
-          "image": "https://emilb.no/og-image.png",
-          "jobTitle": "Computer Science Student & Full-Stack Developer",
-          "description": "Emil Berglund's personal portfolio with projects, experience, skills, and contact information.",
-          "email": "mailto:emil.berglund@live.no",
-          "nationality": "Norwegian",
-          "sameAs": [
-            "https://github.com/EmilB04",
-            "https://www.linkedin.com/in/emilber/"
-          ],
-          "knowsAbout": [
-            "Vue.js", "Quasar", "React", "React Native",
-            "TypeScript", "JavaScript", "HTML", "CSS", "SCSS",
-            "Java", "C#", ".NET", "Python",
-            "Web Development", "Mobile Development", "Full-Stack Development",
-            "Software Engineering", "Computer Science"
-          ],
-          "alumniOf": {
-            "@type": "EducationalOrganization",
-            "name": "Høgskolen i Østfold",
-            "alternateName": "HiØ",
-            "url": "https://www.hiof.no"
-          },
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Halden",
-            "addressRegion": "Østfold",
-            "addressCountry": "NO"
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://emilb.no/#website",
-          "url": "https://emilb.no",
-          "name": "Emil Berglund - Portfolio",
-          "description": "Emil Berglund's personal portfolio with projects, experience, skills, and contact information.",
-          "inLanguage": ["nb-NO", "en-US"],
-          "author": { "@id": "https://emilb.no/#person" }
-        }
-      ]
-    }
-    </script>
+  <meta name="twitter:image:alt" content="Emil Berglunds EB-logo" />
+
+  <!-- Filled from src/lib/seo.ts during prerendering and client navigation. -->
+  <script id="structured-data" type="application/ld+json">{}</script>
 
   <!-- Only the display face is preloaded: the serif is body text further down
        the page and swaps in without holding up the first paint. -->
   <link rel="preload" href="/fonts/bricolage-grotesque-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="canonical" href="https://emilb.no/" />
+  <!-- Stable Portal logo for crawlers; theme-specific browser icons follow. -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/EB_LOGO-192.png" />
   <link rel="icon" type="image/png" sizes="96x96" href="/brand/eb-light-96.png" media="(prefers-color-scheme: dark)" />
   <link rel="icon" type="image/png" sizes="96x96" href="/brand/eb-dark-96.png" media="(prefers-color-scheme: light)" />
-  <link rel="apple-touch-icon" href="/brand/eb-light-192.png" />
-  <title>Emil Berglund - Portfolio</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/EB_LOGO-180.png" />
+  <title>Emil Berglund – Fullstackutvikler og masterstudent i KI</title>
 </head>
 
 <body>

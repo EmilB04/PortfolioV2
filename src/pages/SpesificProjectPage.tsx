@@ -80,8 +80,8 @@ export default function SpesificProjectPage() {
     const localized = useLocalizedProject(project)
 
     useSeo(
-        project ? absoluteTitle(project.title) : absoluteTitle('Project'),
-        localized?.description ?? 'Software project by Emil Berglund, full-stack developer in Halden, Norway.',
+        project ? absoluteTitle(project.title) : absoluteTitle('Prosjekt'),
+        localized?.description ?? 'Et programvareprosjekt av Emil Berglund, fullstackutvikler i Halden.',
         `/projects/${projectId}`,
     )
 

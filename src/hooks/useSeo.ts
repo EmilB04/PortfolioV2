@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { canonicalFor } from '../lib/seo'
+import { canonicalFor, structuredDataFor } from '../lib/seo'
 
 function setMeta(selector: string, attr: 'content' | 'href', value: string) {
     const el = document.head.querySelector(selector)
@@ -23,5 +23,7 @@ export function useSeo(title: string, description: string, path: string) {
         setMeta('meta[name="twitter:title"]', 'content', title)
         setMeta('meta[name="twitter:description"]', 'content', description)
         setMeta('link[rel="canonical"]', 'href', canonical)
+        const structuredData = document.getElementById('structured-data')
+        if (structuredData) structuredData.textContent = JSON.stringify(structuredDataFor(path, title, description))
     }, [title, description, path])
 }
