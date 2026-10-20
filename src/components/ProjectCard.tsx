@@ -12,6 +12,7 @@ import {
     Eye,
     FileText,
     Lightbulb,
+    Gamepad2,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useLocalizedProject } from '../hooks/useProjects'
@@ -19,6 +20,7 @@ import type { Project } from '../hooks/useProjects'
 import { ROUTES } from '../routes/routes'
 
 const PROJECT_ICONS: Record<string, LucideIcon> = {
+    spillarena: Gamepad2,
     lumabridge: Lightbulb,
     pageprobe: Code2,
     varsel: Zap,

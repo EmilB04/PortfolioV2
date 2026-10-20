@@ -14,7 +14,7 @@ import { INDEX_PATHS } from '../../routes/indexPaths'
 import { ROUTES } from '../../routes/routes'
 
 // Change these slugs to control which projects are featured here
-const FEATURED_SLUGS = ['lumabridge', 'streamdeck-battery-monitor', 'varsel', 'perceivo', 'readme-generator', 'pageprobe'] as const
+const FEATURED_SLUGS = ['lumabridge', 'spillarena', 'streamdeck-battery-monitor', 'varsel', 'perceivo', 'readme-generator', 'pageprobe'] as const
 
 export default function ProjectsSection() {
     const { t } = useTranslation()
