@@ -1,5 +1,8 @@
-import { useEffect } from 'react'
-import { canonicalFor } from '../lib/seo'
+import { useContext, useEffect } from 'react'
+import { canonicalFor, structuredDataFor } from '../lib/seo'
+import { ProjectDataContext } from '../context/projectDataContext'
+import { useLanguage } from './useLanguage'
+import type { Project } from '../lib/projects'
 
 function setMeta(selector: string, attr: 'content' | 'href', value: string) {
     const el = document.head.querySelector(selector)
@@ -12,7 +15,11 @@ function setMeta(selector: string, attr: 'content' | 'href', value: string) {
  * page a visitor lands on. This keeps them in sync after that — same job
  * the prerender script does for the initial HTML, just for the SPA leg.
  */
-export function useSeo(title: string, description: string, path: string) {
+export function useSeo(title: string, description: string, path: string, options: { noindex?: boolean; project?: Project | null } = {}) {
+    const projects = useContext(ProjectDataContext)
+    const { current } = useLanguage()
+    const language = { no: 'nb-NO', en: 'en-US', de: 'de-DE', fr: 'fr-FR', es: 'es-ES' }[current]
+    const { noindex = false, project } = options
     useEffect(() => {
         const canonical = canonicalFor(path)
         document.title = title
@@ -23,5 +30,9 @@ export function useSeo(title: string, description: string, path: string) {
         setMeta('meta[name="twitter:title"]', 'content', title)
         setMeta('meta[name="twitter:description"]', 'content', description)
         setMeta('link[rel="canonical"]', 'href', canonical)
-    }, [title, description, path])
+        setMeta('meta[name="robots"]', 'content', noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large')
+        setMeta('meta[property="og:locale"]', 'content', language.replace('-', '_'))
+        const structuredData = document.getElementById('structured-data')
+        if (structuredData) structuredData.textContent = JSON.stringify(structuredDataFor(path, title, description, project ? [project] : projects, language))
+    }, [title, description, path, noindex, project, projects, language])
 }

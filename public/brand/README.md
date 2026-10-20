@@ -6,7 +6,13 @@ so shipping the originals cost roughly a megabyte per page view.
 
 - `eb-dark-*.png` — dark monogram, used on light backgrounds
 - `eb-light-*.png` — light monogram, used on dark backgrounds
-- `96` for the header and favicon, `192` for the apple-touch icon
+- `96` for the header and theme-specific browser favicon
+- `192` retained as source assets for the theme-specific marks
+
+The fixed search/share logo and Apple touch icon are separate copies from
+Portfolio Portal in `public/icons/EB_LOGO-*.png`. `public/favicon.ico` is a
+format-only conversion of that logo. Keep those separate from these theme
+variants so changing search branding does not change the header or theme icons.
 
 To regenerate after changing the source art, scale the square source down to
 96 and 192 px with any image tool, keeping transparency, e.g.:

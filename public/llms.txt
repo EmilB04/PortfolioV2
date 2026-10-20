@@ -1,9 +1,11 @@
-# Emil Berglund - Portfolio
+# Emil Berglund – Portefølje
 
-> Personal portfolio of Emil Berglund, a full-stack developer and computer
-> science student, covering projects, experience, skills and contact
-> information.
+> Emil Berglund er fullstackutvikler i Halden og masterstudent i anvendt
+> informatikk med fordypning i kunstig intelligens ved Høgskolen i Østfold.
+> Porteføljen viser prosjekter, erfaring, kompetanse og kontaktinformasjon.
 
-- [Portfolio](https://emilb.no/): Home page with projects, skills and experience.
-- [GitHub](https://github.com/EmilB04): Source code and open-source projects.
-- [LinkedIn](https://www.linkedin.com/in/emilber/): Professional profile.
+- [Portefølje](https://emilb.no/): Prosjekter, kompetanse og erfaring.
+- [Prosjekter](https://emilb.no/projects): Webapper, verktøy og programvare.
+- [Kontakt](https://emilb.no/contact): E-post og sosiale profiler.
+- [GitHub](https://github.com/EmilB04): Kildekode og åpne prosjekter.
+- [LinkedIn](https://www.linkedin.com/in/emilber/): Profesjonell profil.

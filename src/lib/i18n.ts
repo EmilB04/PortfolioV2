@@ -13,25 +13,9 @@ export const SUPPORTED_LANGUAGES = [
 /** The language the prerendered HTML is baked in. */
 export const PRERENDER_LANGUAGE = 'no'
 
-/** For visitors whose browser asks for no language the site supports. */
-export const FALLBACK_LANGUAGE = 'en'
-
-/** First of the browser's preferred languages the site supports, else English.
- *  Norwegian arrives as `nb` (Bokmål) or `nn` (Nynorsk) as often as `no`.
- *  The prerender has no browser to ask, so it stays on PRERENDER_LANGUAGE. */
-function detectBrowserLanguage(): string {
-    if (typeof window === 'undefined') return PRERENDER_LANGUAGE
-
-    const supported = new Set<string>(SUPPORTED_LANGUAGES.map((language) => language.code))
-    const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
-
-    for (const tag of preferred) {
-        const base = tag?.toLowerCase().split('-')[0]
-        const code = base === 'nb' || base === 'nn' ? 'no' : base
-        if (code && supported.has(code)) return code
-    }
-    return FALLBACK_LANGUAGE
-}
+/** Keep the public URL Norwegian, including after Google renders JavaScript.
+ * Visitors can still choose any supported language and save that preference. */
+export const FALLBACK_LANGUAGE = PRERENDER_LANGUAGE
 
 const en = {
     nav: {
@@ -248,6 +232,10 @@ const en = {
         cta: 'See all projects',
         visitSite: 'Visit site',
     },
+    notFoundPage: {
+        title: 'Page not found',
+        description: 'This page does not exist. Go to the home page or explore my projects.',
+    },
     projectsPage: {
         title: 'My projects',
         subtitle: 'Explore my projects and see what I have been working on',
@@ -262,6 +250,7 @@ const en = {
     },
     projectDetails: {
         notFound: 'Project not found.',
+        loadError: 'Could not load the project. Please try again.',
         stack: 'Tech stack',
         tags: 'Tags',
     },
@@ -584,6 +573,10 @@ const no: TranslationSchema = {
         cta: 'Se alle prosjekter',
         visitSite: 'Besøk siden',
     },
+    notFoundPage: {
+        title: 'Siden ble ikke funnet',
+        description: 'Denne siden finnes ikke. Gå til forsiden eller utforsk prosjektene mine.',
+    },
     projectsPage: {
         title: 'Mine prosjekter',
         subtitle: 'Utforsk mine prosjekter og se hva jeg har jobbet med',
@@ -598,6 +591,7 @@ const no: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Prosjekt ikke funnet.',
+        loadError: 'Kunne ikke laste prosjektet. Prøv igjen.',
         stack: 'Teknologi',
         tags: 'Stikkord',
     },
@@ -917,6 +911,10 @@ const es: TranslationSchema = {
         cta: 'Ver todos los proyectos',
         visitSite: 'Visitar sitio',
     },
+    notFoundPage: {
+        title: 'Página no encontrada',
+        description: 'Esta página no existe. Ve al inicio o explora mis proyectos.',
+    },
     projectsPage: {
         title: 'Mis proyectos',
         subtitle: 'Explora mis proyectos y mira en qué he estado trabajando',
@@ -931,6 +929,7 @@ const es: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Proyecto no encontrado.',
+        loadError: 'No se pudo cargar el proyecto. Inténtalo de nuevo.',
         stack: 'Tecnologías',
         tags: 'Etiquetas',
     },
@@ -1250,6 +1249,10 @@ const de: TranslationSchema = {
         cta: 'Alle Projekte ansehen',
         visitSite: 'Seite besuchen',
     },
+    notFoundPage: {
+        title: 'Seite nicht gefunden',
+        description: 'Diese Seite existiert nicht. Gehe zur Startseite oder entdecke meine Projekte.',
+    },
     projectsPage: {
         title: 'Meine Projekte',
         subtitle: 'Entdecke meine Projekte und sieh dir an, woran ich gearbeitet habe',
@@ -1264,6 +1267,7 @@ const de: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Projekt nicht gefunden.',
+        loadError: 'Das Projekt konnte nicht geladen werden. Bitte erneut versuchen.',
         stack: 'Tech-Stack',
         tags: 'Tags',
     },
@@ -1583,6 +1587,10 @@ const fr: TranslationSchema = {
         cta: 'Voir tous les projets',
         visitSite: 'Visiter le site',
     },
+    notFoundPage: {
+        title: 'Page introuvable',
+        description: 'Cette page n’existe pas. Accédez à l’accueil ou découvrez mes projets.',
+    },
     projectsPage: {
         title: 'Mes projets',
         subtitle: 'Découvrez mes projets et ce sur quoi je travaille',
@@ -1597,6 +1605,7 @@ const fr: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Projet introuvable.',
+        loadError: 'Impossible de charger le projet. Réessayez.',
         stack: 'Stack technique',
         tags: 'Tags',
     },
@@ -1711,7 +1720,7 @@ i18n.use(initReactI18next).init({
     },
     supportedLngs: SUPPORTED_LANGUAGES.map((language) => language.code),
     load: 'languageOnly',
-    lng: readPreference('portfolio-lang') ?? detectBrowserLanguage(),
+    lng: readPreference('portfolio-lang') ?? PRERENDER_LANGUAGE,
     fallbackLng: FALLBACK_LANGUAGE,
     interpolation: {
         escapeValue: false,
@@ -1720,7 +1729,7 @@ i18n.use(initReactI18next).init({
 
 function applyHtmlLang(lng: string) {
     if (typeof document !== 'undefined') {
-        document.documentElement.lang = lng
+        document.documentElement.lang = lng === 'no' ? 'nb' : lng
     }
 }
 applyHtmlLang(i18n.resolvedLanguage ?? i18n.language)

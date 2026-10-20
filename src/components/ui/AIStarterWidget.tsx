@@ -58,7 +58,7 @@ export default function AIStarterWidget() {
     const [failed, setFailed] = useState(false)
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
     const [atBottom, setAtBottom] = useState(true)
-    const [isDesktop, setIsDesktop] = useState(() => window.matchMedia(DESKTOP_QUERY).matches)
+    const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' && window.matchMedia(DESKTOP_QUERY).matches)
     const [mobileHeight, setMobileHeight] = useState<number | null>(null)
     const [pendingSection, setPendingSection] = useState<string | null>(null)
 
