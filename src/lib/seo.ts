@@ -1,6 +1,11 @@
+import { localizeProject } from './projects'
+import type { Project } from './projects'
+import type { LanguageCode } from '../hooks/useLanguage'
+
 export interface RouteSeo {
     title: string
     description: string
+    noindex?: boolean
 }
 
 export const SITE = 'https://emilb.no'
@@ -28,7 +33,23 @@ export const ROUTE_SEO: Record<string, RouteSeo> = {
 }
 
 export function canonicalFor(path: string): string {
-    return path === '/' ? `${SITE}/` : `${SITE}${path}`
+    const pathname = path.split(/[?#]/)[0].replace(/\/+$/, '') || '/'
+    return pathname === '/' ? `${SITE}/` : `${SITE}${pathname}`
+}
+
+export const NOT_FOUND_SEO: RouteSeo = {
+    title: 'Siden ble ikke funnet – Emil Berglund',
+    description: 'Denne siden finnes ikke. Gå til forsiden eller utforsk prosjektene til Emil Berglund.',
+    noindex: true,
+}
+
+export function projectSeoFor(project: Project, language: LanguageCode = 'no'): RouteSeo {
+    const text = localizeProject(project, language).description.replace(/\s+/g, ' ').trim()
+    const description = text.length > 160 ? `${text.slice(0, 157).replace(/\s+\S*$/, '')}…` : text
+    return {
+        title: absoluteTitle(project.title),
+        description: description || `Les om ${project.title}, et prosjekt av Emil Berglund.`,
+    }
 }
 
 export function absoluteTitle(title: string): string {
@@ -36,10 +57,14 @@ export function absoluteTitle(title: string): string {
 }
 
 /** Identity and page data shared by the generated HTML and client navigation. */
-export function structuredDataFor(path: string, title: string, description: string) {
+export function structuredDataFor(path: string, title: string, description: string, projects: Project[] = [], language = 'nb-NO') {
     const canonical = canonicalFor(path)
+    const pathname = new URL(canonical).pathname
+    const project = projects.find(item => pathname === `/projects/${item.local_path}`)
     const personId = `${SITE}/#person`
     const websiteId = `${SITE}/#website`
+    const breadcrumbId = `${canonical}#breadcrumb`
+    const hasBreadcrumb = pathname === '/projects' || pathname === '/contact' || Boolean(project)
     return {
         '@context': 'https://schema.org',
         '@graph': [
@@ -82,16 +107,51 @@ export function structuredDataFor(path: string, title: string, description: stri
                 publisher: { '@id': personId },
             },
             {
-                '@type': path === '/' ? 'ProfilePage' : 'WebPage',
+                '@type': pathname === '/' ? 'ProfilePage' : pathname === '/projects' ? 'CollectionPage' : pathname === '/contact' ? 'ContactPage' : 'WebPage',
                 '@id': `${canonical}#webpage`,
                 url: canonical,
                 name: title,
                 description,
-                inLanguage: 'nb-NO',
+                inLanguage: language,
                 isPartOf: { '@id': websiteId },
                 about: { '@id': personId },
-                ...(path === '/' ? { mainEntity: { '@id': personId } } : {}),
+                ...(pathname === '/' ? { mainEntity: { '@id': personId } } : {}),
+                ...(project ? { mainEntity: { '@id': `${canonical}#project` } } : {}),
+                ...(hasBreadcrumb ? { breadcrumb: { '@id': breadcrumbId } } : {}),
+                ...(pathname === '/projects' ? {
+                    mainEntity: {
+                        '@type': 'ItemList',
+                        itemListElement: projects.map((item, index) => ({
+                            '@type': 'ListItem',
+                            position: index + 1,
+                            name: item.title,
+                            url: canonicalFor(`/projects/${item.local_path}`),
+                        })),
+                    },
+                } : {}),
             },
+            ...(project ? [{
+                '@type': 'CreativeWork',
+                '@id': `${canonical}#project`,
+                name: project.title,
+                description,
+                url: canonical,
+                author: { '@id': personId },
+                inLanguage: language,
+            }] : []),
+            ...(hasBreadcrumb ? [{
+                '@type': 'BreadcrumbList',
+                '@id': breadcrumbId,
+                itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'Hjem', item: `${SITE}/` },
+                    {
+                        '@type': 'ListItem', position: 2,
+                        name: pathname === '/contact' ? 'Kontakt' : 'Prosjekter',
+                        item: canonicalFor(pathname === '/contact' ? '/contact' : '/projects'),
+                    },
+                    ...(project ? [{ '@type': 'ListItem', position: 3, name: project.title, item: canonical }] : []),
+                ],
+            }] : []),
         ],
     }
 }

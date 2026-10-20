@@ -1,1 +1,5 @@
-/*    /index.html   200
+# Static HTML supplies each public route. Unknown paths use the generated 404.html.
+# Keep old directory-style URLs consistent with the extensionless canonical URLs.
+/projects/ /projects 301
+/contact/ /contact 301
+/projects/:slug/ /projects/:slug 301

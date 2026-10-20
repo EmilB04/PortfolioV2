@@ -3,6 +3,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import i18n, { PRERENDER_LANGUAGE } from './lib/i18n'
 import { getConsent } from './lib/cookieConsent'
+import { ProjectDataContext, readPrerenderedProjects } from './context/projectDataContext'
 import './styles/index.css'
 import App from './App.tsx'
 import { ThemeProvider } from './context/ThemeProvider'
@@ -16,12 +17,14 @@ const app = (
     <CookieConsentProvider>
       <ThemeProvider>
         <AccentProvider>
-          <BrowserRouter>
-            <ErrorBoundary>
-              <App />
-            </ErrorBoundary>
-          </BrowserRouter>
-          <CookieConsentBanner />
+          <ProjectDataContext.Provider value={readPrerenderedProjects()}>
+            <BrowserRouter>
+              <ErrorBoundary>
+                <App />
+              </ErrorBoundary>
+            </BrowserRouter>
+            <CookieConsentBanner />
+          </ProjectDataContext.Provider>
         </AccentProvider>
       </ThemeProvider>
     </CookieConsentProvider>

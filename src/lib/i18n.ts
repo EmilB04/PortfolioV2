@@ -232,6 +232,10 @@ const en = {
         cta: 'See all projects',
         visitSite: 'Visit site',
     },
+    notFoundPage: {
+        title: 'Page not found',
+        description: 'This page does not exist. Go to the home page or explore my projects.',
+    },
     projectsPage: {
         title: 'My projects',
         subtitle: 'Explore my projects and see what I have been working on',
@@ -246,6 +250,7 @@ const en = {
     },
     projectDetails: {
         notFound: 'Project not found.',
+        loadError: 'Could not load the project. Please try again.',
         stack: 'Tech stack',
         tags: 'Tags',
     },
@@ -568,6 +573,10 @@ const no: TranslationSchema = {
         cta: 'Se alle prosjekter',
         visitSite: 'Besøk siden',
     },
+    notFoundPage: {
+        title: 'Siden ble ikke funnet',
+        description: 'Denne siden finnes ikke. Gå til forsiden eller utforsk prosjektene mine.',
+    },
     projectsPage: {
         title: 'Mine prosjekter',
         subtitle: 'Utforsk mine prosjekter og se hva jeg har jobbet med',
@@ -582,6 +591,7 @@ const no: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Prosjekt ikke funnet.',
+        loadError: 'Kunne ikke laste prosjektet. Prøv igjen.',
         stack: 'Teknologi',
         tags: 'Stikkord',
     },
@@ -901,6 +911,10 @@ const es: TranslationSchema = {
         cta: 'Ver todos los proyectos',
         visitSite: 'Visitar sitio',
     },
+    notFoundPage: {
+        title: 'Página no encontrada',
+        description: 'Esta página no existe. Ve al inicio o explora mis proyectos.',
+    },
     projectsPage: {
         title: 'Mis proyectos',
         subtitle: 'Explora mis proyectos y mira en qué he estado trabajando',
@@ -915,6 +929,7 @@ const es: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Proyecto no encontrado.',
+        loadError: 'No se pudo cargar el proyecto. Inténtalo de nuevo.',
         stack: 'Tecnologías',
         tags: 'Etiquetas',
     },
@@ -1234,6 +1249,10 @@ const de: TranslationSchema = {
         cta: 'Alle Projekte ansehen',
         visitSite: 'Seite besuchen',
     },
+    notFoundPage: {
+        title: 'Seite nicht gefunden',
+        description: 'Diese Seite existiert nicht. Gehe zur Startseite oder entdecke meine Projekte.',
+    },
     projectsPage: {
         title: 'Meine Projekte',
         subtitle: 'Entdecke meine Projekte und sieh dir an, woran ich gearbeitet habe',
@@ -1248,6 +1267,7 @@ const de: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Projekt nicht gefunden.',
+        loadError: 'Das Projekt konnte nicht geladen werden. Bitte erneut versuchen.',
         stack: 'Tech-Stack',
         tags: 'Tags',
     },
@@ -1567,6 +1587,10 @@ const fr: TranslationSchema = {
         cta: 'Voir tous les projets',
         visitSite: 'Visiter le site',
     },
+    notFoundPage: {
+        title: 'Page introuvable',
+        description: 'Cette page n’existe pas. Accédez à l’accueil ou découvrez mes projets.',
+    },
     projectsPage: {
         title: 'Mes projets',
         subtitle: 'Découvrez mes projets et ce sur quoi je travaille',
@@ -1581,6 +1605,7 @@ const fr: TranslationSchema = {
     },
     projectDetails: {
         notFound: 'Projet introuvable.',
+        loadError: 'Impossible de charger le projet. Réessayez.',
         stack: 'Stack technique',
         tags: 'Tags',
     },

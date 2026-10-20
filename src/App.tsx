@@ -7,6 +7,7 @@ const Home = lazy(() => import('./pages/HomePage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const SpesificProjectPage = lazy(() => import('./pages/SpesificProjectPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:projectId" element={<SpesificProjectPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </Layout>

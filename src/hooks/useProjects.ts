@@ -1,36 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useLanguage } from './useLanguage'
-import type { LanguageCode } from './useLanguage'
+import { ProjectDataContext } from '../context/projectDataContext'
+import { localizeProject } from '../lib/projects'
+import type { Project } from '../lib/projects'
 
-type ProjectText = Partial<Pick<Project, 'description' | 'details'>>
-
-export interface Project {
-    id: number
-    title: string
-    languages: string[]
-    description: string
-    details: string
-    local_path: string
-    url: string
-    live_url: string | null
-    images: string[]
-    videos: string[]
-    tags: string[]
-    /** Non-English text by language code; `description` / `details` above are English. */
-    translations?: Partial<Record<LanguageCode, ProjectText>> | null
-}
-
-/** The project with its text in `lang`, falling back to English field by field. */
-export function localizeProject(project: Project, lang: LanguageCode): Project {
-    const text = project.translations?.[lang]
-    if (!text) return project
-    return {
-        ...project,
-        description: text.description || project.description,
-        details: text.details || project.details,
-    }
-}
+export type { Project } from '../lib/projects'
 
 /** Project in the language the page is currently shown in. */
 export function useLocalizedProject<T extends Project | null | undefined>(project: T): T {
@@ -39,13 +14,13 @@ export function useLocalizedProject<T extends Project | null | undefined>(projec
 }
 
 export function useProjects() {
-    const [projects, setProjects] = useState<Project[]>([])
-    const [loading, setLoading] = useState(true)
+    const initialProjects = useContext(ProjectDataContext)
+    const [projects, setProjects] = useState<Project[]>(initialProjects ?? [])
+    const [loading, setLoading] = useState(initialProjects === undefined)
 
     useEffect(() => {
         let mounted = true
             ; (async () => {
-                setLoading(true)
                 const { data, error } = await supabase
                     .from('projects')
                     .select('*')
@@ -56,7 +31,7 @@ export function useProjects() {
                 } else if (mounted && data) {
                     setProjects(data as Project[])
                 }
-                setLoading(false)
+                if (mounted) setLoading(false)
             })()
 
         return () => {
@@ -65,4 +40,40 @@ export function useProjects() {
     }, [])
 
     return { projects, loading }
+}
+
+/** Keep the current slug isolated from previous requests and upload updates. */
+export function useProject(slug: string | undefined) {
+    const initialProject = useContext(ProjectDataContext)?.find(project => project.local_path === slug)
+    const [result, setResult] = useState<{
+        slug: string | undefined
+        project: Project | null
+        notFound: boolean
+        error: boolean
+    }>()
+    const current = result?.slug === slug ? result : undefined
+
+    useEffect(() => {
+        let mounted = true
+        void (async () => {
+            const { data, error } = await supabase.from('projects').select('*').eq('local_path', slug).maybeSingle()
+            if (!mounted) return
+            if (error) console.error(error)
+            setResult({
+                slug,
+                project: error ? initialProject ?? null : data as Project | null,
+                notFound: !error && !data,
+                error: Boolean(error),
+            })
+        })()
+        return () => { mounted = false }
+    }, [slug, initialProject])
+
+    return {
+        project: current ? current.project : initialProject ?? null,
+        loading: !current && !initialProject,
+        notFound: current?.notFound ?? false,
+        error: current?.error ?? false,
+        setProject: (project: Project) => setResult({ slug, project, notFound: false, error: false }),
+    }
 }

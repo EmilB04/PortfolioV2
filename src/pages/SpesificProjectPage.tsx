@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { readStored, writeStored } from '../lib/cookieConsent'
 import { ExternalLink, Github, Upload, X, Check, Loader2 } from 'lucide-react'
-import { supabase } from '../lib/supabase'
-import { useLocalizedProject } from '../hooks/useProjects'
-import type { Project } from '../hooks/useProjects'
+import { useLocalizedProject, useProject } from '../hooks/useProjects'
 import { ProjectDetailSkeleton } from '../components/ui/Skeleton'
 import ProjectMediaCarousel from '../components/ProjectMediaCarousel'
 import { useSeo } from '../hooks/useSeo'
-import { absoluteTitle } from '../lib/seo'
+import { NOT_FOUND_SEO, projectSeoFor } from '../lib/seo'
+import { useLanguage } from '../hooks/useLanguage'
 
 const CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME ?? 'emilber-portfolio'
 const API_KEY = import.meta.env.CLOUDINARY_API_KEY ?? ''
@@ -69,9 +68,8 @@ async function uploadToCloudinary(file: File, folder: string, publicId: string, 
 export default function SpesificProjectPage() {
     const { projectId } = useParams<{ projectId: string }>()
     const { t } = useTranslation()
-    const [project, setProject] = useState<Project | null>(null)
-    const [loading, setLoading] = useState(true)
-    const [notFound, setNotFound] = useState(false)
+    const { project, setProject, loading, notFound, error } = useProject(projectId)
+    const { current } = useLanguage()
     const [devMode, setDevMode] = useState(false)
     const [adminKey, setAdminKey] = useState<string | null>(readStoredAdminKey)
     const [uploading, setUploading] = useState(false)
@@ -79,31 +77,11 @@ export default function SpesificProjectPage() {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const localized = useLocalizedProject(project)
 
-    useSeo(
-        project ? absoluteTitle(project.title) : absoluteTitle('Prosjekt'),
-        localized?.description ?? 'Et programvareprosjekt av Emil Berglund, fullstackutvikler i Halden.',
-        `/projects/${projectId}`,
-    )
-
-    useEffect(() => {
-        let mounted = true
-            ; (async () => {
-                const { data, error } = await supabase
-                    .from('projects')
-                    .select('*')
-                    .eq('local_path', projectId)
-                    .single()
-
-                if (!mounted) return
-                if (error || !data) {
-                    setNotFound(true)
-                } else {
-                    setProject(data as Project)
-                }
-                setLoading(false)
-            })()
-        return () => { mounted = false }
-    }, [projectId])
+    const seo = notFound ? NOT_FOUND_SEO : project ? projectSeoFor(project, current) : {
+        title: 'Prosjekt – Emil Berglund',
+        description: 'Et programvareprosjekt av Emil Berglund, fullstackutvikler i Halden.',
+    }
+    useSeo(seo.title, seo.description, `/projects/${projectId}`, { noindex: notFound, project })
 
     // CTRL+SHIFT+D toggles dev mode
     useEffect(() => {
@@ -184,7 +162,8 @@ export default function SpesificProjectPage() {
     if (notFound || !project) {
         return (
             <div className="flex flex-col items-center justify-center gap-4" style={{ minHeight: 'calc(100vh - 4rem)', color: 'var(--text)' }}>
-                <p className="text-[var(--text-muted)]">{t('projectDetails.notFound')}</p>
+                <h1>{t(error ? 'projectDetails.loadError' : 'projectDetails.notFound')}</h1>
+                <Link to="/projects" className="text-[var(--accent-text)] underline">{t('nav.projects')}</Link>
             </div>
         )
     }

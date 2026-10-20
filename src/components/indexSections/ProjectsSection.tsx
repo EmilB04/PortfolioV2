@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
@@ -9,9 +9,7 @@ import { TagList } from '../ui/Tag'
 import { FeaturedProjectsSkeleton } from '../ui/Skeleton'
 import BrowserPreview from '../BrowserPreview'
 import { resolveMediaUrl } from '../../lib/media'
-import { supabase } from '../../lib/supabase'
-import { useLocalizedProject } from '../../hooks/useProjects'
-import type { Project } from '../../hooks/useProjects'
+import { useLocalizedProject, useProjects } from '../../hooks/useProjects'
 import { INDEX_PATHS } from '../../routes/indexPaths'
 import { ROUTES } from '../../routes/routes'
 
@@ -20,33 +18,9 @@ const FEATURED_SLUGS = ['streamdeck-battery-monitor', 'varsel', 'perceivo', 'rea
 
 export default function ProjectsSection() {
     const { t } = useTranslation()
-    const [projects, setProjects] = useState<Project[]>([])
-    const [loading, setLoading] = useState(true)
+    const { projects: allProjects, loading } = useProjects()
+    const projects = useMemo(() => FEATURED_SLUGS.flatMap(slug => allProjects.filter(project => project.local_path === slug)), [allProjects])
     const [activeIndex, setActiveIndex] = useState(0)
-
-    useEffect(() => {
-        let mounted = true
-            ; (async () => {
-                const { data, error } = await supabase
-                    .from('projects')
-                    .select('*')
-                    .in('local_path', [...FEATURED_SLUGS])
-
-                if (error) {
-                    console.error(error)
-                } else if (mounted && data) {
-                    const sorted = [...FEATURED_SLUGS]
-                        .map((slug) => (data as Project[]).find((p) => p.local_path === slug))
-                        .filter(Boolean) as Project[]
-                    setProjects(sorted)
-                }
-                if (mounted) setLoading(false)
-            })()
-
-        return () => {
-            mounted = false
-        }
-    }, [])
 
     // Warm Microlink's screenshot cache for every live project — switching tabs
     // later then hits an already-rendering (or cached) screenshot instead of
