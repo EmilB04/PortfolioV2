@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
@@ -21,36 +21,6 @@ export default function ProjectsSection() {
     const { projects: allProjects, loading } = useProjects()
     const projects = useMemo(() => FEATURED_SLUGS.flatMap(slug => allProjects.filter(project => project.local_path === slug)), [allProjects])
     const [activeIndex, setActiveIndex] = useState(0)
-
-    // Warm Microlink's screenshot cache for every live project — switching tabs
-    // later then hits an already-rendering (or cached) screenshot instead of
-    // triggering a fresh cold render. It waits for an idle moment, and is
-    // skipped entirely on phones and metered connections, where five extra
-    // screenshot fetches cost more than the tab switch they save.
-    useEffect(() => {
-        if (projects.length === 0) return
-
-        const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-        const onPhone = window.matchMedia('(pointer: coarse)').matches
-        if (onPhone || connection?.saveData) return
-
-        const warm = () => {
-            projects.forEach((p) => {
-                if (!p.live_url) return
-                const img = new Image()
-                img.src = `https://api.microlink.io/?url=${encodeURIComponent(p.live_url)}&screenshot=true&meta=false&embed=screenshot.url`
-            })
-        }
-
-        const idle = window.requestIdleCallback
-        if (idle) {
-            const handle = idle(warm, { timeout: 4000 })
-            return () => window.cancelIdleCallback?.(handle)
-        }
-
-        const timer = window.setTimeout(warm, 2500)
-        return () => window.clearTimeout(timer)
-    }, [projects])
 
     const active = useLocalizedProject(projects[activeIndex])
     const previewImage = resolveMediaUrl(active?.images?.[0])

@@ -49,6 +49,9 @@ npm run build      # type-check, client build, SSR build and prerender
 npm run preview
 ```
 
+Website previews use saved captures for fast loading without consent dialogs.
+See [refreshing website previews](docs/web-previews.md) after updating a showcased site.
+
 ## Built with
 
 React · TypeScript · Vite · Tailwind CSS · Supabase · React Router · Framer Motion · i18next · Lucide

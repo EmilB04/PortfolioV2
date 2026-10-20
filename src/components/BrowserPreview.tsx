@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { ExternalLink, Lock } from 'lucide-react'
+import SitePreviewImage from './SitePreviewImage'
 
 type Props = {
     url: string
@@ -7,41 +7,10 @@ type Props = {
     placeholderUrl?: string
 }
 
-const MAX_RETRIES = 3
-const RETRY_DELAY_MS = 1500
-
 export default function BrowserPreview({ url, imageUrl, placeholderUrl }: Props) {
-    const [attempt, setAttempt] = useState(0)
-    const [screenshotFailed, setScreenshotFailed] = useState(false)
-    const [screenshotLoaded, setScreenshotLoaded] = useState(false)
-    const [prevUrl, setPrevUrl] = useState(url)
-
-    // Reset retry state whenever the target url changes (e.g. switching active project).
-    // Adjusting state during render instead of an effect avoids an extra commit.
-    if (url !== prevUrl) {
-        setPrevUrl(url)
-        setAttempt(0)
-        setScreenshotFailed(false)
-        setScreenshotLoaded(false)
-    }
-
     const hostname = (() => {
         try { return new URL(url).hostname } catch { return url }
     })()
-
-    // Microlink renders the target page on first request — a cold screenshot can 4xx/5xx
-    // before it's ready, even though the same request would succeed moments later once
-    // microlink's own cache is warm. Retry with backoff instead of giving up immediately.
-    function handleError() {
-        if (attempt < MAX_RETRIES) {
-            setTimeout(() => setAttempt((a) => a + 1), RETRY_DELAY_MS * (attempt + 1))
-        } else {
-            setScreenshotFailed(true)
-        }
-    }
-
-    const microlinkSrc = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`
-    const src = imageUrl ?? (screenshotFailed ? null : microlinkSrc)
 
     return (
         <div
@@ -72,34 +41,13 @@ export default function BrowserPreview({ url, imageUrl, placeholderUrl }: Props)
 
             {/* Preview */}
             <div className="relative aspect-video w-full overflow-hidden bg-[var(--surface)]">
-                {/* Stored screenshot shown instantly while the live one renders — Microlink's
-                    cold capture can take several seconds, so this avoids a blank wait. */}
-                {placeholderUrl && (
-                    <img
-                        src={placeholderUrl}
-                        alt=""
-                        aria-hidden="true"
-                        className={`absolute inset-0 block h-full w-full object-cover object-top transition-opacity duration-300 ${imageUrl || screenshotLoaded ? 'opacity-0' : 'opacity-100'}`}
-                    />
-                )}
-                {src ? (
-                    <img
-                        key={attempt}
-                        src={src}
-                        alt={`${hostname} preview`}
-                        onLoad={() => setScreenshotLoaded(true)}
-                        onError={handleError}
-                        className={`relative block h-full w-full object-cover object-top ${placeholderUrl && !imageUrl ? `transition-opacity duration-300 ${screenshotLoaded ? 'opacity-100' : 'opacity-0'}` : ''}`}
-                        loading="eager"
-                    />
-                ) : !placeholderUrl ? (
-                    <div
-                        className="flex h-full w-full items-center justify-center"
-                        style={{ background: 'color-mix(in srgb, var(--accent) 6%, var(--surface))' }}
-                    >
-                        <span className="text-xs text-[var(--text-subtle)]">{hostname}</span>
-                    </div>
-                ) : null}
+                <SitePreviewImage
+                    url={url}
+                    imageUrl={imageUrl}
+                    placeholderUrl={placeholderUrl}
+                    alt={`${hostname} preview`}
+                    className="block h-full w-full object-cover object-top"
+                />
             </div>
         </div>
     )

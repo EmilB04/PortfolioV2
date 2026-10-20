@@ -5,6 +5,7 @@ import { ArrowRight, Lock, ChevronLeft, ChevronRight } from 'lucide-react'
 import IndexLayout from './_layout'
 import SectionHeading from '../ui/SectionHeading'
 import { INDEX_PATHS } from '../../routes/indexPaths'
+import SitePreviewImage from '../SitePreviewImage'
 
 interface DomainConfig {
     previewImage: string | null
@@ -44,32 +45,17 @@ const SLIDE_MS = 380
 const SLIDE_DISTANCE = 56
 const SLIDE_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
-// Live page screenshot via microlink — probes the actual page instead of a static image.
-function screenshotSrc(href: string) {
-    return `https://api.microlink.io/?url=${encodeURIComponent(href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=960&viewport.height=600`
-}
-
 export default function LiveDomainShowcase() {
     const { t } = useTranslation()
     const [active, setActive] = useState(0)
     const [paused, setPaused] = useState(false)
     const [phase, setPhase] = useState<'idle' | 'exiting' | 'entering'>('idle')
     const [slideDir, setSlideDir] = useState(1)
-    const [failed, setFailed] = useState<Record<number, boolean>>({})
     const navigatingRef = useRef(false)
 
     const items = t('showcase.items', { returnObjects: true }) as ShowcaseItem[]
     const domain = DOMAINS[active]
     const item = items[active]
-
-    // Live screenshot first; on failure fall back to the static previewImage (may be null → gradient).
-    function previewSrc(d: DomainConfig, i: number): string | null {
-        return failed[i] ? d.previewImage : screenshotSrc(d.href)
-    }
-
-    function handlePreviewError(i: number) {
-        setFailed((prev) => (prev[i] ? prev : { ...prev, [i]: true }))
-    }
 
     // Declared before the autoplay effect so it can be a dependency without hitting the TDZ.
     const navigate = useCallback((rawIndex: number) => {
@@ -219,19 +205,12 @@ export default function LiveDomainShowcase() {
                             </div>
 
                             <div style={{ background: 'var(--surface-sunken)' }}>
-                                {previewSrc(domain, active) ? (
-                                    <img
-                                        src={previewSrc(domain, active) as string}
-                                        alt={item.previewAlt}
-                                        onError={() => handlePreviewError(active)}
-                                        className="block aspect-[16/10] w-full object-cover object-top"
-                                        loading="lazy"
-                                    />
-                                ) : (
-                                    <div className="flex h-64 w-full items-center justify-center font-mono text-sm text-[var(--text-subtle)]">
-                                        {item.url}
-                                    </div>
-                                )}
+                                <SitePreviewImage
+                                    url={domain.href}
+                                    placeholderUrl={domain.previewImage ?? undefined}
+                                    alt={item.previewAlt}
+                                    className="block aspect-[16/10] w-full object-cover object-top"
+                                />
                             </div>
                         </div>
 
