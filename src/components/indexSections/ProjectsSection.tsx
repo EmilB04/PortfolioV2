@@ -14,7 +14,7 @@ import { INDEX_PATHS } from '../../routes/indexPaths'
 import { ROUTES } from '../../routes/routes'
 
 // Change these slugs to control which projects are featured here
-const FEATURED_SLUGS = ['streamdeck-battery-monitor', 'varsel', 'perceivo', 'readme-generator', 'pageprobe'] as const
+const FEATURED_SLUGS = ['lumabridge', 'streamdeck-battery-monitor', 'varsel', 'perceivo', 'readme-generator', 'pageprobe'] as const
 
 export default function ProjectsSection() {
     const { t } = useTranslation()
@@ -171,7 +171,7 @@ export default function ProjectsSection() {
                                                     <img
                                                         src={previewImage}
                                                         alt={active.title}
-                                                        className="aspect-video w-full object-cover"
+                                                        className="aspect-video w-full object-contain"
                                                         loading="lazy"
                                                     />
                                                 </div>
