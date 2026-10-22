@@ -7,7 +7,6 @@ import { ProjectDataContext, readPrerenderedProjects } from './context/projectDa
 import './styles/index.css'
 import App from './App.tsx'
 import { ThemeProvider } from './context/ThemeProvider'
-import { AccentProvider } from './context/AccentProvider'
 import { CookieConsentProvider } from './context/CookieConsentProvider'
 import CookieConsentBanner from './components/CookieConsentBanner'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -16,16 +15,14 @@ const app = (
   <StrictMode>
     <CookieConsentProvider>
       <ThemeProvider>
-        <AccentProvider>
-          <ProjectDataContext.Provider value={readPrerenderedProjects()}>
-            <BrowserRouter>
-              <ErrorBoundary>
-                <App />
-              </ErrorBoundary>
-            </BrowserRouter>
-            <CookieConsentBanner />
-          </ProjectDataContext.Provider>
-        </AccentProvider>
+        <ProjectDataContext.Provider value={readPrerenderedProjects()}>
+          <BrowserRouter>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </BrowserRouter>
+          <CookieConsentBanner />
+        </ProjectDataContext.Provider>
       </ThemeProvider>
     </CookieConsentProvider>
   </StrictMode>

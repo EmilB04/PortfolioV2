@@ -24,7 +24,26 @@
   z-index: 0;
   pointer-events: none;
   background: var(--terrain-bg);
-  transition: background 0.4s var(--ease-organic);
+}
+
+/* Reading pages sit on the flat ground colour. */
+.terrain-backdrop[data-variant='plain'] {
+  background: var(--bg);
+}
+
+.terrain-light {
+  background: radial-gradient(70% 55% at 72% -8%, var(--terrain-light), transparent 72%);
+}
+
+.terrain-backdrop[data-variant='plain'] .terrain-light {
+  background: radial-gradient(90% 38% at 50% -12%, var(--terrain-light-soft), transparent 70%);
+}
+
+/* The map fades out towards the middle of the view, so the lines frame the
+   content instead of running under it. */
+.terrain-map {
+  mask-image: radial-gradient(75% 70% at 50% 55%, transparent 30%, black 85%);
+  -webkit-mask-image: radial-gradient(75% 70% at 50% 55%, transparent 30%, black 85%);
 }
 
 #root>*:not(.terrain-backdrop):not(.fixed) {
@@ -403,10 +422,6 @@ code {
   .ai-typing-dot {
     animation: none;
     opacity: 0.6;
-  }
-
-  .terrain-backdrop * {
-    animation: none !important;
   }
 }
 

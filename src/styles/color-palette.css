@@ -2,15 +2,11 @@
    Terreng — organic token layer.
 
    The palette is built from mineral and plant neutrals (lichen,
-   paper, peat, moss) so it stays quiet under any of the 13 accent
-   presets a visitor can pick. `--accent` / `--accent-text` are set
-   inline on <html> by AccentProvider; nothing here may hard-code them.
+   paper, peat, moss) so it stays quiet under the orange accent.
    ─────────────────────────────────────────────────────────── */
 
 :root {
     --background: #12160f;
-    /* Matches the 'orange' preset in accentContext — the default accent
-       until AccentProvider sets --accent inline from a stored preference. */
     --accent-base: #fb923c;
     --max-width: 1200px;
 
@@ -38,10 +34,8 @@
 
     --accent: var(--accent-base);
     --accent-text: var(--accent-base);
-    /* Accent fills are tuned to carry near-black text (see accentContext). */
+    /* Solid accent fills carry near-black text at 7:1 (WCAG AAA). */
     --on-accent: #12160f;
-    /* Fallback before AccentProvider's JS runs; it overrides both to guarantee
-       7:1 text contrast for the active preset (see AccentProvider.tsx). */
     --accent-solid: var(--accent);
 
     --nav-bg: rgba(22, 27, 19, 0.82);
@@ -53,12 +47,12 @@
     --heading-gradient-start: var(--text);
     --heading-gradient-end: var(--accent);
 
-    /* ── Landscape layers used by the backdrop ────────────── */
-    --terrain-bg: radial-gradient(120% 90% at 50% 110%, #1d2418 0%, #161b12 42%, #0f1210 100%);
-    --terrain-far: rgba(63, 78, 54, 0.55);
-    --terrain-mid: rgba(44, 55, 38, 0.72);
-    --terrain-near: rgba(26, 32, 22, 0.92);
-    --haze: color-mix(in srgb, var(--accent) 17%, transparent);
+    /* ── Map layers used by the backdrop ──────────────────── */
+    --terrain-bg: radial-gradient(120% 90% at 50% 110%, #1a2016 0%, #141911 45%, #10130e 100%);
+    --terrain-light: color-mix(in srgb, var(--accent) 16%, transparent);
+    --terrain-light-soft: color-mix(in srgb, var(--accent) 6%, transparent);
+    --topo-line: rgba(236, 238, 226, 0.075);
+    --topo-line-index: color-mix(in srgb, var(--accent) 30%, transparent);
     --grain-opacity: 0.09;
     --contour-color: rgba(236, 238, 226, 0.07);
 
@@ -128,9 +122,11 @@ html.light-mode {
     --border-hover: color-mix(in srgb, var(--accent) 45%, transparent);
 
     --on-accent: #12160f;
-    /* Light-mode values of the same 'orange' preset. */
+    /* Light-mode orange. The base is too dark for 7:1 under near-black
+       text, so solid fills use a lighter mix of it. */
     --accent-base: #ea580c;
     --accent-text: #b9460a;
+    --accent-solid: #ef844b;
     --nav-bg: rgba(233, 235, 226, 0.88);
     --nav-bg-transparent: rgba(233, 235, 226, 0.55);
     --mobile-menu-bg: rgba(233, 235, 226, 0.99);
@@ -141,10 +137,10 @@ html.light-mode {
     --heading-gradient-end: var(--accent);
 
     --terrain-bg: radial-gradient(120% 90% at 50% 110%, #dfe4d3 0%, #e9ebe2 45%, #f2f2ec 100%);
-    --terrain-far: rgba(163, 177, 148, 0.5);
-    --terrain-mid: rgba(139, 155, 124, 0.55);
-    --terrain-near: rgba(112, 129, 99, 0.42);
-    --haze: color-mix(in srgb, var(--accent) 9%, transparent);
+    --terrain-light: color-mix(in srgb, var(--accent) 10%, transparent);
+    --terrain-light-soft: color-mix(in srgb, var(--accent) 4%, transparent);
+    --topo-line: rgba(30, 36, 28, 0.08);
+    --topo-line-index: color-mix(in srgb, var(--accent) 28%, transparent);
     --grain-opacity: 0.055;
     --contour-color: rgba(30, 36, 28, 0.06);
 
