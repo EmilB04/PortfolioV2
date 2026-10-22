@@ -63,7 +63,10 @@ async function uploadToCloudinary(file: File, folder: string, publicId: string, 
         method: 'POST',
         body: form,
     })
-    const data = await res.json() as { public_id: string }
+    const data = await res.json().catch(() => null) as { public_id?: string; error?: { message?: string } } | null
+    if (!res.ok || !data?.public_id) {
+        throw new Error(`Cloudinary upload failed: ${data?.error?.message ?? res.status}`)
+    }
     return data.public_id
 }
 
