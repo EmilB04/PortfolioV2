@@ -5,7 +5,6 @@ import './lib/i18n'
 import Layout from './components/_layout'
 import ErrorBoundary from './components/ErrorBoundary'
 import { ThemeProvider } from './context/ThemeProvider'
-import { AccentProvider } from './context/AccentProvider'
 import { CookieConsentProvider } from './context/CookieConsentProvider'
 import Home from './pages/HomePage'
 import ContactPage from './pages/ContactPage'
@@ -28,26 +27,24 @@ export async function render(url: string, projects: Project[]) {
         <StrictMode>
             <CookieConsentProvider>
                 <ThemeProvider>
-                    <AccentProvider>
-                        <ProjectDataContext.Provider value={projects}>
-                            <StaticRouter location={url}>
-                                <ErrorBoundary>
-                                    <Layout>
-                                        <Suspense fallback={<PageLayout><LoadingSpinner /></PageLayout>}>
-                                            <Routes>
-                                                <Route path="/" element={<Home />} />
-                                                <Route path="/contact" element={<ContactPage />} />
-                                                <Route path="/projects" element={<ProjectsPage />} />
-                                                <Route path="/projects/:projectId" element={<SpesificProjectPage />} />
-                                                <Route path="*" element={<NotFoundPage />} />
-                                            </Routes>
-                                        </Suspense>
-                                    </Layout>
-                                </ErrorBoundary>
-                            </StaticRouter>
-                            <CookieConsentBanner />
-                        </ProjectDataContext.Provider>
-                    </AccentProvider>
+                    <ProjectDataContext.Provider value={projects}>
+                        <StaticRouter location={url}>
+                            <ErrorBoundary>
+                                <Layout>
+                                    <Suspense fallback={<PageLayout><LoadingSpinner /></PageLayout>}>
+                                        <Routes>
+                                            <Route path="/" element={<Home />} />
+                                            <Route path="/contact" element={<ContactPage />} />
+                                            <Route path="/projects" element={<ProjectsPage />} />
+                                            <Route path="/projects/:projectId" element={<SpesificProjectPage />} />
+                                            <Route path="*" element={<NotFoundPage />} />
+                                        </Routes>
+                                    </Suspense>
+                                </Layout>
+                            </ErrorBoundary>
+                        </StaticRouter>
+                        <CookieConsentBanner />
+                    </ProjectDataContext.Provider>
                 </ThemeProvider>
             </CookieConsentProvider>
         </StrictMode>,
