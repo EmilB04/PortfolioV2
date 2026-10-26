@@ -15,7 +15,7 @@
   "dependencies": {
     "@emotion/is-prop-valid": "^1.4.0",
     "@supabase/supabase-js": "^2.118.0",
-    "framer-motion": "^13.4.0",
+    "framer-motion": "^14.6.0",
     "i18next": "^26.5.4",
     "lucide-react": "^0.408.0",
     "react": "^19.3.1",
