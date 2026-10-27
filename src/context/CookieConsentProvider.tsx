@@ -9,6 +9,8 @@ const CONSENT_KEY = 'cookie-consent'
 /** Everything this site may keep on the device, by storage area. */
 const STORED_KEYS: { key: string; area: 'local' | 'session' }[] = [
     { key: 'portfolio-theme', area: 'local' },
+    // No longer written; kept so a value saved before the accent picker was
+    // removed is still cleared when the visitor declines.
     { key: 'portfolio-accent', area: 'local' },
     { key: 'portfolio-lang', area: 'local' },
     { key: 'ai_chat_messages', area: 'local' },

@@ -47,12 +47,10 @@ const en = {
     },
     settingsMenu: {
         appearance: 'Appearance',
-        accentColor: 'Accent color',
-        chooseAccent: 'Choose accent color',
     },
     cookieConsent: {
         section: 'Privacy',
-        message: 'This site uses cookies to remember your theme, accent color and language. Nothing is shared with third parties.',
+        message: 'This site uses cookies to remember your theme and language. Nothing is shared with third parties.',
         accept: 'Accept',
         decline: 'Decline',
         manage: 'Change cookie preferences',
@@ -392,12 +390,10 @@ const no: TranslationSchema = {
     },
     settingsMenu: {
         appearance: 'Utseende',
-        accentColor: 'Aksentfarge',
-        chooseAccent: 'Velg aksentfarge',
     },
     cookieConsent: {
         section: 'Personvern',
-        message: 'Dette nettstedet bruker informasjonskapsler for å huske tema, aksentfarge og språk. Ingenting deles med tredjeparter.',
+        message: 'Dette nettstedet bruker informasjonskapsler for å huske tema og språk. Ingenting deles med tredjeparter.',
         accept: 'Godta',
         decline: 'Avslå',
         manage: 'Endre cookie-innstillinger',
@@ -736,12 +732,10 @@ const es: TranslationSchema = {
     },
     settingsMenu: {
         appearance: 'Apariencia',
-        accentColor: 'Color de acento',
-        chooseAccent: 'Elegir color de acento',
     },
     cookieConsent: {
         section: 'Privacidad',
-        message: 'Este sitio usa cookies para recordar tu tema, color de acento e idioma. No se comparte nada con terceros.',
+        message: 'Este sitio usa cookies para recordar tu tema e idioma. No se comparte nada con terceros.',
         accept: 'Aceptar',
         decline: 'Rechazar',
         manage: 'Cambiar preferencias de cookies',
@@ -1079,12 +1073,10 @@ const de: TranslationSchema = {
     },
     settingsMenu: {
         appearance: 'Darstellung',
-        accentColor: 'Akzentfarbe',
-        chooseAccent: 'Akzentfarbe wählen',
     },
     cookieConsent: {
         section: 'Datenschutz',
-        message: 'Diese Seite verwendet Cookies, um dein Design, deine Akzentfarbe und deine Sprache zu speichern. Nichts wird an Dritte weitergegeben.',
+        message: 'Diese Seite verwendet Cookies, um dein Design und deine Sprache zu speichern. Nichts wird an Dritte weitergegeben.',
         accept: 'Akzeptieren',
         decline: 'Ablehnen',
         manage: 'Cookie-Einstellungen ändern',
@@ -1422,12 +1414,10 @@ const fr: TranslationSchema = {
     },
     settingsMenu: {
         appearance: 'Apparence',
-        accentColor: "Couleur d'accent",
-        chooseAccent: "Choisir la couleur d'accent",
     },
     cookieConsent: {
         section: 'Confidentialité',
-        message: "Ce site utilise des cookies pour mémoriser votre thème, votre couleur d'accent et votre langue. Rien n'est partagé avec des tiers.",
+        message: "Ce site utilise des cookies pour mémoriser votre thème et votre langue. Rien n'est partagé avec des tiers.",
         accept: 'Accepter',
         decline: 'Refuser',
         manage: 'Modifier les préférences de cookies',

@@ -3,9 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { FiSettings } from 'react-icons/fi'
 import { useTheme } from '../../hooks/useTheme'
 import type { Theme } from '../../context/themeContext'
-import { useAccent } from '../../hooks/useAccent'
-import { ACCENT_PRESETS } from '../../context/accentContext'
-import type { AccentColor } from '../../context/accentContext'
 import { useCookieConsent } from '../../hooks/useCookieConsent'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 
@@ -58,8 +55,7 @@ const INDICATOR_TRANSLATE: Record<Theme, string> = {
 
 export function SettingsPanel({ className = '' }: { className?: string }) {
     const { t } = useTranslation()
-    const { theme, isDark, setTheme } = useTheme()
-    const { accent, setAccent } = useAccent()
+    const { theme, setTheme } = useTheme()
     const { consent, accept, decline, showBanner } = useCookieConsent()
 
     const THEME_OPTIONS: { value: Theme; label: string; Icon: () => React.JSX.Element; activeColor: string }[] = [
@@ -97,42 +93,6 @@ export function SettingsPanel({ className = '' }: { className?: string }) {
                             >
                                 <Icon />
                                 {label}
-                            </button>
-                        )
-                    })}
-                </div>
-            </section>
-
-            <section className="border-t border-[var(--border)] pt-4">
-                <h3 className="mb-2 px-1 text-sm font-medium text-[var(--text-subtle)]">
-                    {t('settingsMenu.accentColor')}
-                </h3>
-                <div role="listbox" aria-label={t('settingsMenu.chooseAccent')} className="flex flex-wrap gap-2 px-1">
-                    {(Object.keys(ACCENT_PRESETS) as AccentColor[]).map((color) => {
-                        const preset = ACCENT_PRESETS[color]
-                        const selected = color === accent
-                        return (
-                            <button
-                                key={color}
-                                type="button"
-                                role="option"
-                                aria-selected={selected}
-                                aria-label={preset.label}
-                                onClick={() => setAccent(color)}
-                                className={`
-                                    flex h-9 w-9 items-center justify-center rounded-full border-2 p-0
-                                    transition-all duration-200 ease-out
-                                    ${selected
-                                        ? 'border-[var(--accent)] scale-110'
-                                        : 'border-transparent hover:scale-105'
-                                    }
-                                `}
-                            >
-                                <span
-                                    aria-hidden="true"
-                                    className="h-6 w-6 rounded-full ring-1 ring-black/10"
-                                    style={{ background: isDark ? preset.dark : preset.light }}
-                                />
                             </button>
                         )
                     })}
