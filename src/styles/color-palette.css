@@ -25,11 +25,13 @@
     /* ── Ink ──────────────────────────────────────────────── */
     --text: #eceee2;
     --text-muted: rgba(236, 238, 226, 0.72);
-    --text-subtle: rgba(236, 238, 226, 0.58);
+    --text-subtle: rgba(236, 238, 226, 0.7);
 
     /* ── Lines ────────────────────────────────────────────── */
     --border: rgba(236, 238, 226, 0.13);
     --border-strong: rgba(236, 238, 226, 0.22);
+    /* Borders of interactive controls: 3:1 against the ground (WCAG 1.4.11). */
+    --border-control: rgba(236, 238, 226, 0.45);
     --border-hover: color-mix(in srgb, var(--accent) 42%, transparent);
 
     --accent: var(--accent-base);
@@ -115,10 +117,11 @@ html.light-mode {
 
     --text: #1e241c;
     --text-muted: rgba(30, 36, 28, 0.72);
-    --text-subtle: rgba(30, 36, 28, 0.66);
+    --text-subtle: rgba(30, 36, 28, 0.76);
 
     --border: rgba(30, 36, 28, 0.13);
     --border-strong: rgba(30, 36, 28, 0.22);
+    --border-control: rgba(30, 36, 28, 0.58);
     --border-hover: color-mix(in srgb, var(--accent) 45%, transparent);
 
     --on-accent: #12160f;

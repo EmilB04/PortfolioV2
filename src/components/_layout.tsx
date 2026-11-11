@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             <a
                 href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[500] focus:rounded-full focus:bg-[var(--surface-card)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[var(--text)] focus:shadow-[var(--shadow)]"
+                className="fixed left-4 top-4 z-[500] -translate-y-[200%] rounded-full bg-[var(--bg)] px-4 py-3 text-sm font-semibold text-[var(--text)] shadow-[var(--shadow)] ring-1 ring-[var(--border-control)] focus:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] motion-reduce:transition-none"
             >
                 {t('header.skipToContent')}
             </a>

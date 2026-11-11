@@ -38,7 +38,7 @@ export function LanguageOptions({ onSelected }: { onSelected?: () => void }) {
     const listRef = useRef<HTMLDivElement | null>(null)
 
     function handleKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
-        const options = Array.from(listRef.current?.querySelectorAll<HTMLElement>('[role="option"]') ?? [])
+        const options = Array.from(listRef.current?.querySelectorAll<HTMLElement>('[data-language-option]') ?? [])
         const index = options.indexOf(document.activeElement as HTMLElement)
         let next: number | null = null
 
@@ -61,7 +61,7 @@ export function LanguageOptions({ onSelected }: { onSelected?: () => void }) {
     return (
         <div
             ref={listRef}
-            role="listbox"
+            role="group"
             aria-label={t('languageSwitcher.choose')}
             onKeyDown={handleKeyDown}
             className="flex flex-col gap-1"
@@ -75,8 +75,8 @@ export function LanguageOptions({ onSelected }: { onSelected?: () => void }) {
                     <button
                         key={code}
                         type="button"
-                        role="option"
-                        aria-selected={selected}
+                        data-language-option=""
+                        aria-pressed={selected}
                         onClick={() => void handleSelect(code)}
                         className={`
                             pebble-sm group flex min-h-[3.25rem] w-full items-center gap-3 px-2.5 py-2 text-left
@@ -173,7 +173,7 @@ export default function LanguageMenu({ settled = false }: { settled?: boolean })
 
     // Declared after the trap so it runs after it: start on the active language, not the first row.
     useEffect(() => {
-        if (open) panelRef.current?.querySelector<HTMLElement>('[aria-selected="true"]')?.focus()
+        if (open) panelRef.current?.querySelector<HTMLElement>('[aria-pressed="true"]')?.focus()
     }, [open])
 
     const currentLabel = SUPPORTED_LANGUAGES.find((language) => language.code === current)?.label

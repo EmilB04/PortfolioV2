@@ -105,7 +105,9 @@ body {
   font-size: 16px;
   font-family: var(--sans);
   font-weight: 400;
-  background-color: transparent;
+  /* Opaque ground colour so contrast tools (and forced paints) resolve the
+     real background; the fixed backdrop still paints over it. */
+  background-color: var(--bg);
   color: var(--text);
   transition:
     background-color var(--transition),
@@ -114,7 +116,7 @@ body {
 
 body.body--dark,
 body.body--light {
-  background-color: transparent;
+  background-color: var(--bg);
   color: var(--text);
 }
 

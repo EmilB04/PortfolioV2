@@ -24,7 +24,7 @@ export default function FooterSection() {
                             href="https://github.com/EmilB04"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 text-[15px] font-medium text-[var(--text)] transition-colors hover:text-[var(--accent-text)]"
+                            className="inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-[var(--text)] transition-colors hover:text-[var(--accent-text)]"
                         >
                             <Github size={17} aria-hidden="true" />
                             <span>{t('footer.github')}</span>
