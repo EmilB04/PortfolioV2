@@ -651,7 +651,7 @@ export default function AIStarterWidget() {
                 <button
                     type="button"
                     onClick={() => setIsOpen((v) => !v)}
-                    aria-label={isOpen ? t('aiWidget.closed') : t('aiWidget.open')}
+                    aria-label={isOpen ? t('aiWidget.closed') : `${t('aiWidget.assistant')} ${t('aiWidget.teaser')}`}
                     aria-expanded={isOpen}
                     className={`ai-launcher pebble-sm group inline-flex items-center border p-2 text-left transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0.28,1)] hover:-translate-y-0.5 ${isOpen ? 'hidden md:inline-flex' : ''}`}
                     style={{
